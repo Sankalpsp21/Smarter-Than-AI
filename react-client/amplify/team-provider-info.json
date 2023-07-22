@@ -10,6 +10,11 @@
       "StackName": "amplify-reactclient-dev-212721",
       "StackId": "arn:aws:cloudformation:us-west-2:142202467334:stack/amplify-reactclient-dev-212721/0dac8330-2848-11ee-996a-02af31a6f229",
       "AmplifyAppId": "d3ijhu4e9phvvx"
+    },
+    "categories": {
+      "auth": {
+        "reactcliente026c379": {}
+      }
     }
   }
 }
