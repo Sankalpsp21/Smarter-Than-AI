@@ -1,3 +1,33 @@
-type GameSessio @model @auth(rules: [{allow: public}]) {
+type UserPersistedData @model @auth(rules: [{allow: public}]) {
   id: ID!
+  totalScore: Int!
+  totalGames: Int!
+  wins: Int!
+  losses: Int!
+  rank: Int!
+  UserSessions: [UserSession] @hasMany(indexName: "byUserPersistedData", fields: ["id"])
 }
+
+type UserSession @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  websocketSessionID: String!
+  eliminated: Boolean!
+  currentRoundResponse: String!
+  totalScore: Int!
+  totalGames: Int!
+  wins: Int!
+  losses: Int!
+  gameSessionID: ID! @index(name: "byGameSession")
+  userPersistedDataID: ID @index(name: "byUserPersistedData")
+}
+
+type GameSession @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  pinCode: Int!
+  playerCount: Int!
+  roundNumber: Int!
+  roundPrompt: String!
+  currentRoundExpiration: AWSDateTime!
+  UserSessions: [UserSession] @hasMany(indexName: "byGameSession", fields: ["id"])
+}
+ 

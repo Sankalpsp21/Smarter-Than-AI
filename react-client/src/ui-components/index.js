@@ -4,6 +4,8 @@
  * Any changes to this file will be overwritten when running amplify pull. *
  **************************************************************************/
 
-export { default as GameSessioCreateForm } from "./GameSessioCreateForm";
-export { default as GameSessioUpdateForm } from "./GameSessioUpdateForm";
 export { default as studioTheme } from "./studioTheme";
+export { default as UserPersistedDataCreateForm } from "./UserPersistedDataCreateForm";
+export { default as UserPersistedDataUpdateForm } from "./UserPersistedDataUpdateForm";
+export { default as GameSessionCreateForm } from "./GameSessionCreateForm";
+export { default as GameSessionUpdateForm } from "./GameSessionUpdateForm";
