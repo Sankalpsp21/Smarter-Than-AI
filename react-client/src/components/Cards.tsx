@@ -1,8 +1,10 @@
 import React from "react";
-import { Button, Card } from "@aws-amplify/ui-react";
+import { Button, Card, CheckboxField, Flex } from "@aws-amplify/ui-react";
+import "../index.css";
 
 interface GeneralCardProps {
   children: React.ReactNode;
+  style?: React.CSSProperties;
 }
 
 interface PromptCardProps {
@@ -10,10 +12,10 @@ interface PromptCardProps {
 }
 
 interface VoteCardProps {
-  children: React.ReactNode;
+  label: string;
 }
 
-export function PinkCard({ children }: GeneralCardProps) {
+export function PinkCard({ children, style }: GeneralCardProps) {
   return (
     <Card
       backgroundColor={"#FF6DDF"}
@@ -28,7 +30,7 @@ export function PinkCard({ children }: GeneralCardProps) {
       border={"none"}
       textAlign={"center"}
       boxShadow={"rgba(13, 26, 38, 0.25) 0px 4px 4px 0px"}
-      margin={"1em"}
+      style={style}
     >
       {children}
     </Card>
@@ -49,12 +51,32 @@ export function PromptCard({ children }: PromptCardProps) {
       border={"none"}
       textAlign={"center"}
       boxShadow={"rgba(13, 26, 38, 0.25) 0px 4px 4px 0px"}
+      style={{ cursor: "default" }}
     >
       {children}
     </Card>
   );
 }
 
-export function VoteCard({ children }: VoteCardProps) {
-  return <></>;
+export function VoteCard({ label }: VoteCardProps) {
+  return (
+    <>
+      <Card
+        backgroundColor={"#ffffff"}
+        color={"#000000"}
+        borderRadius={"12px"}
+        paddingRight={"5vw"}
+        width={"60%"}
+        textAlign={"center"}
+        fontWeight={"500"}
+        style={{ cursor: "default" }}
+        fontSize={"1.2em"}
+        boxShadow={"rgba(13, 26, 38, 0.25) 0px 4px 4px 0px"}
+      >
+        <Flex direction="row">
+          <CheckboxField label={label} name="vote" value="no" size="large" />
+        </Flex>
+      </Card>
+    </>
+  );
 }
