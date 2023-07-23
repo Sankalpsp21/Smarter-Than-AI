@@ -9,10 +9,34 @@ const CreateGame = () => {
   const [pinCode, setPinCode] = useState(5123);
   const [gameSessionId, setGameSessionId] = useState('');
 
+  const pinCodeExists = async (pinCode: number) => {
+    // GraphQL query
+    /* 
+      query PinNumbersQuery {
+        listGameSessions {
+          items {
+            pinCode
+          }
+        }
+      }
+    */
+    try {
+      return await DataStore.query(GameSession, (g) => g.pinCode.eq(pinCode));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     const initGame = async () => {
       try {
-        
+
+        // Generate a pin code
+        var pinCode;
+        do {
+          pinCode = Math.floor(Math.random() * 9000) + 1000;
+        } while (!(await pinCodeExists(pinCode)));
+
         // Create a new GameSession
         const gameSession = new GameSession({
           "pinCode": pinCode,
@@ -25,15 +49,16 @@ const CreateGame = () => {
           "roundMode": "PROMPT",
           "aiResponse": ""
         });
+
         // Save the GameSession to the database
         await DataStore.save(gameSession);
 
         // Set the page's gameSessionId from the id of the GameSession we just created
         setGameSessionId(gameSession.id);
-        console.log(`GameSession id: ${gameSession.id}`);
+        console.log(`Game Session id: ${gameSession.id}`);
  
 
-        // Subscribe to updates to playerCount of the GameSession we just created
+        // Subscribe to updates to playerCount
         const subscription = DataStore.observeQuery(
           GameSession,
           gameSession => gameSession.and(gameSession => [
@@ -44,7 +69,7 @@ const CreateGame = () => {
 
         console.log(subscription);
 
-        // TODO: unsubscribe from subscription
+        // TODO: handle unsubscribe
 
       } catch (error) {
         console.error(error);
