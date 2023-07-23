@@ -4,6 +4,7 @@ import CreateGame from "./pages/CreateGame";
 import JoinGame from "./pages/JoinGame";
 import Game from "./pages/Game";
 import Result from "./pages/Result";
+import Lobby from "./pages/Lobby";
 import { Amplify } from "aws-amplify";
 import { ThemeProvider, Theme } from "@aws-amplify/ui-react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -35,6 +36,7 @@ export default function App() {
             <Route path="/join-game" element={<JoinGame />} />
             <Route path="/game" element={<Game />} />
             <Route path="/result" element={<Result />} />
+            <Route path="/lobby" element={<Lobby />} />
             <Route path="/test" element={<Test />} />
           </Routes>
         </BrowserRouter>
