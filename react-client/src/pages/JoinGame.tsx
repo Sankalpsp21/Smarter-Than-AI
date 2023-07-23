@@ -1,21 +1,12 @@
-import { Button, TextField } from "@aws-amplify/ui-react";
+import { TextField } from "@aws-amplify/ui-react";
+import { ToggleButton } from "../components/Buttons";
 
 const JoinGame = () => {
   return (
     <>
       <div>Enter pin code to join</div>
       <TextField size="default" placeholder="Pin code..." />
-      <Button
-        backgroundColor={"#62A1FF"}
-        borderRadius={"12px"}
-        paddingLeft={"4em"}
-        paddingRight={"4em"}
-        paddingBottom={"0.5em"}
-        paddingTop={"0.5em"}
-        border={"none"}
-      >
-        Join
-      </Button>
+      <ToggleButton color="#62A1FF">Join</ToggleButton>
     </>
   );
 };

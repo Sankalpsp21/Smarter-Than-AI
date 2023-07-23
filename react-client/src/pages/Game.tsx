@@ -1,7 +1,11 @@
 import { Button } from "@aws-amplify/ui-react";
 
 const Game = () => {
-  return <Button>Exit</Button>;
+  return (
+    <div>
+      <Button>Exit</Button>
+    </div>
+  );
 };
 
 export default Game;
