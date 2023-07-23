@@ -6,7 +6,7 @@ import { ToggleButton } from "../components/Buttons";
 
 const CreateGame = () => {
   const [currentPlayerNum, setCurrentPlayerNum] = useState(0);
-  const [pinCode, setPinCode] = useState(5123);
+  const [pinCode, setPinCode] = useState(0);
   const [gameSessionId, setGameSessionId] = useState('');
 
   const pinCodeExists = async (pinCode: number) => {
@@ -32,9 +32,8 @@ const CreateGame = () => {
       try {
 
         // Generate a pin code
-        var pinCode;
         do {
-          pinCode = Math.floor(Math.random() * 9000) + 1000;
+          setPinCode(Math.floor(Math.random() * 9000) + 1000);
         } while (!(await pinCodeExists(pinCode)));
 
         // Create a new GameSession
@@ -56,16 +55,17 @@ const CreateGame = () => {
         // Set the page's gameSessionId from the id of the GameSession we just created
         setGameSessionId(gameSession.id);
         console.log(`Game Session id: ${gameSession.id}`);
- 
 
         // Subscribe to updates to playerCount
         const subscription = DataStore.observeQuery(
           GameSession,
           gameSession => gameSession.and(gameSession => [
             gameSession.id.eq(gameSessionId)
-          ]), {}).subscribe(msg => {
-          console.log(msg);
-        });
+          ]), {}).subscribe(snapshot => { //TODO: test this
+            console.log(`Subscription snapshot: ${snapshot}`);
+            setCurrentPlayerNum(snapshot.items[0].playerCount);
+          }
+        );
 
         console.log(subscription);
 
