@@ -5,7 +5,17 @@ const JoinGame = () => {
     <>
       <div>Enter pin code to join</div>
       <TextField size="default" placeholder="Pin code..." />
-      <Button>Join</Button>
+      <Button
+        backgroundColor={"#62A1FF"}
+        borderRadius={"12px"}
+        paddingLeft={"4em"}
+        paddingRight={"4em"}
+        paddingBottom={"0.5em"}
+        paddingTop={"0.5em"}
+        border={"none"}
+      >
+        Join
+      </Button>
     </>
   );
 };

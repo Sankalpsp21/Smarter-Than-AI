@@ -4,24 +4,39 @@ import JoinGame from "./pages/JoinGame";
 import Game from "./pages/Game";
 import Result from "./pages/Result";
 import { Amplify } from "aws-amplify";
+import { ThemeProvider } from "@aws-amplify/ui-react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "@aws-amplify/ui-react/styles.css";
 
 import awsExports from "./aws-exports";
 Amplify.configure(awsExports);
 
+const theme: Theme = {
+  name: "my-theme",
+  tokens: {
+    button: { backgroundColor: { value: "#000000" } },
+    colors: {
+      font: {
+        primary: { value: "#ffffff" },
+      },
+    },
+  },
+};
+
 export default function App() {
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/create-game" element={<CreateGame />} />
-          <Route path="/join-game" element={<JoinGame />} />
-          <Route path="/game" element={<Game />} />
-          <Route path="/result" element={<Result />} />
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <ThemeProvider theme={theme}>
+      <div className="App">
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Landing />} />
+            <Route path="/create-game" element={<CreateGame />} />
+            <Route path="/join-game" element={<JoinGame />} />
+            <Route path="/game" element={<Game />} />
+            <Route path="/result" element={<Result />} />
+          </Routes>
+        </BrowserRouter>
+      </div>
+    </ThemeProvider>
   );
 }
