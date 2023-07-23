@@ -8,7 +8,10 @@ const Landing = () => {
   const navigate = useNavigate();
   return (
     <>
-      <LoginButton color="#000000" onClick={() => navigate("login")}></LoginButton> 
+      <LoginButton
+        color="#000000"
+        onClick={() => navigate("login")}
+      ></LoginButton>
       <h1>ARE YOU SMARTER THAN AN AI?</h1>
       <ToggleButton color="#FF6DDF" onClick={() => navigate("create-game")}>
         Create a new game

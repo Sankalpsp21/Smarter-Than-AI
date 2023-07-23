@@ -8,7 +8,7 @@ const CreateGame = () => {
   const [currentPlayerNum, setCurrentPlayerNum] = useState(0);
   const [pinCode, setPinCode] = useState(0);
   useEffect(() => {
-    const test = async () => {
+    const fetch = async () => {
       try {
         // get all game sessions
         const gameSessions = await DataStore.query(GameSession);
@@ -18,7 +18,7 @@ const CreateGame = () => {
         console.error(error);
       }
     };
-    test();
+    fetch();
   }, []);
 
   return (
