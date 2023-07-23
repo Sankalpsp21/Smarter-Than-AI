@@ -1,8 +1,10 @@
+import cors from "cors";
 import * as dotenv from "dotenv";
 import express from "express";
-import cors from "cors";
 import helmet from "helmet";
-import { OpenAIApi, Configuration } from "openai";
+import { Configuration, OpenAIApi } from "openai";
+import { Server } from "socket.io";
+import { newConnection } from "./socket.js";
 
 
 dotenv.config();
@@ -26,8 +28,14 @@ app.use(express.urlencoded({ extended: true }));
 
 // * Routes * //
 
-app.listen(PORT, () => {
+const httpServer = app.listen(PORT, () => {
       console.log(`\n\n [⚡️ Server ⚡️]: Listening on port ${PORT}`);
+});
+
+const io = new Server(httpServer);
+
+io.on('connection', (socket) => {
+      newConnection(socket, io);
 });
 
 app.get("/ai/get-question", async (req, res) => {
@@ -46,20 +54,20 @@ app.get("/ai/get-question", async (req, res) => {
       } catch (error) {
             console.log(error);
       }
-      
+
       return res.end();
 });
 
 app.get("/ai/get-answer", async (req, res) => {
       let player_answers = req.body.responses;
-      
+
       let query = `You are playing a game against humans where your goal is to have the most popular answer to a question. 
       Players will vote on which answer is the best. Your goal is to have the best response to the following question: "${req.body.question}" 
       without the players being able to guess that you are an AI based on your response.
       You have access to the answers of the other players (answers are separated by commas): "${player_answers}".
       Your answer should mimic the style of the other players, and avoid capitalization or punctuation that would give away that you are an AI.
       Your answer should not be the same as any of the other players. Please provide just your answer to the question in your response.`
-      
+
       console.log(`Query: "${query}"`);
 
       try {
@@ -75,6 +83,6 @@ app.get("/ai/get-answer", async (req, res) => {
       } catch (error) {
             console.log(error);
       }
-      
+
       return res.end();
 });
