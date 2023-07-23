@@ -15,8 +15,8 @@ export function PromptGame() {
       try {
         const gameSessions = await DataStore.query(GameSession);
         setCurrentResponededPlayer(gameSessions[0].playerCount);
-        // setCurrentResponededPlayer(gameSessions[0].playersResponded);
-        // setCurrentRound(gameSessions[0].roundNumber);
+        setCurrentResponededPlayer(gameSessions[0].playersResponded);
+        setCurrentRound(gameSessions[0].roundNumber);
       } catch (error) {
         console.error(error);
       }
