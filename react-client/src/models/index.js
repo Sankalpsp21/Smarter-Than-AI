@@ -4,8 +4,10 @@ import { schema } from './schema';
 
 
 
-const { GameSessio } = initSchema(schema);
+const { UserPersistedData, UserSession, GameSession } = initSchema(schema);
 
 export {
-  GameSessio
+  UserPersistedData,
+  UserSession,
+  GameSession
 };

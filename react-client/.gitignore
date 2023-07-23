@@ -24,6 +24,7 @@ dist-ssr
 *.sw?
 
 .vscode
+
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
 amplify/.config/local-*
@@ -35,7 +36,7 @@ amplify/backend/.temp
 build/
 dist/
 node_modules/
-# aws-exports.js
+aws-exports.js
 awsconfiguration.json
 amplifyconfiguration.json
 amplifyconfiguration.dart
