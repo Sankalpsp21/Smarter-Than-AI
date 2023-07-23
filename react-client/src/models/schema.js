@@ -113,13 +113,6 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "websocketSessionID": {
-                    "name": "websocketSessionID",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
                 "eliminated": {
                     "name": "eliminated",
                     "isArray": false,
@@ -297,6 +290,29 @@ export const schema = {
                         ]
                     }
                 },
+                "playersResponded": {
+                    "name": "playersResponded",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "roundMode": {
+                    "name": "roundMode",
+                    "isArray": false,
+                    "type": {
+                        "enum": "RoundMode"
+                    },
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "aiResponse": {
+                    "name": "aiResponse",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -340,8 +356,20 @@ export const schema = {
             ]
         }
     },
-    "enums": {},
+    "enums": {
+        "RoundMode": {
+            "name": "RoundMode",
+            "values": [
+                "PROMPT",
+                "PLAY",
+                "VOTE",
+                "MESSAGE",
+                "WIN",
+                "LOSE"
+            ]
+        }
+    },
     "nonModels": {},
     "codegenVersion": "3.4.0",
-    "version": "28a35a5440404db286b616260a1bba86"
+    "version": "aff46f0a08fa97a3d003088b98b3464e"
 };
