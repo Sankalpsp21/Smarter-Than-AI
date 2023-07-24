@@ -5,7 +5,7 @@
  **************************************************************************/
 
 import * as React from "react";
-import { GridProps, TextFieldProps } from "@aws-amplify/ui-react";
+import { GridProps, SelectFieldProps, TextFieldProps } from "@aws-amplify/ui-react";
 import { EscapeHatchProps } from "@aws-amplify/ui-react/internal";
 import { GameSession } from "../models";
 export declare type ValidationResponse = {
@@ -19,6 +19,9 @@ export declare type GameSessionUpdateFormInputValues = {
     roundNumber?: number;
     roundPrompt?: string;
     currentRoundExpiration?: string;
+    playersResponded?: number;
+    roundMode?: string;
+    aiResponse?: string;
 };
 export declare type GameSessionUpdateFormValidationValues = {
     pinCode?: ValidationFunction<number>;
@@ -26,6 +29,9 @@ export declare type GameSessionUpdateFormValidationValues = {
     roundNumber?: ValidationFunction<number>;
     roundPrompt?: ValidationFunction<string>;
     currentRoundExpiration?: ValidationFunction<string>;
+    playersResponded?: ValidationFunction<number>;
+    roundMode?: ValidationFunction<string>;
+    aiResponse?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type GameSessionUpdateFormOverridesProps = {
@@ -35,6 +41,9 @@ export declare type GameSessionUpdateFormOverridesProps = {
     roundNumber?: PrimitiveOverrideProps<TextFieldProps>;
     roundPrompt?: PrimitiveOverrideProps<TextFieldProps>;
     currentRoundExpiration?: PrimitiveOverrideProps<TextFieldProps>;
+    playersResponded?: PrimitiveOverrideProps<TextFieldProps>;
+    roundMode?: PrimitiveOverrideProps<SelectFieldProps>;
+    aiResponse?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type GameSessionUpdateFormProps = React.PropsWithChildren<{
     overrides?: GameSessionUpdateFormOverridesProps | undefined | null;
