@@ -1,12 +1,16 @@
 import { Button, Text } from "@aws-amplify/ui-react";
 import { ToggleButton } from "../components/Buttons";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { LoginButton } from "../components/LoginButton";
 import { PinkCard } from "../components/Cards";
 import { useState } from "react";
 
 export function Message() {
-  const [isWin, setIsWin] = useState(false);
+  const location = useLocation();
+  const dataFromPreviousPage = location.state;
+  const [isWin, setIsWin] = useState(
+    dataFromPreviousPage === "WIN" ? true : false
+  );
 
   return (
     <>
@@ -29,7 +33,7 @@ export function Message() {
       <PinkCard
         style={{ marginTop: "1vh", marginBottom: "15vh", cursor: "default" }}
       >
-        -100
+        {isWin ? "+100" : "-100"}
       </PinkCard>
     </>
   );

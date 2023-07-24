@@ -1,26 +1,26 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { Persistor, persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import gameSlice from "./GameSlice";
+import { gameSlice } from "./GameSlice";
 
 const rootReducer = combineReducers({
-      game: gameSlice,
+  game: gameSlice.reducer,
 });
 
 const persistConfig = {
-      key: "root",
-      storage,
+  key: "root",
+  storage,
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = configureStore({
-      reducer: persistedReducer,
-      devTools: process.env.NODE_ENV !== "production",
-      middleware: (getDefaultMiddleware) =>
-            getDefaultMiddleware({
-                  serializableCheck: false,
-            }),
+  reducer: persistedReducer,
+  devTools: process.env.NODE_ENV !== "production",
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });
 
 export const persistor: Persistor = persistStore(store);

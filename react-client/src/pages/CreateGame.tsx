@@ -108,11 +108,11 @@ const CreateGame = () => {
         const subscription = DataStore.observe(
           GameSession,
           gameSessionId
-        ).subscribe((msg: any) => { //TODO: test this
-            const item = msg.element;
-            console.log(item);
-          }
-        );
+        ).subscribe((msg: any) => {
+          //TODO: test this
+          const item = msg.element;
+          console.log(item);
+        });
         console.log(subscription);
 
         // TODO: handle unsubscribe

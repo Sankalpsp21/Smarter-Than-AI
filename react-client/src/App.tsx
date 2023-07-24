@@ -2,7 +2,6 @@ import Test from "./pages/Test";
 import Landing from "./pages/Landing";
 import CreateGame from "./pages/CreateGame";
 import JoinGame from "./pages/JoinGame";
-import Game from "./pages/Vote";
 import Result from "./pages/Result";
 import Lobby from "./pages/Lobby";
 import Prompt from "./pages/Prompt";
