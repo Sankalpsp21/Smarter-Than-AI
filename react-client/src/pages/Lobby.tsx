@@ -1,24 +1,47 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { Text } from '@aws-amplify/ui-react';
-import { API, DataStore, graphqlOperation } from 'aws-amplify';
-import { GameSession, RoundMode } from '../models';
-import { GraphQLSubscription } from '@aws-amplify/api';
-// import * as subscriptions from './graphql/subscriptions';
+import { DataStore } from 'aws-amplify';
+import { GameSession } from '../models';
+import { RootState } from '../redux/store';
 
 export function Lobby() {
-	// TODO: get values from redux
-	const gameSessionID = '877ed5ad-e0c1-4b0b-8291-c73947433bc4';
+	// get values from redux
+	const gameSessionID: string = useSelector(
+		(state: RootState) => state.game.gameSessionID
+	);
+	const [playerCount, setPlayerCount] = useState<number>(0);
 
 	useEffect(() => {
 		const init = async () => {
-			// TODO: get subscription working
+			const gameSession = await DataStore.query(
+				GameSession,
+				gameSessionID
+			);
+			console.log(gameSession);
+
+			if (gameSession == null) {
+				return;
+			}
+
+			setPlayerCount(gameSession.playerCount);
+
 			const subscription = DataStore.observe(
 				GameSession,
 				gameSessionID
 			).subscribe((msg) => {
-				console.log(msg);
+				const item = msg.element;
+				console.log(item);
+				setPlayerCount(item.playerCount);
+
+				if (item.roundNumber === 1) {
+					// unsubscribe
+					subscription.unsubscribe();
+
+					window.location.href = '/prompt';
+				}
 			});
+			console.log(subscription);
 		};
 		try {
 			init();
@@ -45,7 +68,7 @@ export function Lobby() {
 				textDecoration="none"
 				alignSelf="center"
 			>
-				Players joined: currentPlayerNum
+				Players joined: {playerCount}
 			</Text>
 
 			<LoadingSpinner />
@@ -54,3 +77,6 @@ export function Lobby() {
 }
 
 export default Lobby;
+function useSelector(arg0: (state: RootState) => any) {
+	throw new Error('Function not implemented.');
+}
