@@ -105,24 +105,14 @@ const CreateGame = () => {
         console.log(`Game Session id: ${gameSession.id}`);
 
         // Subscribe to updates to playerCount
-        const subscription = DataStore.observeQuery(
+        const subscription = DataStore.observe(
           GameSession,
-          (gameSession) =>
-            gameSession.and((gameSession) => [
-              gameSession.id.eq(gameSessionId),
-            ]),
-          {}
-        ).subscribe((snapshot) => { //TODO: test this
-            const { items, isSynced } = snapshot;
-            console.log(`Subscription snapshot: ${snapshot}`);
-            console.log(`Subscription snapshot isSynced: ${isSynced}`);
-            console.log(`Subscription snapshot items: ${items}`);
-            if (items.length > 0) {
-              setCurrentPlayerNum(snapshot.items[0].playerCount);
-            }
+          gameSessionId
+        ).subscribe((msg: any) => { //TODO: test this
+            const item = msg.element;
+            console.log(item);
           }
         );
-
         console.log(subscription);
 
         // TODO: handle unsubscribe
