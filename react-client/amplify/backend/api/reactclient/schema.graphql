@@ -1,3 +1,12 @@
+enum RoundMode {
+  PROMPT
+  PLAY
+  VOTE
+  MESSAGE
+  WIN
+  LOSE
+}
+
 type UserPersistedData @model @auth(rules: [{allow: public}]) {
   id: ID!
   totalScore: Int!
@@ -10,7 +19,6 @@ type UserPersistedData @model @auth(rules: [{allow: public}]) {
 
 type UserSession @model @auth(rules: [{allow: public}]) {
   id: ID!
-  websocketSessionID: String!
   eliminated: Boolean!
   currentRoundResponse: String!
   totalScore: Int!
@@ -29,5 +37,8 @@ type GameSession @model @auth(rules: [{allow: public}]) {
   roundPrompt: String!
   currentRoundExpiration: AWSDateTime!
   UserSessions: [UserSession] @hasMany(indexName: "byGameSession", fields: ["id"])
+  playersResponded: Int!
+  roundMode: RoundMode!
+  aiResponse: String!
 }
  

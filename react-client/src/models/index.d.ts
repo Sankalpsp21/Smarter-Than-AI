@@ -2,7 +2,14 @@ import { ModelInit, MutableModel, __modelMeta__, ManagedIdentifier } from "@aws-
 // @ts-ignore
 import { LazyLoading, LazyLoadingDisabled, AsyncCollection } from "@aws-amplify/datastore";
 
-
+export enum RoundMode {
+  PROMPT = "PROMPT",
+  PLAY = "PLAY",
+  VOTE = "VOTE",
+  MESSAGE = "MESSAGE",
+  WIN = "WIN",
+  LOSE = "LOSE"
+}
 
 
 
@@ -50,7 +57,6 @@ type EagerUserSession = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly websocketSessionID: string;
   readonly eliminated: boolean;
   readonly currentRoundResponse: string;
   readonly totalScore: number;
@@ -69,7 +75,6 @@ type LazyUserSession = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly websocketSessionID: string;
   readonly eliminated: boolean;
   readonly currentRoundResponse: string;
   readonly totalScore: number;
@@ -100,6 +105,9 @@ type EagerGameSession = {
   readonly roundPrompt: string;
   readonly currentRoundExpiration: string;
   readonly UserSessions?: (UserSession | null)[] | null;
+  readonly playersResponded: number;
+  readonly roundMode: RoundMode | keyof typeof RoundMode;
+  readonly aiResponse: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -116,6 +124,9 @@ type LazyGameSession = {
   readonly roundPrompt: string;
   readonly currentRoundExpiration: string;
   readonly UserSessions: AsyncCollection<UserSession>;
+  readonly playersResponded: number;
+  readonly roundMode: RoundMode | keyof typeof RoundMode;
+  readonly aiResponse: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

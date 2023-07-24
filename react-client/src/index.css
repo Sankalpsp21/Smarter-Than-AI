@@ -1,3 +1,7 @@
+body {
+  margin: 0;
+}
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -20,4 +24,26 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
+}
+
+.loading-spinner {
+  border: 10px solid rgba(253, 251, 251, 0.3);
+  border-top: 10px solid #ffffff;
+  border-radius: 50%;
+  width: 50vw;
+  height: 50vh;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+span.amplify-text {
+  color: black;
 }
