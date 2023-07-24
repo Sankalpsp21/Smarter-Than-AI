@@ -1,15 +1,15 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 interface GameSliceState {
-      pinCode: string;
-      websocketUserId: string;
-      currentRoundPrompt: string;
-      currentRoundUserResponse: string;
-      currentRoundNumber: number;
-      currentCountdownTimer: number;
-      currentRoundUserVote: string;
-      currentGameUserEliminated: string;
-      currentGamePlayersCount: number;
+	isHost: boolean;
+	gameSessionID: string;
+	// locally saved stats
+	totalScore: number;
+	totalGames: number;
+	wins: number;
+	losses: number;
+	isLoggedIn: boolean;
+	userPersistedDataID: string;
 }
 
 `
@@ -19,78 +19,79 @@ total games played (completed)
 current rank (based on score)
 wins
 losses
-`
+`;
 
 // Initial State
 const initialState: GameSliceState = {
-      pinCode: "",
-      websocketUserId: "",
-      currentRoundPrompt: "",
-      currentRoundUserResponse: "",
-      currentRoundNumber: 0,
-      currentCountdownTimer: 0,
-      currentRoundUserVote: "",
-      currentGameUserEliminated: "",
-      currentGamePlayersCount: 0
+	isHost: false,
+	gameSessionID: '',
+	totalScore: 0,
+	totalGames: 0,
+	wins: 0,
+	losses: 0,
+	isLoggedIn: false,
+	userPersistedDataID: ''
 };
 
 // Slice
 export const gameSlice = createSlice({
-      name: "game",
-      initialState,
-      reducers: {
-            setPinCode: (state, action) => {
-                  state.pinCode = action.payload;
-            },
-            setWebsocketUserId: (state, action) => {
-                  state.websocketUserId = action.payload;
-            },
-            setCurrentRoundPrompt: (state, action) => {
-                  state.currentRoundPrompt = action.payload;
-            },
-            setCurrentRoundUserResponse: (state, action) => {
-                  state.currentRoundUserResponse = action.payload;
-            },
-            setCurrentRoundNumber: (state, action) => {
-                  state.currentRoundNumber = action.payload;
-            },
-            setCurrentCountdownTimer: (state, action) => {
-                  state.currentCountdownTimer = action.payload;
-            },
-            setCurrentRoundUserVote: (state, action) => {
-                  state.currentRoundUserVote = action.payload;
-            },
-            setCurrentGameUserEliminated: (state, action) => {
-                  state.currentGameUserEliminated = action.payload;
-            },
-            setCurrentGamePlayersCount: (state, action) => {
-                  state.currentGamePlayersCount = action.payload;
-            }
-      }
+	name: 'game',
+	initialState,
+	reducers: {
+		setIsHost: (state, action) => {
+			state.isHost = action.payload;
+		},
+		setGameSessionID: (state, action) => {
+			state.gameSessionID = action.payload;
+		},
+		setTotalScore: (state, action) => {
+			state.totalScore = action.payload;
+		},
+		setTotalGames: (state, action) => {
+			state.totalGames = action.payload;
+		},
+		setWins: (state, action) => {
+			state.wins = action.payload;
+		},
+		setLosses: (state, action) => {
+			state.losses = action.payload;
+		},
+		setIsLoggedIn: (state, action) => {
+			state.isLoggedIn = action.payload;
+		},
+		setUserPersistedDataID: (state, action) => {
+			state.userPersistedDataID = action.payload;
+		}
+	}
 });
 
 // Action Creators
 export const {
-      setPinCode,
-      setWebsocketUserId,
-      setCurrentRoundPrompt,
-      setCurrentRoundUserResponse,
-      setCurrentRoundNumber,
-      setCurrentCountdownTimer,
-      setCurrentRoundUserVote,
-      setCurrentGameUserEliminated,
-      setCurrentGamePlayersCount
+	setIsHost,
+	setGameSessionID,
+	setTotalScore,
+	setTotalGames,
+	setWins,
+	setLosses,
+	setIsLoggedIn,
+	setUserPersistedDataID
 } = gameSlice.actions;
 
 // Selector Accessors
-export const selectPinCode = (state: { game: GameSliceState }) => state.game.pinCode;
-export const selectWebsocketUserId = (state: { game: GameSliceState }) => state.game.websocketUserId;
-export const selectCurrentRoundPrompt = (state: { game: GameSliceState }) => state.game.currentRoundPrompt;
-export const selectCurrentRoundUserResponse = (state: { game: GameSliceState }) => state.game.currentRoundUserResponse;
-export const selectCurrentRoundNumber = (state: { game: GameSliceState }) => state.game.currentRoundNumber;
-export const selectCurrentCountdownTimer = (state: { game: GameSliceState }) => state.game.currentCountdownTimer;
-export const selectCurrentRoundUserVote = (state: { game: GameSliceState }) => state.game.currentRoundUserVote;
-export const selectCurrentGameUserEliminated = (state: { game: GameSliceState }) => state.game.currentGameUserEliminated;
-export const selectCurrentGamePlayersCount = (state: { game: GameSliceState }) => state.game.currentGamePlayersCount;
+export const selectIsHost = (state: { game: GameSliceState }) =>
+	state.game.isHost;
+export const selectGameSessionID = (state: { game: GameSliceState }) =>
+	state.game.gameSessionID;
+export const selectTotalScore = (state: { game: GameSliceState }) =>
+	state.game.totalScore;
+export const selectTotalGames = (state: { game: GameSliceState }) =>
+	state.game.totalGames;
+export const selectWins = (state: { game: GameSliceState }) => state.game.wins;
+export const selectLosses = (state: { game: GameSliceState }) =>
+	state.game.losses;
+export const selectIsLoggedIn = (state: { game: GameSliceState }) =>
+	state.game.isLoggedIn;
+export const selectUserPersistedDataID = (state: { game: GameSliceState }) =>
+	state.game.userPersistedDataID;
 
 export default gameSlice.reducer;
