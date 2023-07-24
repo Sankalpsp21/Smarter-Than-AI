@@ -39,41 +39,52 @@ export const copyToClipboard = async ({ target }: CopyToClipboard) => {
   }
 };
 
+const pinCodeExists = async (pinCode: number) => {
+  // GraphQL query
+  /* 
+    query PinNumbersQuery {
+      listGameSessions {
+        items {
+          pinCode
+        }
+      }
+    }
+  */
+  try {
+    return await DataStore.query(GameSession, (g) => g.pinCode.eq(pinCode));
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 const CreateGame = () => {
   const [currentPlayerNum, setCurrentPlayerNum] = useState(0);
   const [pinCode, setPinCode] = useState(0);
   const [gameSessionId, setGameSessionId] = useState("");
   const [copySuccess, setCopySuccess] = useState(false);
 
-  const pinCodeExists = async (pinCode: number) => {
-    // GraphQL query
-    /* 
-      query PinNumbersQuery {
-        listGameSessions {
-          items {
-            pinCode
-          }
-        }
-      }
-    */
+  const setupPinCode = async () => {
     try {
-      return await DataStore.query(GameSession, (g) => g.pinCode.eq(pinCode));
+      // Generate a pin code
+      let pin = 0;
+      do {
+        pin = Math.floor(Math.random() * 8999) + 1000;
+      } while (!(await pinCodeExists(pin)));
+      console.log(`Pin: ${pin}`);
+      setPinCode(pin);
+      return pin;
     } catch (error) {
       console.error(error);
     }
+    return -1;
   };
 
   useEffect(() => {
     const initGame = async () => {
       try {
-        // Generate a pin code
-        do {
-          setPinCode(Math.floor(Math.random() * 9000) + 1000);
-        } while (!(await pinCodeExists(pinCode)));
-
         // Create a new GameSession
         const gameSession = new GameSession({
-          pinCode: pinCode,
+          pinCode: await setupPinCode(),
           playerCount: 0,
           roundNumber: 0,
           roundPrompt: "",
@@ -83,6 +94,8 @@ const CreateGame = () => {
           roundMode: "PROMPT",
           aiResponse: "",
         });
+
+        console.log(`game session pin code: ${gameSession.pinCode}`);
 
         // Save the GameSession to the database
         await DataStore.save(gameSession);
@@ -100,8 +113,13 @@ const CreateGame = () => {
             ]),
           {}
         ).subscribe((snapshot) => { //TODO: test this
+            const { items, isSynced } = snapshot;
             console.log(`Subscription snapshot: ${snapshot}`);
-            setCurrentPlayerNum(snapshot.items[0].playerCount);
+            console.log(`Subscription snapshot isSynced: ${isSynced}`);
+            console.log(`Subscription snapshot items: ${items}`);
+            if (items.length > 0) {
+              setCurrentPlayerNum(snapshot.items[0].playerCount);
+            }
           }
         );
 
