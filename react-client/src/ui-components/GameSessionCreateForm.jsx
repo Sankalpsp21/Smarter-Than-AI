@@ -6,7 +6,13 @@
 
 /* eslint-disable */
 import * as React from "react";
-import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
+import {
+  Button,
+  Flex,
+  Grid,
+  SelectField,
+  TextField,
+} from "@aws-amplify/ui-react";
 import { getOverrideProps } from "@aws-amplify/ui-react/internal";
 import { GameSession } from "../models";
 import { fetchByPath, validateField } from "./utils";
@@ -28,6 +34,9 @@ export default function GameSessionCreateForm(props) {
     roundNumber: "",
     roundPrompt: "",
     currentRoundExpiration: "",
+    playersResponded: "",
+    roundMode: "",
+    aiResponse: "",
   };
   const [pinCode, setPinCode] = React.useState(initialValues.pinCode);
   const [playerCount, setPlayerCount] = React.useState(
@@ -42,6 +51,11 @@ export default function GameSessionCreateForm(props) {
   const [currentRoundExpiration, setCurrentRoundExpiration] = React.useState(
     initialValues.currentRoundExpiration
   );
+  const [playersResponded, setPlayersResponded] = React.useState(
+    initialValues.playersResponded
+  );
+  const [roundMode, setRoundMode] = React.useState(initialValues.roundMode);
+  const [aiResponse, setAiResponse] = React.useState(initialValues.aiResponse);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     setPinCode(initialValues.pinCode);
@@ -49,6 +63,9 @@ export default function GameSessionCreateForm(props) {
     setRoundNumber(initialValues.roundNumber);
     setRoundPrompt(initialValues.roundPrompt);
     setCurrentRoundExpiration(initialValues.currentRoundExpiration);
+    setPlayersResponded(initialValues.playersResponded);
+    setRoundMode(initialValues.roundMode);
+    setAiResponse(initialValues.aiResponse);
     setErrors({});
   };
   const validations = {
@@ -57,6 +74,9 @@ export default function GameSessionCreateForm(props) {
     roundNumber: [{ type: "Required" }],
     roundPrompt: [{ type: "Required" }],
     currentRoundExpiration: [{ type: "Required" }],
+    playersResponded: [{ type: "Required" }],
+    roundMode: [{ type: "Required" }],
+    aiResponse: [{ type: "Required" }],
   };
   const runValidationTasks = async (
     fieldName,
@@ -106,6 +126,9 @@ export default function GameSessionCreateForm(props) {
           roundNumber,
           roundPrompt,
           currentRoundExpiration,
+          playersResponded,
+          roundMode,
+          aiResponse,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -169,6 +192,9 @@ export default function GameSessionCreateForm(props) {
               roundNumber,
               roundPrompt,
               currentRoundExpiration,
+              playersResponded,
+              roundMode,
+              aiResponse,
             };
             const result = onChange(modelFields);
             value = result?.pinCode ?? value;
@@ -201,6 +227,9 @@ export default function GameSessionCreateForm(props) {
               roundNumber,
               roundPrompt,
               currentRoundExpiration,
+              playersResponded,
+              roundMode,
+              aiResponse,
             };
             const result = onChange(modelFields);
             value = result?.playerCount ?? value;
@@ -233,6 +262,9 @@ export default function GameSessionCreateForm(props) {
               roundNumber: value,
               roundPrompt,
               currentRoundExpiration,
+              playersResponded,
+              roundMode,
+              aiResponse,
             };
             const result = onChange(modelFields);
             value = result?.roundNumber ?? value;
@@ -261,6 +293,9 @@ export default function GameSessionCreateForm(props) {
               roundNumber,
               roundPrompt: value,
               currentRoundExpiration,
+              playersResponded,
+              roundMode,
+              aiResponse,
             };
             const result = onChange(modelFields);
             value = result?.roundPrompt ?? value;
@@ -294,6 +329,9 @@ export default function GameSessionCreateForm(props) {
               roundNumber,
               roundPrompt,
               currentRoundExpiration: value,
+              playersResponded,
+              roundMode,
+              aiResponse,
             };
             const result = onChange(modelFields);
             value = result?.currentRoundExpiration ?? value;
@@ -309,6 +347,134 @@ export default function GameSessionCreateForm(props) {
         errorMessage={errors.currentRoundExpiration?.errorMessage}
         hasError={errors.currentRoundExpiration?.hasError}
         {...getOverrideProps(overrides, "currentRoundExpiration")}
+      ></TextField>
+      <TextField
+        label="Players responded"
+        isRequired={true}
+        isReadOnly={false}
+        type="number"
+        step="any"
+        value={playersResponded}
+        onChange={(e) => {
+          let value = isNaN(parseInt(e.target.value))
+            ? e.target.value
+            : parseInt(e.target.value);
+          if (onChange) {
+            const modelFields = {
+              pinCode,
+              playerCount,
+              roundNumber,
+              roundPrompt,
+              currentRoundExpiration,
+              playersResponded: value,
+              roundMode,
+              aiResponse,
+            };
+            const result = onChange(modelFields);
+            value = result?.playersResponded ?? value;
+          }
+          if (errors.playersResponded?.hasError) {
+            runValidationTasks("playersResponded", value);
+          }
+          setPlayersResponded(value);
+        }}
+        onBlur={() => runValidationTasks("playersResponded", playersResponded)}
+        errorMessage={errors.playersResponded?.errorMessage}
+        hasError={errors.playersResponded?.hasError}
+        {...getOverrideProps(overrides, "playersResponded")}
+      ></TextField>
+      <SelectField
+        label="Round mode"
+        placeholder="Please select an option"
+        isDisabled={false}
+        value={roundMode}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              pinCode,
+              playerCount,
+              roundNumber,
+              roundPrompt,
+              currentRoundExpiration,
+              playersResponded,
+              roundMode: value,
+              aiResponse,
+            };
+            const result = onChange(modelFields);
+            value = result?.roundMode ?? value;
+          }
+          if (errors.roundMode?.hasError) {
+            runValidationTasks("roundMode", value);
+          }
+          setRoundMode(value);
+        }}
+        onBlur={() => runValidationTasks("roundMode", roundMode)}
+        errorMessage={errors.roundMode?.errorMessage}
+        hasError={errors.roundMode?.hasError}
+        {...getOverrideProps(overrides, "roundMode")}
+      >
+        <option
+          children="Prompt"
+          value="PROMPT"
+          {...getOverrideProps(overrides, "roundModeoption0")}
+        ></option>
+        <option
+          children="Play"
+          value="PLAY"
+          {...getOverrideProps(overrides, "roundModeoption1")}
+        ></option>
+        <option
+          children="Vote"
+          value="VOTE"
+          {...getOverrideProps(overrides, "roundModeoption2")}
+        ></option>
+        <option
+          children="Message"
+          value="MESSAGE"
+          {...getOverrideProps(overrides, "roundModeoption3")}
+        ></option>
+        <option
+          children="Win"
+          value="WIN"
+          {...getOverrideProps(overrides, "roundModeoption4")}
+        ></option>
+        <option
+          children="Lose"
+          value="LOSE"
+          {...getOverrideProps(overrides, "roundModeoption5")}
+        ></option>
+      </SelectField>
+      <TextField
+        label="Ai response"
+        isRequired={true}
+        isReadOnly={false}
+        value={aiResponse}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              pinCode,
+              playerCount,
+              roundNumber,
+              roundPrompt,
+              currentRoundExpiration,
+              playersResponded,
+              roundMode,
+              aiResponse: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.aiResponse ?? value;
+          }
+          if (errors.aiResponse?.hasError) {
+            runValidationTasks("aiResponse", value);
+          }
+          setAiResponse(value);
+        }}
+        onBlur={() => runValidationTasks("aiResponse", aiResponse)}
+        errorMessage={errors.aiResponse?.errorMessage}
+        hasError={errors.aiResponse?.hasError}
+        {...getOverrideProps(overrides, "aiResponse")}
       ></TextField>
       <Flex
         justifyContent="space-between"
