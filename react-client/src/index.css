@@ -44,6 +44,7 @@ body {
   }
 }
 
-span.amplify-text {
+span.amplify-text,
+.amplify-icon > svg {
   color: black;
 }

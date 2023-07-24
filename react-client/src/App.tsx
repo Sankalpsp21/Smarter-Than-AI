@@ -12,6 +12,7 @@ import "@aws-amplify/ui-react/styles.css";
 
 // Use next two lines only if syncing with the cloud
 import awsExports from "./aws-exports";
+import ModalTest from "./pages/ModalTest";
 Amplify.configure(awsExports);
 
 const theme: Theme = {
@@ -38,6 +39,7 @@ export default function App() {
             <Route path="/result" element={<Result />} />
             <Route path="/lobby" element={<Lobby />} />
             <Route path="/test" element={<Test />} />
+            <Route path="/dev" element={<ModalTest />} />
           </Routes>
         </BrowserRouter>
       </div>

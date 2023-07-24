@@ -1,9 +1,15 @@
 import React from "react";
 import { Button, Card, CheckboxField, Flex } from "@aws-amplify/ui-react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 import "../index.css";
 
 interface GeneralCardProps {
   children: React.ReactNode;
+  style?: React.CSSProperties;
+}
+
+interface LoginCardProps {
   style?: React.CSSProperties;
 }
 
@@ -78,5 +84,28 @@ export function VoteCard({ label }: VoteCardProps) {
         </Flex>
       </Card>
     </>
+  );
+}
+
+export function LoginCard({ style }: LoginCardProps) {
+  return (
+    <Card
+      backgroundColor="white"
+      borderRadius="50%" /* To make it perfectly round */
+      width="80px" /* Adjust the width to your desired size */
+      height="80px" /* Adjust the height to your desired size */
+      padding="1em"
+      border="none"
+      boxShadow="rgba(13, 26, 38, 0.25) 0px 4px 4px 0px"
+      alignSelf="center"
+      textAlign="center"
+      style={style}
+    >
+      <FontAwesomeIcon
+        icon={faUser}
+        fontSize="40px"
+        style={{ color: "#000000", alignSelf: "center" }}
+      />
+    </Card>
   );
 }
