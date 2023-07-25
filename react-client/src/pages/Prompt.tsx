@@ -4,11 +4,13 @@ import { Text } from "@aws-amplify/ui-react";
 import { API, DataStore, graphqlOperation } from "aws-amplify";
 import { GameSession, RoundMode } from "../models";
 import { GraphQLSubscription } from "@aws-amplify/api";
+import { useSelector } from "react-redux";
+import { selectIsHost } from "../redux/GameSlice";
 // import * as subscriptions from './graphql/subscriptions';
 
 export function Prompt() {
   // TODO: get values from redux
-  const isHost = false;
+  const isHost = useSelector(selectIsHost);
   const gameSessionID = "877ed5ad-e0c1-4b0b-8291-c73947433bc4";
 
   useEffect(() => {
