@@ -3,13 +3,13 @@ import LoadingSpinner from "../components/LoadingSpinner";
 import { Text } from "@aws-amplify/ui-react";
 import { DataStore } from "aws-amplify";
 import { GameSession } from "../models";
-import { RootState } from "../redux/store";
+import { selectGameSessionID } from "../redux/GameSlice";
+import { useSelector } from "react-redux";
 
 export function Lobby() {
   // get values from redux
-  const gameSessionID: string = useSelector(
-    (state: RootState) => state.game.gameSessionID
-  );
+  const gameSessionID: string = useSelector(selectGameSessionID);
+  console.log("GameSessionID is ====", gameSessionID);
   const [playerCount, setPlayerCount] = useState<number>(0);
 
   useEffect(() => {
@@ -72,8 +72,4 @@ export function Lobby() {
     </>
   );
 }
-
 export default Lobby;
-function useSelector(arg0: (state: RootState) => any) {
-  throw new Error("Function not implemented.");
-}

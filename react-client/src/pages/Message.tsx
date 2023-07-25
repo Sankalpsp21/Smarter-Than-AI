@@ -6,14 +6,9 @@ import { useNavigate } from "react-router-dom";
 import { GameSession, RoundMode, UserSession } from "../models";
 import { useSelector } from "react-redux";
 import { selectIsHost } from "../redux/GameSlice";
-import { RootState } from "../redux/store";
 
 export function Message() {
-  // TODO: get values from redux
-  //const isHost = useSelector((state: RootState) => state.game.isHost);
-  const isHost = false;
-  console.log("HERE2");
-  console.log("isHost is === ", isHost);
+  const isHost = useSelector(selectIsHost);
   const gameSessionID = "877ed5ad-e0c1-4b0b-8291-c73947433bc4";
   const navigate = useNavigate();
 
