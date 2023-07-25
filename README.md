@@ -5,8 +5,8 @@
 ### TODO
 
 - [ ] Landing Page: Sign in, Sign up
-- [ ] **Fix Redux** (Idk whay but the returned value is **always undefined** for now)
-- [ ] Handling LOSE case; when a random player is just eliminated, then that player will see the LOSE message page while the other players will navigate to Lobby page.
+- [x] **Fix Redux** (Idk whay but the returned value is **always undefined** for now)
+- [ ] Handling LOSE case; when a random player is just eliminated, then that player will see the LOSE message page while the other players will navigate to Lobby page. (Vote page)
 - [ ] Overall Styling (The lowest priority)
 
 - I think I finished all requirements from our Figma. So, if the subscription works properly, then Message & Result pages are done. (Imgyeong Lee)
