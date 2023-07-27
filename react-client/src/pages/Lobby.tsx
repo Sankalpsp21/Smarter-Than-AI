@@ -1,75 +1,78 @@
-import { useEffect, useRef, useState } from "react";
-import LoadingSpinner from "../components/LoadingSpinner";
-import { Text } from "@aws-amplify/ui-react";
-import { DataStore } from "aws-amplify";
-import { GameSession } from "../models";
-import { selectGameSessionID } from "../redux/GameSlice";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from 'react';
+import LoadingSpinner from '../components/LoadingSpinner';
+import { Text } from '@aws-amplify/ui-react';
+import { DataStore } from 'aws-amplify';
+import { GameSession } from '../models';
+import { selectGameSessionID } from '../redux/GameSlice';
+import { useSelector } from 'react-redux';
 
 export function Lobby() {
-  // get values from redux
-  const gameSessionID: string = useSelector(selectGameSessionID);
-  console.log("GameSessionID is ====", gameSessionID);
-  const [playerCount, setPlayerCount] = useState<number>(0);
+	// get values from redux
+	const gameSessionID: string = useSelector(selectGameSessionID);
+	console.log('GameSessionID is ====', gameSessionID);
+	const [playerCount, setPlayerCount] = useState<number>(0);
 
-  useEffect(() => {
-    const init = async () => {
-      const gameSession = await DataStore.query(GameSession, gameSessionID);
-      console.log(gameSession);
+	useEffect(() => {
+		const init = async () => {
+			const gameSession = await DataStore.query(
+				GameSession,
+				gameSessionID
+			);
+			console.log(gameSession);
 
-      if (gameSession == null) {
-        return;
-      }
+			if (gameSession == null) {
+				return;
+			}
 
-      setPlayerCount(gameSession.playerCount);
+			setPlayerCount(gameSession.playerCount);
 
-      const subscription = DataStore.observe(
-        GameSession,
-        gameSessionID
-      ).subscribe((msg) => {
-        const item = msg.element;
-        console.log(item);
-        setPlayerCount(item.playerCount);
+			const subscription = DataStore.observe(
+				GameSession,
+				gameSessionID
+			).subscribe((msg) => {
+				const item = msg.element;
+				console.log(item);
+				setPlayerCount(item.playerCount);
 
-        if (item.roundNumber === 1) {
-          // unsubscribe
-          subscription.unsubscribe();
+				if (item.roundNumber === 1) {
+					// unsubscribe
+					subscription.unsubscribe();
 
-          window.location.href = "/prompt";
-        }
-      });
-      console.log(subscription);
-    };
-    try {
-      init();
-    } catch (error) {
-      console.error(error);
-    }
-  }, []);
+					window.location.href = '/prompt';
+				}
+			});
+			console.log(subscription);
+		};
+		try {
+			init();
+		} catch (error) {
+			console.error(error);
+		}
+	}, []);
 
-  return (
-    <>
-      <h1>ARE YOU SMARTER THAN AN AI?</h1>
+	return (
+		<>
+			<h1>ARE YOU SMARTER THAN AN AI?</h1>
 
-      <Text
-        marginBottom="1em"
-        fontSize="1.2em"
-        fontWeight="500"
-        alignSelf="center"
-      >
-        Waiting for Host to Start...
-      </Text>
-      <Text
-        marginBottom="2em"
-        fontStyle="normal"
-        textDecoration="none"
-        alignSelf="center"
-      >
-        Players joined: {playerCount}
-      </Text>
+			<Text
+				marginBottom="1em"
+				fontSize="1.2em"
+				fontWeight="500"
+				alignSelf="center"
+			>
+				Waiting for Host to Start...
+			</Text>
+			<Text
+				marginBottom="2em"
+				fontStyle="normal"
+				textDecoration="none"
+				alignSelf="center"
+			>
+				Players joined: {playerCount}
+			</Text>
 
-      <LoadingSpinner />
-    </>
-  );
+			<LoadingSpinner />
+		</>
+	);
 }
 export default Lobby;
