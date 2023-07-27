@@ -19,6 +19,7 @@ interface PromptCardProps {
 
 interface VoteCardProps {
   label: string;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export function PinkCard({ children, style }: GeneralCardProps) {
@@ -64,7 +65,7 @@ export function PromptCard({ children }: PromptCardProps) {
   );
 }
 
-export function VoteCard({ label }: VoteCardProps) {
+export function VoteCard({ label, onChange }: VoteCardProps) {
   return (
     <>
       <Card
@@ -80,7 +81,13 @@ export function VoteCard({ label }: VoteCardProps) {
         boxShadow={"rgba(13, 26, 38, 0.25) 0px 4px 4px 0px"}
       >
         <Flex direction="row">
-          <CheckboxField label={label} name="vote" value="no" size="large" />
+          <CheckboxField
+            label={label}
+            name="vote"
+            value="yes"
+            size="large"
+            onChange={onChange}
+          />
         </Flex>
       </Card>
     </>

@@ -5,6 +5,8 @@ interface ButtonProps {
   children: React.ReactNode;
   color: string;
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  form?: string;
+  style?: React.CSSProperties;
 }
 
 export function ToggleButton({ children, color, onClick }: ButtonProps) {
@@ -26,7 +28,13 @@ export function ToggleButton({ children, color, onClick }: ButtonProps) {
   );
 }
 
-export function SubmitButton({ children, color, onClick }: ButtonProps) {
+export function SubmitButton({
+  children,
+  color,
+  onClick,
+  form,
+  style,
+}: ButtonProps) {
   return (
     <Button
       backgroundColor={color}
@@ -40,6 +48,8 @@ export function SubmitButton({ children, color, onClick }: ButtonProps) {
       onClick={onClick}
       margin={"0.5em"}
       type="submit"
+      form={form}
+      style={style}
     >
       {children}
     </Button>
