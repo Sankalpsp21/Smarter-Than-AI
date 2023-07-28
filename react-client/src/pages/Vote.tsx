@@ -40,6 +40,7 @@ export function Vote() {
 
   // For state management
   const playersResponded = useRef(0);
+  const [playerCount, setPlayerCount] = useState(0);
   const [currentResponededPlayer, setCurrentResponededPlayer] = useState(0);
   const [currentRoundNumber, setCurrentRoundNumber] = useState(0);
   const [voteOptions, setVoteOptions] = useState<string[]>([]);
@@ -89,8 +90,11 @@ export function Vote() {
       setVoteOptions(options);
 
       // update currentRoundNumber and currentResponededPlayer
+      playersResponded.current = gameSession.playersResponded;
+
       setCurrentResponededPlayer(gameSession.playersResponded);
       setCurrentRoundNumber(gameSession.roundNumber);
+      setPlayerCount(gameSession.playerCount);
 
       const subscription = DataStore.observe(
         GameSession,
@@ -374,7 +378,7 @@ export function Vote() {
         textDecoration="none"
         style={{ position: "fixed", top: "5vh", cursor: "default" }}
       >
-        Players responded ({currentResponededPlayer}/5)
+        Players responded ({currentResponededPlayer}/{playerCount})
       </Text>
       <PinkCard style={{ position: "fixed", top: "10vh", cursor: "default" }}>
         Round {currentRoundNumber} Voting
@@ -416,14 +420,16 @@ export function Vote() {
 				<VoteCard label="something Something" />
 				<VoteCard label="something Something" /> */}
       </Flex>
-      <SubmitButton
-        color="#FF6DDF"
-        form="vote-form"
-        style={{ position: "fixed", bottom: "4vh" }}
-        onClick={handleSubmit}
-      >
-        Submit
-      </SubmitButton>
+      {!isHost && (
+        <SubmitButton
+          color="#FF6DDF"
+          form="vote-form"
+          style={{ position: "fixed", bottom: "4vh" }}
+          onClick={handleSubmit}
+        >
+          Submit
+        </SubmitButton>
+      )}
     </>
   );
 }
