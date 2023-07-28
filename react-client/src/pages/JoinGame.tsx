@@ -18,14 +18,15 @@ const JoinGame = () => {
   const [pinCode, setPinCode] = useState<number>(0);
   const [error, setError] = useState<string>("");
 
-  useEffect(() => {}, []);
-
   const getGameSession = async (pinCode: number) => {
     try {
       // get all game sessions
       const gameSession = await DataStore.query(GameSession, (c) =>
         c.and((c) => [c.pinCode.eq(pinCode)])
       );
+
+      //const gameSessions = await DataStore.query(GameSession);
+      //console.log("gameSessions===", gameSessions);
       if (gameSession.length === 0) return null;
       return gameSession[0];
     } catch (error) {
@@ -40,9 +41,7 @@ const JoinGame = () => {
   };
 
   const handleJoinBtn = async () => {
-    console.log(pinCode);
     const gameSession = await getGameSession(pinCode);
-    console.log(gameSession);
 
     if (gameSession == null || gameSession.roundNumber > 0) {
       setError("Invalid pin code or game session has already started");
@@ -50,10 +49,12 @@ const JoinGame = () => {
     }
 
     dispatch(setGameSessionID(gameSession.id));
+    console.log("Pin code in IF is ====", pinCode);
+    console.log("gameSession in IF is ====", gameSession);
 
     // TODO: check redux store for user. For now just assuming user is new and needs to be created
     try {
-      if (userSessionID === "") {
+      if (!userSessionID) {
         const user = await DataStore.save(
           new UserSession({
             eliminated: false,
@@ -67,12 +68,16 @@ const JoinGame = () => {
         );
 
         dispatch(setUserSessionID(user.id));
+        console.log("IN IF ====", userSessionID);
       } else {
+        console.log(userSessionID);
         const user = await DataStore.query(UserSession, userSessionID);
 
         if (user == null) {
           return;
         }
+
+        console.log("user ==", user);
 
         await DataStore.save(
           UserSession.copyOf(user, (updated) => {
@@ -95,6 +100,7 @@ const JoinGame = () => {
     } catch (error: any) {
       console.error(error);
       setError(error.message);
+      console.log("ERROR IN TRY");
     }
   };
 
