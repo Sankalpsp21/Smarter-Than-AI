@@ -84,17 +84,22 @@ export const {
 } = gameSlice.actions;
 
 // Selector Accessors
-export const selectIsHost = (state: GameSliceState) => state.isHost;
-export const selectGameSessionID = (state: GameSliceState) =>
-  state.gameSessionID;
-export const selectUserSessionID = (state: GameSliceState) =>
-  state.userSessionID;
-export const selectTotalScore = (state: GameSliceState) => state.totalScore;
-export const selectTotalGames = (state: GameSliceState) => state.totalGames;
-export const selectWins = (state: GameSliceState) => state.wins;
-export const selectLosses = (state: GameSliceState) => state.losses;
-export const selectIsLoggedIn = (state: GameSliceState) => state.isLoggedIn;
-export const selectUserPersistedDataID = (state: GameSliceState) =>
-  state.userPersistedDataID;
+export const selectIsHost = (state: { game: GameSliceState }) =>
+  state.game.isHost;
+export const selectGameSessionID = (state: { game: GameSliceState }) =>
+  state.game.gameSessionID;
+export const selectUserSessionID = (state: { game: GameSliceState }) =>
+  state.game.userSessionID;
+export const selectTotalScore = (state: { game: GameSliceState }) =>
+  state.game.totalScore;
+export const selectTotalGames = (state: { game: GameSliceState }) =>
+  state.game.totalGames;
+export const selectWins = (state: { game: GameSliceState }) => state.game.wins;
+export const selectLosses = (state: { game: GameSliceState }) =>
+  state.game.losses;
+export const selectIsLoggedIn = (state: { game: GameSliceState }) =>
+  state.game.isLoggedIn;
+export const selectUserPersistedDataID = (state: { game: GameSliceState }) =>
+  state.game.userPersistedDataID;
 
 export default gameSlice.reducer;

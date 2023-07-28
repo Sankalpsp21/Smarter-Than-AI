@@ -11,6 +11,9 @@ export function Prompt() {
   const isHost = useSelector(selectIsHost);
   const gameSessionID = useSelector(selectGameSessionID);
 
+  console.log("isHost is ", isHost);
+  console.log("gameSessionID is ", gameSessionID);
+
   useEffect(() => {
     const init = async () => {
       const gameSession = await DataStore.query(GameSession, gameSessionID);
