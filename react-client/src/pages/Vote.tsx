@@ -40,6 +40,7 @@ export function Vote() {
 
 	// For state management
 	const playersResponded = useRef(0);
+	const [playerCount, setPlayerCount] = useState(0);
 	const [currentResponededPlayer, setCurrentResponededPlayer] = useState(0);
 	const [currentRoundNumber, setCurrentRoundNumber] = useState(0);
 	const [voteOptions, setVoteOptions] = useState<string[]>([]);
@@ -71,29 +72,32 @@ export function Vote() {
 			// Prevent the case when gameSession is undefined
 			if (!gameSession) return;
 
-      // Get voteOptions from gameSession
-      const { UserSessions, aiResponse } = gameSession;
-      const users = await UserSessions.toArray();
+			// Get voteOptions from gameSession
+			const { UserSessions, aiResponse } = gameSession;
+			const users = await UserSessions.toArray();
 
-	  let userVoteResponses = users
-  		.filter((user: UserSession) => !user.eliminated)
-  		.map((user: UserSession) => user.currentRoundResponse); 
+			let userVoteResponses = users
+				.filter((user: UserSession) => !user.eliminated)
+				.map((user: UserSession) => user.currentRoundResponse);
 
-	  // delay 0.5s
-	  await new Promise((resolve) => setTimeout(resolve, 500));
+			// delay 0.5s
+			await new Promise((resolve) => setTimeout(resolve, 500));
 
-	  userVoteResponses = users
-  		.filter((user: UserSession) => !user.eliminated)
-  		.map((user: UserSession) => user.currentRoundResponse);
+			userVoteResponses = users
+				.filter((user: UserSession) => !user.eliminated)
+				.map((user: UserSession) => user.currentRoundResponse);
 
-      const options = [...userVoteResponses, aiResponse];
-      // randomize order of options
-      options.sort(() => Math.random() - 0.5);
-      setVoteOptions(options);
+			const options = [...userVoteResponses, aiResponse];
+			// randomize order of options
+			options.sort(() => Math.random() - 0.5);
+			setVoteOptions(options);
 
 			// update currentRoundNumber and currentResponededPlayer
+			playersResponded.current = gameSession.playersResponded;
+
 			setCurrentResponededPlayer(gameSession.playersResponded);
 			setCurrentRoundNumber(gameSession.roundNumber);
+			setPlayerCount(gameSession.playerCount);
 
 			const subscription = DataStore.observe(
 				GameSession,
@@ -334,75 +338,77 @@ export function Vote() {
 		}
 	};
 
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
+	const handleSubmit = async (e: any) => {
+		e.preventDefault();
 
-    if (isHost) return;
+		if (isHost) return;
 
-    playersResponded.current += 1;
-    setCurrentResponededPlayer(playersResponded.current);
+		playersResponded.current += 1;
+		setCurrentResponededPlayer(playersResponded.current);
 
-    const gameSession = await DataStore.query(GameSession, gameSessionID);
-    if (gameSession == null) return;
+		const gameSession = await DataStore.query(GameSession, gameSessionID);
+		if (gameSession == null) return;
 
-    await DataStore.save(
-      GameSession.copyOf(gameSession, (item) => {
-        item.playersResponded = playersResponded.current;
-      })
-    );
+		await DataStore.save(
+			GameSession.copyOf(gameSession, (item) => {
+				item.playersResponded = playersResponded.current;
+			})
+		);
 
-    const userSession = await DataStore.query(UserSession, userSessionID);
-    if (userSession == null) return;
+		const userSession = await DataStore.query(UserSession, userSessionID);
+		if (userSession == null) return;
 
-    await DataStore.save(
-      UserSession.copyOf(userSession, (item) => {
-        // TODO: get value from form
-        item.currentRoundResponse = "something";
-      })
-    );
-  };
+		await DataStore.save(
+			UserSession.copyOf(userSession, (item) => {
+				// TODO: get value from form
+				item.currentRoundResponse = 'something';
+			})
+		);
+	};
 
-  return (
-    <>
-      <div style={{ width: "100%", position: "fixed", top: "0" }}>
-        <GameNavbar time={currentTime} />
-      </div>
-      <Text
-        variation="primary"
-        as="p"
-        lineHeight="1.5em"
-        fontWeight={500}
-        fontSize="1em"
-        fontStyle="normal"
-        textDecoration="none"
-        style={{ position: "fixed", top: "5vh", cursor: "default" }}
-      >
-        Players responded ({currentResponededPlayer}/5)
-      </Text>
-      <PinkCard style={{ position: "fixed", top: "10vh", cursor: "default" }}>
-        Round {currentRoundNumber} Voting
-      </PinkCard>
-      <Flex
-        as={"form"}
-        id={"vote-form"}
-        direction={"column"}
-        gap={"0.5em"}
-        width={"100%"}
-        height={"60vh"}
-        alignItems={"center"}
-        position={"fixed"}
-        bottom={"15vh"}
-        overflow={"auto"}
-        style={{ overflowX: "hidden" }}
-      >
-        {voteOptions.map((option, index) => (
-          <VoteCard
-            key={index}
-            label={option}
-            onChange={(e) => checkOnlyOne(e)}
-          />
-        ))}
-        {/* <VoteCard
+	return (
+		<>
+			<div style={{ width: '100%', position: 'fixed', top: '0' }}>
+				<GameNavbar time={currentTime} />
+			</div>
+			<Text
+				variation="primary"
+				as="p"
+				lineHeight="1.5em"
+				fontWeight={500}
+				fontSize="1em"
+				fontStyle="normal"
+				textDecoration="none"
+				style={{ position: 'fixed', top: '5vh', cursor: 'default' }}
+			>
+				Players responded ({currentResponededPlayer}/{playerCount})
+			</Text>
+			<PinkCard
+				style={{ position: 'fixed', top: '10vh', cursor: 'default' }}
+			>
+				Round {currentRoundNumber} Voting
+			</PinkCard>
+			<Flex
+				as={'form'}
+				id={'vote-form'}
+				direction={'column'}
+				gap={'0.5em'}
+				width={'100%'}
+				height={'60vh'}
+				alignItems={'center'}
+				position={'fixed'}
+				bottom={'15vh'}
+				overflow={'auto'}
+				style={{ overflowX: 'hidden' }}
+			>
+				{voteOptions.map((option, index) => (
+					<VoteCard
+						key={index}
+						label={option}
+						onChange={(e) => checkOnlyOne(e)}
+					/>
+				))}
+				{/* <VoteCard
 					label="something Something"
 					onChange={(e) => checkOnlyOne(e)}
 				/>
@@ -419,14 +425,16 @@ export function Vote() {
 				<VoteCard label="something Something" />
 				<VoteCard label="something Something" /> */}
 			</Flex>
-			<SubmitButton
-				color="#FF6DDF"
-				form="vote-form"
-				style={{ position: 'fixed', bottom: '4vh' }}
-				onClick={handleSubmit}
-			>
-				Submit
-			</SubmitButton>
+			{!isHost && (
+				<SubmitButton
+					color="#FF6DDF"
+					form="vote-form"
+					style={{ position: 'fixed', bottom: '4vh' }}
+					onClick={handleSubmit}
+				>
+					Submit
+				</SubmitButton>
+			)}
 		</>
 	);
 }
