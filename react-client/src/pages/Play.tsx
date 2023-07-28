@@ -93,7 +93,8 @@ export function Play() {
           console.log(seconds);
           setCurrentTime(seconds);
         } else {
-          setCurrentTime(seconds);
+          setCurrentTime(0);
+          setIsTimeOut(true);
           if (isHost) {
             determineNextStep();
           }
