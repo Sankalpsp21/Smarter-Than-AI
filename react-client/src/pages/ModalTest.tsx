@@ -1,7 +1,7 @@
-import { Login, SignIn, SignUp } from "../components/Modals";
+import { Login, SignIn, SignUp, Exit } from "../components/Modals";
 
 const ModalTest = () => {
-  return <SignUp />;
+  return <Exit />;
 };
 
 export default ModalTest;

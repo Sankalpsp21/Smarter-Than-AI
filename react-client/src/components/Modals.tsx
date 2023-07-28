@@ -1,4 +1,10 @@
-import { Card, Flex, TextField, PasswordField } from "@aws-amplify/ui-react";
+import {
+  Card,
+  Flex,
+  TextField,
+  PasswordField,
+  Text,
+} from "@aws-amplify/ui-react";
 import { ToggleButton, SubmitButton } from "./Buttons";
 import { LoginCard } from "./Cards";
 import { useState } from "react";
@@ -144,6 +150,38 @@ export function SignUp() {
             <SubmitButton color="#FF6DDF">Sign Up</SubmitButton>
           </Flex>
         </Card>
+      </Card>
+    </>
+  );
+}
+
+export function Exit() {
+  return (
+    <>
+      <Card
+        backgroundColor="ffffff"
+        borderRadius="12px"
+        color="black"
+        padding="1em"
+        boxShadow="rgba(13, 26, 38, 0.25) 0px 4px 4px 0px"
+        paddingLeft="5vw"
+        paddingRight="5vw"
+        paddingTop="5vh"
+        paddingBottom="5vh"
+      >
+        <Text
+          textAlign="center"
+          fontSize="1.5em"
+          color="black"
+          fontWeight="500"
+          padding="3vh"
+        >
+          Do you really want to exit?
+        </Text>
+        <Flex direction="row" gap="1.5" justifyContent="center">
+          <ToggleButton color="#FF6DDF">Yes</ToggleButton>
+          <ToggleButton color="#62A1FF">Cancel</ToggleButton>
+        </Flex>
       </Card>
     </>
   );

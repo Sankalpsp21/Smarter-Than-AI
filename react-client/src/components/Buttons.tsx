@@ -7,9 +7,15 @@ interface ButtonProps {
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   form?: string;
   style?: React.CSSProperties;
+  disabled?: boolean;
 }
 
-export function ToggleButton({ children, color, onClick }: ButtonProps) {
+export function ToggleButton({
+  children,
+  color,
+  onClick,
+  disabled,
+}: ButtonProps) {
   return (
     <Button
       backgroundColor={color}
@@ -22,6 +28,7 @@ export function ToggleButton({ children, color, onClick }: ButtonProps) {
       boxShadow={"rgba(13, 26, 38, 0.25) 0px 4px 4px 0px"}
       onClick={onClick}
       margin={"0.5em"}
+      disabled={disabled}
     >
       {children}
     </Button>
