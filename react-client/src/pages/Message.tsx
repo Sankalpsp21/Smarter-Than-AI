@@ -12,6 +12,8 @@ export function Message() {
   const gameSessionID = useSelector(selectGameSessionID);
   const navigate = useNavigate();
 
+  const [currentTime, setCurrentTime] = useState(10);
+
   const messageSet = {
     WIN: "An AI has been deported....",
     MESSAGE: "A human has been deported....",
@@ -21,9 +23,14 @@ export function Message() {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
+    let timer: string | number | NodeJS.Timeout | undefined;
+
     const init = async () => {
       // Get a gameSession data
       const gameSession = await DataStore.query(GameSession, gameSessionID);
+
+      // Prevent the case when gameSession is undefined
+      if (!gameSession) return;
 
       // HOST
       if (isHost) {
@@ -39,9 +46,9 @@ export function Message() {
         );
 
         setMessage(messageSet.MESSAGE);
-        // delay for 10 seconds
-        await new Promise((resolve) => setTimeout(resolve, 10000));
-        navigate("/prompt");
+        // // delay for 10 seconds
+        // await new Promise((resolve) => setTimeout(resolve, 10000));
+        // navigate("/prompt");
       }
       // NOT HOST
       else {
@@ -121,6 +128,28 @@ export function Message() {
         });
         console.log(subscription);
       }
+
+      timer = setInterval(async () => {
+        const { currentRoundExpiration } = gameSession;
+        const date = new Date(currentRoundExpiration);
+        const now = new Date();
+        const diff = date.getTime() - now.getTime();
+
+        // get time in seconds
+        const seconds = Math.floor(diff / 1000) - 10;
+        console.log(seconds);
+        if (seconds > 0) {
+          console.log(seconds);
+          setCurrentTime(seconds);
+        } else {
+          setCurrentTime(0);
+          if (isHost) {
+            navigate("/prompt");
+          } else {
+            navigate("/prompt");
+          }
+        }
+      }, 1000);
     };
     try {
       init();
@@ -131,6 +160,9 @@ export function Message() {
 
   return (
     <>
+      <div style={{ width: "100%", position: "fixed", top: "0" }}>
+        <GameNavbar time={currentTime} />
+      </div>
       <Text
         variation="primary"
         as="p"
@@ -150,9 +182,6 @@ export function Message() {
 const Game = () => {
   return (
     <>
-      <div style={{ width: "100%", position: "fixed", top: "0" }}>
-        <GameNavbar />
-      </div>
       <Message />
     </>
   );
