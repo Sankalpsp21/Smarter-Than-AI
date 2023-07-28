@@ -58,6 +58,8 @@ export function Vote() {
 	};
 
 	useEffect(() => {
+		let timer: string | number | NodeJS.Timeout | undefined;
+
 		const init = async () => {
 			// Get gameSession data by gameSessionID
 			const gameSession = await DataStore.query(
@@ -97,8 +99,10 @@ export function Vote() {
 				if (!isHost) {
 					// If RoundMode is MESSAGE
 					if (item.roundMode === RoundMode.MESSAGE) {
-						// navigate('/message', { state: 'MESSAGE' });
 						console.log('navigate to /message with MESSAGE');
+						navigate('/message', {
+							state: 'MESSAGE'
+						});
 					}
 					// If RoundMode is WIN
 					else if (item.roundMode === RoundMode.WIN) {
@@ -121,8 +125,10 @@ export function Vote() {
 						dispatch(setTotalGames(totalGames + 1));
 						dispatch(setWins(wins + 1));
 
-						// navigate('/message', { state: 'WIN' });
 						console.log('navigate to /message with WIN');
+						navigate('/message', {
+							state: 'WIN'
+						});
 					}
 					// If RoundMode is LOSE (When the case is; playerNum === 2)
 					else if (item.roundMode === RoundMode.LOSE) {
@@ -131,8 +137,8 @@ export function Vote() {
 						dispatch(setTotalGames(totalGames + 1));
 						dispatch(setLosses(losses + 1));
 
-						// navigate('/message', { state: 'LOSE' });
 						console.log('navigate to /message with LOSE');
+						navigate('/message', { state: 'LOSE' });
 					}
 				}
 
@@ -148,9 +154,10 @@ export function Vote() {
 				const date = new Date(currentRoundExpiration);
 				const now = new Date();
 				const diff = date.getTime() - now.getTime();
-				console.log(diff);
 
-				const timer = setTimeout(() => {
+				console.log(`expiration in seconds: ${diff / 1000}`);
+
+				timer = setTimeout(() => {
 					determineNextStep();
 				}, diff);
 			} else {
@@ -163,8 +170,8 @@ export function Vote() {
 
 					if (item.eliminated) {
 						subscription.unsubscribe();
-						// navigate('/message', { state: 'LOSE' });
 						console.log('navigate to /message with LOSE');
+						navigate('/message', { state: 'LOSE' });
 					}
 				});
 				console.log(subscription);
@@ -175,6 +182,12 @@ export function Vote() {
 		} catch (err) {
 			console.log(err);
 		}
+
+		return () => {
+			if (timer) {
+				clearTimeout(timer);
+			}
+		};
 	}, []);
 
 	const determineNextStep = async () => {

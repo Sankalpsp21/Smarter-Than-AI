@@ -1,6 +1,6 @@
-import { Button, Text, TextField, Flex } from '@aws-amplify/ui-react';
+import { Text, TextField, Flex } from '@aws-amplify/ui-react';
 import { ToggleButton } from '../components/Buttons';
-import { PromptCard, PinkCard, VoteCard } from '../components/Cards';
+import { PromptCard, PinkCard } from '../components/Cards';
 import GameNavbar from '../components/GameNavbar';
 import { DataStore } from 'aws-amplify';
 import { useEffect, useState } from 'react';
@@ -31,12 +31,14 @@ export function Play() {
 		let timer: string | number | NodeJS.Timeout | undefined;
 
 		const setupRound = async () => {
-			const gameSessions = await DataStore.query(GameSession, (c) =>
-				c.and((c) => [c.id.eq(gameSessionId)])
+			const gameSession = await DataStore.query(
+				GameSession,
+				gameSessionId
 			);
-			setPlayerCount(gameSessions[0].playerCount);
-			setPlayersResponded(gameSessions[0].playersResponded);
-			setRoundNo(gameSessions[0].roundNumber);
+			if (gameSession == null) return;
+			setPlayerCount(gameSession.playerCount);
+			setPlayersResponded(gameSession.playersResponded);
+			setRoundNo(gameSession.roundNumber);
 
 			// Subscribe to updates to playersResponded
 			subscription = DataStore.observe(
@@ -68,19 +70,25 @@ export function Play() {
 				// const aiRespText = await aiResp.text();
 				const aiRespText = 'This is an AI response';
 
+				const gameSession = await DataStore.query(
+					GameSession,
+					gameSessionId
+				);
+				if (gameSession == null) return;
+
 				// Update GameSession with aiResponse
 				await DataStore.save(
-					GameSession.copyOf(gameSessions[0], (updated) => {
+					GameSession.copyOf(gameSession, (updated) => {
 						updated.aiResponse = aiRespText;
 						updated.playersResponded =
-							gameSessions[0].playersResponded + 1;
+							gameSession.playersResponded + 1;
 					})
 				);
 			}
 
 			// set timer that runs every 1 second
 			timer = setInterval(async () => {
-				const { currentRoundExpiration } = gameSessions[0];
+				const { currentRoundExpiration } = gameSession;
 				const date = new Date(currentRoundExpiration);
 				const now = new Date();
 				const diff = date.getTime() - now.getTime();
@@ -136,33 +144,33 @@ export function Play() {
 			set roundMode to “VOTE”
 	*/
 
-	const getGameSession = async (gsid: string) => {
-		try {
-			// get all game sessions
-			const gameSession = await DataStore.query(GameSession, (c) =>
-				c.and((c) => [c.id.eq(gsid)])
-			);
-			if (gameSession.length === 0) return null;
-			return gameSession[0];
-		} catch (error) {
-			console.error(error);
-			return null;
-		}
-	};
+	// const getGameSession = async (gsid: string) => {
+	// 	try {
+	// 		// get all game sessions
+	// 		const gameSession = await DataStore.query(GameSession, (c) =>
+	// 			c.and((c) => [c.id.eq(gsid)])
+	// 		);
+	// 		if (gameSession.length === 0) return null;
+	// 		return gameSession[0];
+	// 	} catch (error) {
+	// 		console.error(error);
+	// 		return null;
+	// 	}
+	// };
 
-	const getUserSession = async (usid: string) => {
-		try {
-			// get all user sessions
-			const userSession = await DataStore.query(UserSession, (c) =>
-				c.and((c) => [c.id.eq(usid)])
-			);
-			if (userSession.length === 0) return null;
-			return userSession[0];
-		} catch (error) {
-			console.error(error);
-			return null;
-		}
-	};
+	// const getUserSession = async (usid: string) => {
+	// 	try {
+	// 		// get all user sessions
+	// 		const userSession = await DataStore.query(UserSession, (c) =>
+	// 			c.and((c) => [c.id.eq(usid)])
+	// 		);
+	// 		if (userSession.length === 0) return null;
+	// 		return userSession[0];
+	// 	} catch (error) {
+	// 		console.error(error);
+	// 		return null;
+	// 	}
+	// };
 
 	// Update user's current round response state when they type in TextField
 	const handleTextField = (event: React.ChangeEvent<HTMLInputElement>) => {
