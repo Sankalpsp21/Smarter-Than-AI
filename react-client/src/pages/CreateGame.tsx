@@ -91,7 +91,7 @@ const CreateGame = () => {
         // Create a new GameSession
         const gameSession = new GameSession({
           pinCode: await setupPinCode(),
-          playerCount: 0,
+          playerCount: 1,
           roundNumber: 0,
           roundPrompt: "",
           currentRoundExpiration: new Date().toISOString(),
