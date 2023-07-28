@@ -1,5 +1,5 @@
 import { Button, Text, Flex } from "@aws-amplify/ui-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { DataStore } from "aws-amplify";
 import { GameSession } from "../models";
 import { ToggleButton } from "../components/Buttons";
@@ -60,8 +60,9 @@ const pinCodeExists = async (pinCode: number) => {
 
 const CreateGame = () => {
   const [currentPlayerNum, setCurrentPlayerNum] = useState(0);
+  const playerCount = useRef(0);
   const [pinCode, setPinCode] = useState(0);
-  const [gameSessionId, setGameSessionId] = useState("");
+  const gameSessionId = useRef("");
   const [copySuccess, setCopySuccess] = useState(false);
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -106,17 +107,18 @@ const CreateGame = () => {
         await DataStore.save(gameSession);
 
         // Set the page's gameSessionId from the id of the GameSession we just created
-        setGameSessionId(gameSession.id);
+        gameSessionId.current = gameSession.id;
         console.log(`Game Session id: ${gameSession.id}`);
 
         // Subscribe to updates to playerCount
         const subscription = DataStore.observe(
           GameSession,
-          gameSessionId
+          gameSessionId.current
         ).subscribe((msg: any) => {
           //TODO: test this
           const item = msg.element;
           console.log("ITEM IS ====", item);
+          playerCount.current = item.playerCount;
           setCurrentPlayerNum(item.playerCount);
         });
         console.log(subscription);
@@ -154,7 +156,7 @@ const CreateGame = () => {
         setIsError(true);
         setErrorMessage("Invalid pin code or game session has already started");
         return;
-      } else if (currentPlayerNum < 2) {
+      } else if (playerCount.current < 2) {
         setIsError(true);
         setErrorMessage(
           "You don't have enough number of players to start the game"
