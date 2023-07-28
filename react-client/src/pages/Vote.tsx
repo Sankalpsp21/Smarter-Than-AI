@@ -208,8 +208,8 @@ export function Vote() {
 					item.roundMode = RoundMode.WIN;
 				})
 			);
-			navigate('/message', { state: 'WIN' });
 			console.log('navigate to /message with WIN');
+			navigate('/message', { state: 'WIN' });
 		}
 		// if playerCount is 2, then then set to LOSE
 		else if (gameSession.playerCount === 2) {
@@ -228,8 +228,8 @@ export function Vote() {
 					updated.totalGames += 1;
 				})
 			);
-			navigate('/message', { state: 'LOSE' });
 			console.log('navigate to /message with LOSE');
+			navigate('/message', { state: 'LOSE' });
 		} else {
 			// pick random user to eliminate
 			const randomNum = Math.floor(Math.random() * users.length);
@@ -251,8 +251,42 @@ export function Vote() {
 					item.roundMode = RoundMode.MESSAGE;
 				})
 			);
-			navigate('/message', { state: 'MESSAGE' });
-			console.log('navigate to /message with MESSAGE');
+
+			// get last playerCount
+			const newPlayerCount = gameSession.playerCount - 1;
+
+			if (newPlayerCount == 2) {
+				// ai wins
+				await DataStore.save(
+					GameSession.copyOf(gameSession, (item) => {
+						item.roundMode = RoundMode.LOSE;
+					})
+				);
+
+				// get last user from users where eliminated is false
+				const users = await DataStore.query(UserSession, (c) =>
+					c.and((c) => [
+						c.gameSessionID.eq(gameSessionID),
+						c.eliminated.eq(false)
+					])
+				);
+				const user = users[0];
+
+				// update user's data
+				await DataStore.save(
+					UserSession.copyOf(user, (updated) => {
+						updated.eliminated = true;
+						updated.totalScore -= 100;
+						updated.losses += 1;
+						updated.totalGames += 1;
+					})
+				);
+				console.log('navigate to /message with LOSE');
+				navigate('/message', { state: 'LOSE' });
+			} else {
+				console.log('navigate to /message with MESSAGE');
+				navigate('/message', { state: 'MESSAGE' });
+			}
 		}
 	};
 
