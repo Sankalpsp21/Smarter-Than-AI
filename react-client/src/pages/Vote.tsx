@@ -208,7 +208,7 @@ export function Vote() {
 					item.roundMode = RoundMode.WIN;
 				})
 			);
-			// navigate('/message', { state: 'WIN' });
+			navigate('/message', { state: 'WIN' });
 			console.log('navigate to /message with WIN');
 		}
 		// if playerCount is 2, then then set to LOSE
@@ -228,7 +228,7 @@ export function Vote() {
 					updated.totalGames += 1;
 				})
 			);
-			// navigate('/message', { state: 'LOSE' });
+			navigate('/message', { state: 'LOSE' });
 			console.log('navigate to /message with LOSE');
 		} else {
 			// pick random user to eliminate
@@ -251,7 +251,7 @@ export function Vote() {
 					item.roundMode = RoundMode.MESSAGE;
 				})
 			);
-			// navigate('/message', { state: 'MESSAGE' });
+			navigate('/message', { state: 'MESSAGE' });
 			console.log('navigate to /message with MESSAGE');
 		}
 	};
