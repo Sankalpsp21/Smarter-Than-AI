@@ -15,7 +15,6 @@ import { useLocation } from "react-router-dom";
 export function Message() {
   const isHost = useSelector(selectIsHost);
   const gameSessionID = useSelector(selectGameSessionID);
-  const userSessionID = useSelector(selectUserSessionID);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -37,7 +36,6 @@ export function Message() {
     const init = async () => {
       // Get a gameSession data
       const gameSession = await DataStore.query(GameSession, gameSessionID);
-      const userSession = await DataStore.query(UserSession, userSessionID);
 
       if (location.state === "MESSAGE") {
         setMessage(messageSet.MESSAGE);
@@ -64,6 +62,7 @@ export function Message() {
           setCurrentTime(seconds);
         } else {
           setCurrentTime(0);
+          setIsTimeOut(true);
         }
       }, 1000);
 
