@@ -12,6 +12,7 @@ import {
 	selectIsHost
 } from '../redux/GameSlice';
 import { useNavigate } from 'react-router-dom';
+import { ZenObservable } from 'zen-observable-ts';
 
 export function Play() {
 	const navigate = useNavigate();
@@ -26,80 +27,89 @@ export function Play() {
 	const [currentRoundResponse, setCurrentRoundResponse] = useState('');
 
 	useEffect(() => {
+		let subscription: ZenObservable.Subscription;
+		let timer: string | number | NodeJS.Timeout | undefined;
+
 		const setupRound = async () => {
-			try {
-				const gameSessions = await DataStore.query(GameSession, (c) =>
-					c.and((c) => [c.id.eq(gameSessionId)])
-				);
-				setPlayerCount(gameSessions[0].playerCount);
-				setPlayersResponded(gameSessions[0].playersResponded);
-				setRoundNo(gameSessions[0].roundNumber);
+			const gameSessions = await DataStore.query(GameSession, (c) =>
+				c.and((c) => [c.id.eq(gameSessionId)])
+			);
+			setPlayerCount(gameSessions[0].playerCount);
+			setPlayersResponded(gameSessions[0].playersResponded);
+			setRoundNo(gameSessions[0].roundNumber);
 
-				// Subscribe to updates to playersResponded
-				const subscription = DataStore.observe(
-					GameSession,
-					gameSessionId
-				).subscribe((msg: any) => {
-					//TODO: test this
-					const item = msg.element;
-					setPlayersResponded(item.playersResponded);
+			// Subscribe to updates to playersResponded
+			subscription = DataStore.observe(
+				GameSession,
+				gameSessionId
+			).subscribe((msg: any) => {
+				//TODO: test this
+				const item = msg.element;
+				setPlayersResponded(item.playersResponded);
 
-					if (isHost && item.playersResponded == item.playerCount) {
-						determineNextStep();
-					}
-
-					if (!isHost) {
-						if (item.roundMode === RoundMode.VOTE) {
-							navigate('/vote');
-						}
-					}
-				});
-
-				console.log(subscription);
-
-				if (isHost) {
-					// Generate AI response by fetching from endpoint
-					// // const aiResp = await fetch("/ai/get-answer");
-					// // if (!aiResp.ok)
-					// //   throw new Error("Failed to get response from /ai/get-answer");
-					// const aiRespText = await aiResp.text();
-					const aiRespText = 'This is an AI response';
-
-					// Update GameSession with aiResponse
-					await DataStore.save(
-						GameSession.copyOf(gameSessions[0], (updated) => {
-							updated.aiResponse = aiRespText;
-							updated.playersResponded =
-								gameSessions[0].playersResponded + 1;
-						})
-					);
+				if (isHost && item.playersResponded == item.playerCount) {
+					determineNextStep();
 				}
 
-				// set timer that runs every 1 second
-				const timer = setInterval(async () => {
-					const { currentRoundExpiration } = gameSessions[0];
-					const date = new Date(currentRoundExpiration);
-					const now = new Date();
-					const diff = date.getTime() - now.getTime();
-
-					// get time in seconds
-					const seconds = Math.floor(diff / 1000);
-					if (seconds >= 0) {
-						console.log(seconds);
-						// TODO: update timer in navbar ui
-					} else {
-						// TODO: prevent player from entering submission since time is up
-
-						if (isHost) {
-							determineNextStep();
-						}
+				if (!isHost) {
+					if (item.roundMode === RoundMode.VOTE) {
+						navigate('/vote');
 					}
-				}, 1000);
-			} catch (error) {
-				console.error(error);
+				}
+			});
+
+			console.log(subscription);
+
+			if (isHost) {
+				// Generate AI response by fetching from endpoint
+				// // const aiResp = await fetch("/ai/get-answer");
+				// // if (!aiResp.ok)
+				// //   throw new Error("Failed to get response from /ai/get-answer");
+				// const aiRespText = await aiResp.text();
+				const aiRespText = 'This is an AI response';
+
+				// Update GameSession with aiResponse
+				await DataStore.save(
+					GameSession.copyOf(gameSessions[0], (updated) => {
+						updated.aiResponse = aiRespText;
+						updated.playersResponded =
+							gameSessions[0].playersResponded + 1;
+					})
+				);
+			}
+
+			// set timer that runs every 1 second
+			timer = setInterval(async () => {
+				const { currentRoundExpiration } = gameSessions[0];
+				const date = new Date(currentRoundExpiration);
+				const now = new Date();
+				const diff = date.getTime() - now.getTime();
+
+				// get time in seconds
+				const seconds = Math.floor(diff / 1000);
+				if (seconds >= 0) {
+					console.log(seconds);
+					// TODO: update timer in navbar ui
+				} else {
+					// TODO: prevent player from entering submission since time is up
+					if (isHost) {
+						determineNextStep();
+					}
+				}
+			}, 1000);
+		};
+		try {
+			setupRound();
+		} catch (error) {
+			console.error(error);
+		}
+
+		return () => {
+			subscription?.unsubscribe();
+			if (timer) {
+				clearInterval(timer);
 			}
 		};
-		setupRound();
 	}, []);
 
 	const determineNextStep = async () => {
@@ -110,6 +120,9 @@ export function Play() {
 			GameSession.copyOf(gameSession, (updated) => {
 				updated.playersResponded = 0;
 				updated.roundMode = RoundMode.VOTE;
+				updated.currentRoundExpiration = new Date( // set to now + 30s
+					Date.now() + 30000
+				).toISOString();
 			})
 		);
 		navigate('/vote');
