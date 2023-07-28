@@ -1,6 +1,6 @@
 import { TextField, Text } from '@aws-amplify/ui-react';
 import { ToggleButton } from '../components/Buttons';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { DataStore } from 'aws-amplify';
 import { GameSession, UserSession } from '../models';
 import { LoginButton } from '../components/LoginButton';
@@ -8,7 +8,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
 	selectUserSessionID,
 	setUserSessionID,
-	setGameSessionID
+	setGameSessionID,
+	setIsHost
 } from '../redux/GameSlice';
 import { AppDispatch } from '../redux/store';
 import { useNavigate } from 'react-router-dom';
@@ -57,6 +58,8 @@ const JoinGame = () => {
 			setError('Invalid pin code or game session has already started');
 			return;
 		}
+
+		dispatch(setIsHost(false));
 
 		dispatch(setGameSessionID(gameSession.id));
 		console.log('Pin code in IF is ====', pinCode);
