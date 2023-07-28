@@ -87,11 +87,11 @@ export function Play() {
 
         // get time in seconds
         const seconds = Math.floor(diff / 1000);
-        if (seconds >= 0) {
+        if (seconds > 0) {
           console.log(seconds);
-          // TODO: update timer in navbar ui
+          setCurrentTime(seconds);
         } else {
-          // TODO: prevent player from entering submission since time is up
+          setCurrentTime(seconds);
           if (isHost) {
             determineNextStep();
           }
