@@ -37,11 +37,13 @@ export function Message() {
       // Get a gameSession data
       const gameSession = await DataStore.query(GameSession, gameSessionID);
 
+      console.log(location.state);
+
       if (location.state === "MESSAGE") {
         setMessage(messageSet.MESSAGE);
-      } else if ((location.state = "WIN")) {
+      } else if (location.state === "WIN") {
         setMessage(messageSet.WIN);
-      } else {
+      } else if (location.state === "LOSE") {
         setMessage(messageSet.LOSE);
       }
 
@@ -55,10 +57,9 @@ export function Message() {
         const diff = date.getTime() - now.getTime();
 
         // get time in seconds
-        const seconds = Math.floor(diff / 1000) - 10;
+        const seconds = Math.floor(diff / 1000) - 5;
         console.log(seconds);
         if (seconds > 0) {
-          console.log(seconds);
           setCurrentTime(seconds);
         } else {
           setCurrentTime(0);
@@ -67,7 +68,7 @@ export function Message() {
       }, 1000);
 
       // HOST
-      if (isHost && isTimeOut) {
+      if (isHost) {
         if (gameSession == null) {
           return;
         }
@@ -79,10 +80,13 @@ export function Message() {
           })
         );
       }
-      // NOT HOST
-      else {
+    };
+
+    const handleNavigate = async () => {
+      if (isTimeOut) {
         // Get the userSession
         const userSession = await DataStore.query(UserSession, userSessionID);
+        console.log("COME TO Else Statement cuz I am not the host");
 
         if (userSession == null) {
           console.log("ERROR: userSession is null");
@@ -95,6 +99,22 @@ export function Message() {
             item.currentRoundResponse = "";
           })
         );
+
+        if (location.state === "WIN") {
+          if (userSession) {
+            await DataStore.save(
+              UserSession.copyOf(userSession, (updated) => {
+                updated.wins += 1;
+                updated.totalScore += 1;
+              })
+            );
+          }
+          navigate("/result", { state: "WIN" });
+        } else if (location.state === "LOSE") {
+          navigate("/result", { state: "LOSE" });
+        } else {
+          navigate("/prompt");
+        }
 
         const subscription = DataStore.observe(
           GameSession,
@@ -186,10 +206,11 @@ export function Message() {
     };
     try {
       init();
+      handleNavigate();
     } catch (error) {
       console.error(error);
     }
-  }, []);
+  }, [isTimeOut]);
 
   return (
     <>
