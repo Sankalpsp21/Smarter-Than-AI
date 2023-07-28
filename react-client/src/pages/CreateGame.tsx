@@ -4,6 +4,7 @@ import { DataStore } from "aws-amplify";
 import { GameSession } from "../models";
 import { ToggleButton } from "../components/Buttons";
 import { LoginButton } from "../components/LoginButton";
+import { useNavigate } from "react-router-dom";
 
 interface CopyToClipboard {
   target: string;
@@ -62,6 +63,10 @@ const CreateGame = () => {
   const [pinCode, setPinCode] = useState(0);
   const [gameSessionId, setGameSessionId] = useState("");
   const [copySuccess, setCopySuccess] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const navigate = useNavigate();
 
   const setupPinCode = async () => {
     try {
@@ -111,7 +116,8 @@ const CreateGame = () => {
         ).subscribe((msg: any) => {
           //TODO: test this
           const item = msg.element;
-          console.log(item);
+          console.log("ITEM IS ====", item);
+          setCurrentPlayerNum(item.playerCount);
         });
         console.log(subscription);
 
@@ -145,6 +151,14 @@ const CreateGame = () => {
       // Handle invalid game session
       if (gameSession == null || gameSession.roundNumber > 0) {
         console.error("Invalid pin code or game session has already started");
+        setIsError(true);
+        setErrorMessage("Invalid pin code or game session has already started");
+        return;
+      } else if (currentPlayerNum < 2) {
+        setIsError(true);
+        setErrorMessage(
+          "You don't have enough number of players to start the game"
+        );
         return;
       }
 
@@ -154,6 +168,8 @@ const CreateGame = () => {
           updated.roundNumber = gameSession.roundNumber + 1;
         })
       );
+
+      navigate("/prompt");
     } catch (error) {
       console.error(error);
     }
@@ -189,6 +205,8 @@ const CreateGame = () => {
       <Text fontStyle="normal" textDecoration="none" alignSelf="center">
         Players joined: {currentPlayerNum}
       </Text>
+      {isError && <Text color="#ffa6a6">{errorMessage}</Text>}
+
       <ToggleButton color="#FF6DDF" onClick={handleStartbtn}>
         Start Game
       </ToggleButton>
