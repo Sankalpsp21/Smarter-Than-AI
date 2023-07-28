@@ -43,6 +43,7 @@ export function Vote() {
 	const [currentResponededPlayer, setCurrentResponededPlayer] = useState(0);
 	const [currentRoundNumber, setCurrentRoundNumber] = useState(0);
 	const [voteOptions, setVoteOptions] = useState<string[]>([]);
+	const [currentTime, setCurrentTime] = useState(15);
 
 	const checkOnlyOne = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const target = e.target;
@@ -149,33 +150,67 @@ export function Vote() {
 			});
 			console.log(subscription);
 
-			if (isHost) {
+			timer = setInterval(async () => {
 				const { currentRoundExpiration } = gameSession;
 				const date = new Date(currentRoundExpiration);
 				const now = new Date();
 				const diff = date.getTime() - now.getTime();
 
-				console.log(`expiration in seconds: ${diff / 1000}`);
+				// get time in seconds
+				const seconds = Math.floor(diff / 1000);
+				if (seconds > 0) {
+					console.log(seconds);
+					setCurrentTime(seconds);
+				} else {
+					setCurrentTime(0);
+					if (isHost) {
+						determineNextStep();
+					} else {
+						const subscription = DataStore.observe(
+							UserSession,
+							userSessionID
+						).subscribe(async (msg: any) => {
+							const item = msg.element;
+							console.log(item);
 
-				timer = setTimeout(() => {
-					determineNextStep();
-				}, diff);
-			} else {
-				const subscription = DataStore.observe(
-					UserSession,
-					userSessionID
-				).subscribe(async (msg: any) => {
-					const item = msg.element;
-					console.log(item);
-
-					if (item.eliminated) {
-						subscription.unsubscribe();
-						console.log('navigate to /message with LOSE');
-						navigate('/message', { state: 'LOSE' });
+							if (item.eliminated) {
+								subscription.unsubscribe();
+								console.log('navigate to /message with LOSE');
+								navigate('/message', { state: 'LOSE' });
+							}
+						});
+						console.log(subscription);
 					}
-				});
-				console.log(subscription);
-			}
+				}
+			}, 1000);
+
+			// const { currentRoundExpiration } = gameSession;
+			// const date = new Date(currentRoundExpiration);
+			// const now = new Date();
+			// const diff = date.getTime() - now.getTime();
+
+			// console.log(`expiration in seconds: ${diff / 1000}`);
+
+			// if (isHost) {
+			//   timer = setTimeout(() => {
+			//     determineNextStep();
+			//   }, diff);
+			// } else {
+			//   const subscription = DataStore.observe(
+			//     UserSession,
+			//     userSessionID
+			//   ).subscribe(async (msg: any) => {
+			//     const item = msg.element;
+			//     console.log(item);
+
+			//     if (item.eliminated) {
+			//       subscription.unsubscribe();
+			//       console.log("navigate to /message with LOSE");
+			//       navigate("/message", { state: "LOSE" });
+			//     }
+			//   });
+			//   console.log(subscription);
+			// }
 		};
 		try {
 			init();
@@ -320,6 +355,9 @@ export function Vote() {
 
 	return (
 		<>
+			<div style={{ width: '100%', position: 'fixed', top: '0' }}>
+				<GameNavbar time={currentTime} />
+			</div>
 			<Text
 				variation="primary"
 				as="p"
@@ -389,9 +427,6 @@ export function Vote() {
 const Game = () => {
 	return (
 		<>
-			<div style={{ width: '100%', position: 'fixed', top: '0' }}>
-				<GameNavbar />
-			</div>
 			<Vote />
 		</>
 	);
