@@ -20,6 +20,7 @@ export function Message() {
 
   const [currentTime, setCurrentTime] = useState(10);
   const [isTimeOut, setIsTimeOut] = useState(false);
+  const userSessionID = useSelector(selectUserSessionID);
 
   const messageSet = {
     WIN: "An AI has been deported....",
@@ -31,7 +32,6 @@ export function Message() {
 
   useEffect(() => {
     let timer: string | number | NodeJS.Timeout | undefined;
-    const userSessionID = useSelector(selectUserSessionID);
 
     const init = async () => {
       // Get a gameSession data
