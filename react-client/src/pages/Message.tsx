@@ -5,14 +5,22 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { GameSession, RoundMode, UserSession } from "../models";
 import { useSelector } from "react-redux";
-import { selectIsHost, selectGameSessionID } from "../redux/GameSlice";
+import {
+  selectIsHost,
+  selectGameSessionID,
+  selectUserSessionID,
+} from "../redux/GameSlice";
+import { useLocation } from "react-router-dom";
 
 export function Message() {
   const isHost = useSelector(selectIsHost);
   const gameSessionID = useSelector(selectGameSessionID);
+  const userSessionID = useSelector(selectUserSessionID);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [currentTime, setCurrentTime] = useState(10);
+  const [isTimeOut, setIsTimeOut] = useState(false);
 
   const messageSet = {
     WIN: "An AI has been deported....",
@@ -28,12 +36,38 @@ export function Message() {
     const init = async () => {
       // Get a gameSession data
       const gameSession = await DataStore.query(GameSession, gameSessionID);
+      const userSession = await DataStore.query(UserSession, userSessionID);
+
+      if (location.state === "MESSAGE") {
+        setMessage(messageSet.MESSAGE);
+      } else if ((location.state = "WIN")) {
+        setMessage(messageSet.WIN);
+      } else {
+        setMessage(messageSet.LOSE);
+      }
 
       // Prevent the case when gameSession is undefined
       if (!gameSession) return;
 
+      timer = setInterval(async () => {
+        const { currentRoundExpiration } = gameSession;
+        const date = new Date(currentRoundExpiration);
+        const now = new Date();
+        const diff = date.getTime() - now.getTime();
+
+        // get time in seconds
+        const seconds = Math.floor(diff / 1000) - 10;
+        console.log(seconds);
+        if (seconds > 0) {
+          console.log(seconds);
+          setCurrentTime(seconds);
+        } else {
+          setCurrentTime(0);
+        }
+      }, 1000);
+
       // HOST
-      if (isHost) {
+      if (isHost && isTimeOut) {
         if (gameSession == null) {
           return;
         }
@@ -44,11 +78,6 @@ export function Message() {
             item.roundMode = RoundMode.PROMPT;
           })
         );
-
-        setMessage(messageSet.MESSAGE);
-        // // delay for 10 seconds
-        // await new Promise((resolve) => setTimeout(resolve, 10000));
-        // navigate("/prompt");
       }
       // NOT HOST
       else {
@@ -59,8 +88,19 @@ export function Message() {
           const item = msg.element;
           console.log(item);
 
-          // if RoundMode is PROMPT i.e. the game is not ended
-          if (item.roundMode === RoundMode.PROMPT) {
+          if (location.state === "WIN") {
+            if (userSession) {
+              await DataStore.save(
+                UserSession.copyOf(userSession, (updated) => {
+                  updated.wins += 1;
+                  updated.totalScore += 1;
+                })
+              );
+            }
+            navigate("/result", { state: "WIN" });
+          } else if (location.state === "LOSE") {
+            navigate("/result", { state: "LOSE" });
+          } else {
             navigate("/prompt");
           }
 
@@ -128,28 +168,6 @@ export function Message() {
         });
         console.log(subscription);
       }
-
-      timer = setInterval(async () => {
-        const { currentRoundExpiration } = gameSession;
-        const date = new Date(currentRoundExpiration);
-        const now = new Date();
-        const diff = date.getTime() - now.getTime();
-
-        // get time in seconds
-        const seconds = Math.floor(diff / 1000) - 10;
-        console.log(seconds);
-        if (seconds > 0) {
-          console.log(seconds);
-          setCurrentTime(seconds);
-        } else {
-          setCurrentTime(0);
-          if (isHost) {
-            navigate("/prompt");
-          } else {
-            navigate("/prompt");
-          }
-        }
-      }, 1000);
     };
     try {
       init();
