@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { GameSession, RoundMode, UserSession } from "../models";
 import { useSelector } from "react-redux";
-import { selectIsHost, selectGameSessionID } from "../redux/GameSlice";
+import { selectIsHost, selectGameSessionID, selectUserSessionID } from "../redux/GameSlice";
 
 export function Message() {
   const isHost = useSelector(selectIsHost);
@@ -24,6 +24,7 @@ export function Message() {
 
   useEffect(() => {
     let timer: string | number | NodeJS.Timeout | undefined;
+    const userSessionID = useSelector(selectUserSessionID);
 
     const init = async () => {
       // Get a gameSession data
@@ -52,6 +53,24 @@ export function Message() {
       }
       // NOT HOST
       else {
+        // Get the userSession
+        const userSession = await DataStore.query(
+          UserSession,
+          userSessionID
+        );
+
+        if(userSession == null) {
+          console.log("ERROR: userSession is null");
+          return;
+        }
+
+        // Reset user response to empty string
+        await DataStore.save(
+          UserSession.copyOf(userSession, (item) => {
+            item.currentRoundResponse = "";
+          })
+        );
+
         const subscription = DataStore.observe(
           GameSession,
           gameSessionID
