@@ -4,6 +4,7 @@
 
 export type CreateUserPersistedDataInput = {
   id?: string | null,
+  username: string,
   totalScore: number,
   totalGames: number,
   wins: number,
@@ -13,6 +14,7 @@ export type CreateUserPersistedDataInput = {
 };
 
 export type ModelUserPersistedDataConditionInput = {
+  username?: ModelStringInput | null,
   totalScore?: ModelIntInput | null,
   totalGames?: ModelIntInput | null,
   wins?: ModelIntInput | null,
@@ -21,18 +23,23 @@ export type ModelUserPersistedDataConditionInput = {
   and?: Array< ModelUserPersistedDataConditionInput | null > | null,
   or?: Array< ModelUserPersistedDataConditionInput | null > | null,
   not?: ModelUserPersistedDataConditionInput | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
-export type ModelIntInput = {
-  ne?: number | null,
-  eq?: number | null,
-  le?: number | null,
-  lt?: number | null,
-  ge?: number | null,
-  gt?: number | null,
-  between?: Array< number | null > | null,
+export type ModelStringInput = {
+  ne?: string | null,
+  eq?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  contains?: string | null,
+  notContains?: string | null,
+  between?: Array< string | null > | null,
+  beginsWith?: string | null,
   attributeExists?: boolean | null,
   attributeType?: ModelAttributeTypes | null,
+  size?: ModelSizeInput | null,
 };
 
 export enum ModelAttributeTypes {
@@ -49,9 +56,39 @@ export enum ModelAttributeTypes {
 }
 
 
+export type ModelSizeInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+};
+
+export type ModelIntInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+};
+
+export type ModelBooleanInput = {
+  ne?: boolean | null,
+  eq?: boolean | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+};
+
 export type UserPersistedData = {
   __typename: "UserPersistedData",
   id: string,
+  username: string,
   totalScore: number,
   totalGames: number,
   wins: number,
@@ -63,6 +100,7 @@ export type UserPersistedData = {
   _version: number,
   _deleted?: boolean | null,
   _lastChangedAt: number,
+  owner?: string | null,
 };
 
 export type ModelUserSessionConnection = {
@@ -92,6 +130,7 @@ export type UserSession = {
 
 export type UpdateUserPersistedDataInput = {
   id: string,
+  username?: string | null,
   totalScore?: number | null,
   totalGames?: number | null,
   wins?: number | null,
@@ -130,39 +169,7 @@ export type ModelUserSessionConditionInput = {
   and?: Array< ModelUserSessionConditionInput | null > | null,
   or?: Array< ModelUserSessionConditionInput | null > | null,
   not?: ModelUserSessionConditionInput | null,
-};
-
-export type ModelBooleanInput = {
-  ne?: boolean | null,
-  eq?: boolean | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
-};
-
-export type ModelStringInput = {
-  ne?: string | null,
-  eq?: string | null,
-  le?: string | null,
-  lt?: string | null,
-  ge?: string | null,
-  gt?: string | null,
-  contains?: string | null,
-  notContains?: string | null,
-  between?: Array< string | null > | null,
-  beginsWith?: string | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
-  size?: ModelSizeInput | null,
-};
-
-export type ModelSizeInput = {
-  ne?: number | null,
-  eq?: number | null,
-  le?: number | null,
-  lt?: number | null,
-  ge?: number | null,
-  gt?: number | null,
-  between?: Array< number | null > | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelIDInput = {
@@ -234,6 +241,7 @@ export type ModelGameSessionConditionInput = {
   and?: Array< ModelGameSessionConditionInput | null > | null,
   or?: Array< ModelGameSessionConditionInput | null > | null,
   not?: ModelGameSessionConditionInput | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelRoundModeInput = {
@@ -280,6 +288,7 @@ export type DeleteGameSessionInput = {
 
 export type ModelUserPersistedDataFilterInput = {
   id?: ModelIDInput | null,
+  username?: ModelStringInput | null,
   totalScore?: ModelIntInput | null,
   totalGames?: ModelIntInput | null,
   wins?: ModelIntInput | null,
@@ -288,6 +297,7 @@ export type ModelUserPersistedDataFilterInput = {
   and?: Array< ModelUserPersistedDataFilterInput | null > | null,
   or?: Array< ModelUserPersistedDataFilterInput | null > | null,
   not?: ModelUserPersistedDataFilterInput | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelUserPersistedDataConnection = {
@@ -310,6 +320,7 @@ export type ModelUserSessionFilterInput = {
   and?: Array< ModelUserSessionFilterInput | null > | null,
   or?: Array< ModelUserSessionFilterInput | null > | null,
   not?: ModelUserSessionFilterInput | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export enum ModelSortDirection {
@@ -331,6 +342,7 @@ export type ModelGameSessionFilterInput = {
   and?: Array< ModelGameSessionFilterInput | null > | null,
   or?: Array< ModelGameSessionFilterInput | null > | null,
   not?: ModelGameSessionFilterInput | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelGameSessionConnection = {
@@ -342,6 +354,7 @@ export type ModelGameSessionConnection = {
 
 export type ModelSubscriptionUserPersistedDataFilterInput = {
   id?: ModelSubscriptionIDInput | null,
+  username?: ModelSubscriptionStringInput | null,
   totalScore?: ModelSubscriptionIntInput | null,
   totalGames?: ModelSubscriptionIntInput | null,
   wins?: ModelSubscriptionIntInput | null,
@@ -349,9 +362,25 @@ export type ModelSubscriptionUserPersistedDataFilterInput = {
   rank?: ModelSubscriptionIntInput | null,
   and?: Array< ModelSubscriptionUserPersistedDataFilterInput | null > | null,
   or?: Array< ModelSubscriptionUserPersistedDataFilterInput | null > | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelSubscriptionIDInput = {
+  ne?: string | null,
+  eq?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  contains?: string | null,
+  notContains?: string | null,
+  between?: Array< string | null > | null,
+  beginsWith?: string | null,
+  in?: Array< string | null > | null,
+  notIn?: Array< string | null > | null,
+};
+
+export type ModelSubscriptionStringInput = {
   ne?: string | null,
   eq?: string | null,
   le?: string | null,
@@ -390,26 +419,12 @@ export type ModelSubscriptionUserSessionFilterInput = {
   userPersistedDataID?: ModelSubscriptionIDInput | null,
   and?: Array< ModelSubscriptionUserSessionFilterInput | null > | null,
   or?: Array< ModelSubscriptionUserSessionFilterInput | null > | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelSubscriptionBooleanInput = {
   ne?: boolean | null,
   eq?: boolean | null,
-};
-
-export type ModelSubscriptionStringInput = {
-  ne?: string | null,
-  eq?: string | null,
-  le?: string | null,
-  lt?: string | null,
-  ge?: string | null,
-  gt?: string | null,
-  contains?: string | null,
-  notContains?: string | null,
-  between?: Array< string | null > | null,
-  beginsWith?: string | null,
-  in?: Array< string | null > | null,
-  notIn?: Array< string | null > | null,
 };
 
 export type ModelSubscriptionGameSessionFilterInput = {
@@ -424,6 +439,7 @@ export type ModelSubscriptionGameSessionFilterInput = {
   aiResponse?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionGameSessionFilterInput | null > | null,
   or?: Array< ModelSubscriptionGameSessionFilterInput | null > | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type CreateUserPersistedDataMutationVariables = {
@@ -435,6 +451,7 @@ export type CreateUserPersistedDataMutation = {
   createUserPersistedData?:  {
     __typename: "UserPersistedData",
     id: string,
+    username: string,
     totalScore: number,
     totalGames: number,
     wins: number,
@@ -450,6 +467,7 @@ export type CreateUserPersistedDataMutation = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 
@@ -462,6 +480,7 @@ export type UpdateUserPersistedDataMutation = {
   updateUserPersistedData?:  {
     __typename: "UserPersistedData",
     id: string,
+    username: string,
     totalScore: number,
     totalGames: number,
     wins: number,
@@ -477,6 +496,7 @@ export type UpdateUserPersistedDataMutation = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 
@@ -489,6 +509,7 @@ export type DeleteUserPersistedDataMutation = {
   deleteUserPersistedData?:  {
     __typename: "UserPersistedData",
     id: string,
+    username: string,
     totalScore: number,
     totalGames: number,
     wins: number,
@@ -504,6 +525,7 @@ export type DeleteUserPersistedDataMutation = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 
@@ -680,6 +702,7 @@ export type GetUserPersistedDataQuery = {
   getUserPersistedData?:  {
     __typename: "UserPersistedData",
     id: string,
+    username: string,
     totalScore: number,
     totalGames: number,
     wins: number,
@@ -695,6 +718,7 @@ export type GetUserPersistedDataQuery = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 
@@ -710,6 +734,7 @@ export type ListUserPersistedDataQuery = {
     items:  Array< {
       __typename: "UserPersistedData",
       id: string,
+      username: string,
       totalScore: number,
       totalGames: number,
       wins: number,
@@ -720,6 +745,7 @@ export type ListUserPersistedDataQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
+      owner?: string | null,
     } | null >,
     nextToken?: string | null,
     startedAt?: number | null,
@@ -739,6 +765,7 @@ export type SyncUserPersistedDataQuery = {
     items:  Array< {
       __typename: "UserPersistedData",
       id: string,
+      username: string,
       totalScore: number,
       totalGames: number,
       wins: number,
@@ -749,6 +776,7 @@ export type SyncUserPersistedDataQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
+      owner?: string | null,
     } | null >,
     nextToken?: string | null,
     startedAt?: number | null,
@@ -1002,12 +1030,14 @@ export type SyncGameSessionsQuery = {
 
 export type OnCreateUserPersistedDataSubscriptionVariables = {
   filter?: ModelSubscriptionUserPersistedDataFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnCreateUserPersistedDataSubscription = {
   onCreateUserPersistedData?:  {
     __typename: "UserPersistedData",
     id: string,
+    username: string,
     totalScore: number,
     totalGames: number,
     wins: number,
@@ -1023,17 +1053,20 @@ export type OnCreateUserPersistedDataSubscription = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 
 export type OnUpdateUserPersistedDataSubscriptionVariables = {
   filter?: ModelSubscriptionUserPersistedDataFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnUpdateUserPersistedDataSubscription = {
   onUpdateUserPersistedData?:  {
     __typename: "UserPersistedData",
     id: string,
+    username: string,
     totalScore: number,
     totalGames: number,
     wins: number,
@@ -1049,17 +1082,20 @@ export type OnUpdateUserPersistedDataSubscription = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 
 export type OnDeleteUserPersistedDataSubscriptionVariables = {
   filter?: ModelSubscriptionUserPersistedDataFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnDeleteUserPersistedDataSubscription = {
   onDeleteUserPersistedData?:  {
     __typename: "UserPersistedData",
     id: string,
+    username: string,
     totalScore: number,
     totalGames: number,
     wins: number,
@@ -1075,6 +1111,7 @@ export type OnDeleteUserPersistedDataSubscription = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 

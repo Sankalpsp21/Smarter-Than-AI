@@ -5,9 +5,11 @@
 export const onCreateUserPersistedData = /* GraphQL */ `
   subscription OnCreateUserPersistedData(
     $filter: ModelSubscriptionUserPersistedDataFilterInput
+    $owner: String
   ) {
-    onCreateUserPersistedData(filter: $filter) {
+    onCreateUserPersistedData(filter: $filter, owner: $owner) {
       id
+      username
       totalScore
       totalGames
       wins
@@ -16,21 +18,26 @@ export const onCreateUserPersistedData = /* GraphQL */ `
       UserSessions {
         nextToken
         startedAt
+        __typename
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      owner
+      __typename
     }
   }
 `;
 export const onUpdateUserPersistedData = /* GraphQL */ `
   subscription OnUpdateUserPersistedData(
     $filter: ModelSubscriptionUserPersistedDataFilterInput
+    $owner: String
   ) {
-    onUpdateUserPersistedData(filter: $filter) {
+    onUpdateUserPersistedData(filter: $filter, owner: $owner) {
       id
+      username
       totalScore
       totalGames
       wins
@@ -39,21 +46,26 @@ export const onUpdateUserPersistedData = /* GraphQL */ `
       UserSessions {
         nextToken
         startedAt
+        __typename
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      owner
+      __typename
     }
   }
 `;
 export const onDeleteUserPersistedData = /* GraphQL */ `
   subscription OnDeleteUserPersistedData(
     $filter: ModelSubscriptionUserPersistedDataFilterInput
+    $owner: String
   ) {
-    onDeleteUserPersistedData(filter: $filter) {
+    onDeleteUserPersistedData(filter: $filter, owner: $owner) {
       id
+      username
       totalScore
       totalGames
       wins
@@ -62,12 +74,15 @@ export const onDeleteUserPersistedData = /* GraphQL */ `
       UserSessions {
         nextToken
         startedAt
+        __typename
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      owner
+      __typename
     }
   }
 `;
@@ -90,6 +105,7 @@ export const onCreateUserSession = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -112,6 +128,7 @@ export const onUpdateUserSession = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -134,6 +151,7 @@ export const onDeleteUserSession = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -151,6 +169,7 @@ export const onCreateGameSession = /* GraphQL */ `
       UserSessions {
         nextToken
         startedAt
+        __typename
       }
       playersResponded
       roundMode
@@ -160,6 +179,7 @@ export const onCreateGameSession = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -177,6 +197,7 @@ export const onUpdateGameSession = /* GraphQL */ `
       UserSessions {
         nextToken
         startedAt
+        __typename
       }
       playersResponded
       roundMode
@@ -186,6 +207,7 @@ export const onUpdateGameSession = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -203,6 +225,7 @@ export const onDeleteGameSession = /* GraphQL */ `
       UserSessions {
         nextToken
         startedAt
+        __typename
       }
       playersResponded
       roundMode
@@ -212,6 +235,7 @@ export const onDeleteGameSession = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;

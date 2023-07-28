@@ -9,6 +9,7 @@ export const createUserPersistedData = /* GraphQL */ `
   ) {
     createUserPersistedData(input: $input, condition: $condition) {
       id
+      username
       totalScore
       totalGames
       wins
@@ -17,12 +18,15 @@ export const createUserPersistedData = /* GraphQL */ `
       UserSessions {
         nextToken
         startedAt
+        __typename
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      owner
+      __typename
     }
   }
 `;
@@ -33,6 +37,7 @@ export const updateUserPersistedData = /* GraphQL */ `
   ) {
     updateUserPersistedData(input: $input, condition: $condition) {
       id
+      username
       totalScore
       totalGames
       wins
@@ -41,12 +46,15 @@ export const updateUserPersistedData = /* GraphQL */ `
       UserSessions {
         nextToken
         startedAt
+        __typename
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      owner
+      __typename
     }
   }
 `;
@@ -57,6 +65,7 @@ export const deleteUserPersistedData = /* GraphQL */ `
   ) {
     deleteUserPersistedData(input: $input, condition: $condition) {
       id
+      username
       totalScore
       totalGames
       wins
@@ -65,12 +74,15 @@ export const deleteUserPersistedData = /* GraphQL */ `
       UserSessions {
         nextToken
         startedAt
+        __typename
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      owner
+      __typename
     }
   }
 `;
@@ -94,6 +106,7 @@ export const createUserSession = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -117,6 +130,7 @@ export const updateUserSession = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -140,6 +154,7 @@ export const deleteUserSession = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -158,6 +173,7 @@ export const createGameSession = /* GraphQL */ `
       UserSessions {
         nextToken
         startedAt
+        __typename
       }
       playersResponded
       roundMode
@@ -167,6 +183,7 @@ export const createGameSession = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -185,6 +202,7 @@ export const updateGameSession = /* GraphQL */ `
       UserSessions {
         nextToken
         startedAt
+        __typename
       }
       playersResponded
       roundMode
@@ -194,6 +212,7 @@ export const updateGameSession = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -212,6 +231,7 @@ export const deleteGameSession = /* GraphQL */ `
       UserSessions {
         nextToken
         startedAt
+        __typename
       }
       playersResponded
       roundMode
@@ -221,6 +241,7 @@ export const deleteGameSession = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;

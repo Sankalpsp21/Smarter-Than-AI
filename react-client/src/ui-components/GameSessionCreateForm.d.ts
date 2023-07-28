@@ -5,8 +5,9 @@
  **************************************************************************/
 
 import * as React from "react";
-import { GridProps, SelectFieldProps, TextFieldProps } from "@aws-amplify/ui-react";
+import { AutocompleteProps, GridProps, SelectFieldProps, TextFieldProps } from "@aws-amplify/ui-react";
 import { EscapeHatchProps } from "@aws-amplify/ui-react/internal";
+import { UserSession } from "../models";
 export declare type ValidationResponse = {
     hasError: boolean;
     errorMessage?: string;
@@ -18,6 +19,7 @@ export declare type GameSessionCreateFormInputValues = {
     roundNumber?: number;
     roundPrompt?: string;
     currentRoundExpiration?: string;
+    UserSessions?: UserSession[];
     playersResponded?: number;
     roundMode?: string;
     aiResponse?: string;
@@ -28,6 +30,7 @@ export declare type GameSessionCreateFormValidationValues = {
     roundNumber?: ValidationFunction<number>;
     roundPrompt?: ValidationFunction<string>;
     currentRoundExpiration?: ValidationFunction<string>;
+    UserSessions?: ValidationFunction<UserSession>;
     playersResponded?: ValidationFunction<number>;
     roundMode?: ValidationFunction<string>;
     aiResponse?: ValidationFunction<string>;
@@ -40,6 +43,7 @@ export declare type GameSessionCreateFormOverridesProps = {
     roundNumber?: PrimitiveOverrideProps<TextFieldProps>;
     roundPrompt?: PrimitiveOverrideProps<TextFieldProps>;
     currentRoundExpiration?: PrimitiveOverrideProps<TextFieldProps>;
+    UserSessions?: PrimitiveOverrideProps<AutocompleteProps>;
     playersResponded?: PrimitiveOverrideProps<TextFieldProps>;
     roundMode?: PrimitiveOverrideProps<SelectFieldProps>;
     aiResponse?: PrimitiveOverrideProps<TextFieldProps>;

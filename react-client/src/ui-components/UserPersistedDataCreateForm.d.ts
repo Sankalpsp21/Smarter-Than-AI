@@ -5,35 +5,42 @@
  **************************************************************************/
 
 import * as React from "react";
-import { GridProps, TextFieldProps } from "@aws-amplify/ui-react";
+import { AutocompleteProps, GridProps, TextFieldProps } from "@aws-amplify/ui-react";
 import { EscapeHatchProps } from "@aws-amplify/ui-react/internal";
+import { UserSession } from "../models";
 export declare type ValidationResponse = {
     hasError: boolean;
     errorMessage?: string;
 };
 export declare type ValidationFunction<T> = (value: T, validationResponse: ValidationResponse) => ValidationResponse | Promise<ValidationResponse>;
 export declare type UserPersistedDataCreateFormInputValues = {
+    username?: string;
     totalScore?: number;
     totalGames?: number;
     wins?: number;
     losses?: number;
     rank?: number;
+    UserSessions?: UserSession[];
 };
 export declare type UserPersistedDataCreateFormValidationValues = {
+    username?: ValidationFunction<string>;
     totalScore?: ValidationFunction<number>;
     totalGames?: ValidationFunction<number>;
     wins?: ValidationFunction<number>;
     losses?: ValidationFunction<number>;
     rank?: ValidationFunction<number>;
+    UserSessions?: ValidationFunction<UserSession>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type UserPersistedDataCreateFormOverridesProps = {
     UserPersistedDataCreateFormGrid?: PrimitiveOverrideProps<GridProps>;
+    username?: PrimitiveOverrideProps<TextFieldProps>;
     totalScore?: PrimitiveOverrideProps<TextFieldProps>;
     totalGames?: PrimitiveOverrideProps<TextFieldProps>;
     wins?: PrimitiveOverrideProps<TextFieldProps>;
     losses?: PrimitiveOverrideProps<TextFieldProps>;
     rank?: PrimitiveOverrideProps<TextFieldProps>;
+    UserSessions?: PrimitiveOverrideProps<AutocompleteProps>;
 } & EscapeHatchProps;
 export declare type UserPersistedDataCreateFormProps = React.PropsWithChildren<{
     overrides?: UserPersistedDataCreateFormOverridesProps | undefined | null;

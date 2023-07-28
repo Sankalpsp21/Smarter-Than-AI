@@ -19,6 +19,7 @@ type EagerUserPersistedData = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
+  readonly username: string;
   readonly totalScore: number;
   readonly totalGames: number;
   readonly wins: number;
@@ -35,6 +36,7 @@ type LazyUserPersistedData = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
+  readonly username: string;
   readonly totalScore: number;
   readonly totalGames: number;
   readonly wins: number;

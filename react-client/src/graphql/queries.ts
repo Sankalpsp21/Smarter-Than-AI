@@ -6,6 +6,7 @@ export const getUserPersistedData = /* GraphQL */ `
   query GetUserPersistedData($id: ID!) {
     getUserPersistedData(id: $id) {
       id
+      username
       totalScore
       totalGames
       wins
@@ -14,12 +15,15 @@ export const getUserPersistedData = /* GraphQL */ `
       UserSessions {
         nextToken
         startedAt
+        __typename
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      owner
+      __typename
     }
   }
 `;
@@ -36,6 +40,7 @@ export const listUserPersistedData = /* GraphQL */ `
     ) {
       items {
         id
+        username
         totalScore
         totalGames
         wins
@@ -46,9 +51,12 @@ export const listUserPersistedData = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
+        __typename
       }
       nextToken
       startedAt
+      __typename
     }
   }
 `;
@@ -67,6 +75,7 @@ export const syncUserPersistedData = /* GraphQL */ `
     ) {
       items {
         id
+        username
         totalScore
         totalGames
         wins
@@ -77,9 +86,12 @@ export const syncUserPersistedData = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
+        __typename
       }
       nextToken
       startedAt
+      __typename
     }
   }
 `;
@@ -100,6 +112,7 @@ export const getUserSession = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -125,9 +138,11 @@ export const listUserSessions = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        __typename
       }
       nextToken
       startedAt
+      __typename
     }
   }
 `;
@@ -159,9 +174,11 @@ export const syncUserSessions = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        __typename
       }
       nextToken
       startedAt
+      __typename
     }
   }
 `;
@@ -195,9 +212,11 @@ export const userSessionsByGameSessionID = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        __typename
       }
       nextToken
       startedAt
+      __typename
     }
   }
 `;
@@ -231,9 +250,11 @@ export const userSessionsByUserPersistedDataID = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        __typename
       }
       nextToken
       startedAt
+      __typename
     }
   }
 `;
@@ -249,6 +270,7 @@ export const getGameSession = /* GraphQL */ `
       UserSessions {
         nextToken
         startedAt
+        __typename
       }
       playersResponded
       roundMode
@@ -258,6 +280,7 @@ export const getGameSession = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -283,9 +306,11 @@ export const listGameSessions = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        __typename
       }
       nextToken
       startedAt
+      __typename
     }
   }
 `;
@@ -317,9 +342,11 @@ export const syncGameSessions = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        __typename
       }
       nextToken
       startedAt
+      __typename
     }
   }
 `;
