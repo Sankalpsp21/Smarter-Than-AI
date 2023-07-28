@@ -97,7 +97,8 @@ export function Vote() {
 				if (!isHost) {
 					// If RoundMode is MESSAGE
 					if (item.roundMode === RoundMode.MESSAGE) {
-						navigate('/message', { state: 'MESSAGE' });
+						// navigate('/message', { state: 'MESSAGE' });
+						console.log('navigate to /message with MESSAGE');
 					}
 					// If RoundMode is WIN
 					else if (item.roundMode === RoundMode.WIN) {
@@ -120,7 +121,8 @@ export function Vote() {
 						dispatch(setTotalGames(totalGames + 1));
 						dispatch(setWins(wins + 1));
 
-						navigate('/message', { state: 'WIN' });
+						// navigate('/message', { state: 'WIN' });
+						console.log('navigate to /message with WIN');
 					}
 					// If RoundMode is LOSE (When the case is; playerNum === 2)
 					else if (item.roundMode === RoundMode.LOSE) {
@@ -129,7 +131,8 @@ export function Vote() {
 						dispatch(setTotalGames(totalGames + 1));
 						dispatch(setLosses(losses + 1));
 
-						navigate('/message', { state: 'LOSE' });
+						// navigate('/message', { state: 'LOSE' });
+						console.log('navigate to /message with LOSE');
 					}
 				}
 
@@ -160,7 +163,8 @@ export function Vote() {
 
 					if (item.eliminated) {
 						subscription.unsubscribe();
-						navigate('/message', { state: 'LOSE' });
+						// navigate('/message', { state: 'LOSE' });
+						console.log('navigate to /message with LOSE');
 					}
 				});
 				console.log(subscription);
@@ -191,7 +195,8 @@ export function Vote() {
 					item.roundMode = RoundMode.WIN;
 				})
 			);
-			navigate('/message', { state: 'WIN' });
+			// navigate('/message', { state: 'WIN' });
+			console.log('navigate to /message with WIN');
 		}
 		// if playerCount is 2, then then set to LOSE
 		else if (gameSession.playerCount === 2) {
@@ -210,7 +215,8 @@ export function Vote() {
 					updated.totalGames += 1;
 				})
 			);
-			navigate('/message', { state: 'LOSE' });
+			// navigate('/message', { state: 'LOSE' });
+			console.log('navigate to /message with LOSE');
 		} else {
 			// pick random user to eliminate
 			const randomNum = Math.floor(Math.random() * users.length);
@@ -232,7 +238,8 @@ export function Vote() {
 					item.roundMode = RoundMode.MESSAGE;
 				})
 			);
-			navigate('/message', { state: 'MESSAGE' });
+			// navigate('/message', { state: 'MESSAGE' });
+			console.log('navigate to /message with MESSAGE');
 		}
 	};
 
