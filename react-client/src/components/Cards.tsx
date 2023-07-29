@@ -84,7 +84,7 @@ export function VoteCard({ label, onChange }: VoteCardProps) {
           <CheckboxField
             label={label}
             name="vote"
-            value="yes"
+            value={label}
             size="large"
             onChange={onChange}
           />
