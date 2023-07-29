@@ -1,4 +1,13 @@
+# Overview
+
+This is the React client that runs our game. You can either be a host or a player. You can also log in as a player and save your game stats.
+
 # Setup
+
+-   Run `npm install`
+-   Run `npm start`
+
+# Amplify Setup
 
 ```
 cd react-client
