@@ -8,8 +8,13 @@ import {
 import { ToggleButton, SubmitButton } from "./Buttons";
 import { LoginCard } from "./Cards";
 import { useState } from "react";
+import "../index.css";
 
-export function Login() {
+interface ModalProps {
+  style?: React.CSSProperties;
+}
+
+export function Login({ style }: ModalProps) {
   return (
     <>
       <Card
@@ -18,6 +23,7 @@ export function Login() {
         color="black"
         padding="5vh"
         boxShadow="rgba(13, 26, 38, 0.25) 0px 4px 4px 0px"
+        style={style}
       >
         <Flex justifyContent="center" marginBottom="5vh">
           <LoginCard />
@@ -43,7 +49,7 @@ export function Login() {
   );
 }
 
-export function SignIn() {
+export function SignIn({ style }: ModalProps) {
   const emailRegex: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   function isEmailValid(email: string): boolean {
@@ -58,6 +64,7 @@ export function SignIn() {
         color="black"
         padding="5vh"
         boxShadow="rgba(13, 26, 38, 0.25) 0px 4px 4px 0px"
+        style={style}
       >
         <Flex justifyContent="center" marginBottom="5vh">
           <LoginCard />
@@ -106,7 +113,7 @@ export function SignIn() {
   );
 }
 
-export function SignUp() {
+export function SignUp({ style }: ModalProps) {
   return (
     <>
       <Card
@@ -115,6 +122,7 @@ export function SignUp() {
         color="black"
         padding="5vh"
         boxShadow="rgba(13, 26, 38, 0.25) 0px 4px 4px 0px"
+        style={style}
       >
         <Flex justifyContent="center" marginBottom="5vh">
           <LoginCard />
@@ -155,7 +163,7 @@ export function SignUp() {
   );
 }
 
-export function Exit() {
+export function Exit({ style }: ModalProps) {
   return (
     <>
       <Card

@@ -48,3 +48,14 @@ span.amplify-text,
 .amplify-icon > svg {
   color: black;
 }
+
+.login-button {
+  transition: all 0.3s ease; /* Apply transition to all CSS properties with a 0.3s duration and ease timing function */
+}
+
+.login-button.open {
+  transform: scale(
+    1.2
+  ); /* When the open class is applied, the button will be scaled to 1.2 times its original size */
+  /* You can adjust the scale value to control the size of the SignIn component */
+}
