@@ -355,10 +355,30 @@ export function Vote() {
     const userSession = await DataStore.query(UserSession, userSessionID);
     if (userSession == null) return;
 
+	// get selected vote option element
+    let selectedElement = document.querySelector('input[name="vote"]:checked');
+
+	if(!selectedElement) {
+		console.log("No vote option selected (cannot get selected element)");
+		return;
+	}
+
+	// get value from selected element
+	let selectedValue = (selectedElement as HTMLInputElement).getAttribute("value");
+
+	if(!selectedValue || selectedValue === null) {
+		console.log("No vote option selected (cannot get selected value)");
+		return;
+	}
+
+	// At this point, selectedValue must be a string (not null) because of the preceding check.
+
+	console.log("selectedValue: ", selectedValue);
+
     await DataStore.save(
       UserSession.copyOf(userSession, (item) => {
-        // TODO: get value from form
-        item.currentRoundResponse = "something";
+        // Get response from vote-form
+        item.currentRoundResponse = selectedValue as string;
       })
     );
   };
