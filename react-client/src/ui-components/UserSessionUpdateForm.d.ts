@@ -17,6 +17,7 @@ export declare type UserSessionUpdateFormInputValues = {
     _ttl?: number;
     eliminated?: boolean;
     currentRoundResponse?: string;
+    currentVoteResponse?: string;
     totalScore?: number;
     totalGames?: number;
     wins?: number;
@@ -28,6 +29,7 @@ export declare type UserSessionUpdateFormValidationValues = {
     _ttl?: ValidationFunction<number>;
     eliminated?: ValidationFunction<boolean>;
     currentRoundResponse?: ValidationFunction<string>;
+    currentVoteResponse?: ValidationFunction<string>;
     totalScore?: ValidationFunction<number>;
     totalGames?: ValidationFunction<number>;
     wins?: ValidationFunction<number>;
@@ -41,6 +43,7 @@ export declare type UserSessionUpdateFormOverridesProps = {
     _ttl?: PrimitiveOverrideProps<TextFieldProps>;
     eliminated?: PrimitiveOverrideProps<SwitchFieldProps>;
     currentRoundResponse?: PrimitiveOverrideProps<TextFieldProps>;
+    currentVoteResponse?: PrimitiveOverrideProps<TextFieldProps>;
     totalScore?: PrimitiveOverrideProps<TextFieldProps>;
     totalGames?: PrimitiveOverrideProps<TextFieldProps>;
     wins?: PrimitiveOverrideProps<TextFieldProps>;

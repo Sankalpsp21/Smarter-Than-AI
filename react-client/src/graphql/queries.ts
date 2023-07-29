@@ -105,6 +105,7 @@ export const getUserSession = /* GraphQL */ `
       _ttl
       eliminated
       currentRoundResponse
+      currentVoteResponse
       totalScore
       totalGames
       wins
@@ -132,6 +133,7 @@ export const listUserSessions = /* GraphQL */ `
         _ttl
         eliminated
         currentRoundResponse
+        currentVoteResponse
         totalScore
         totalGames
         wins
@@ -169,6 +171,7 @@ export const syncUserSessions = /* GraphQL */ `
         _ttl
         eliminated
         currentRoundResponse
+        currentVoteResponse
         totalScore
         totalGames
         wins
@@ -208,6 +211,7 @@ export const userSessionsByGameSessionID = /* GraphQL */ `
         _ttl
         eliminated
         currentRoundResponse
+        currentVoteResponse
         totalScore
         totalGames
         wins
@@ -247,6 +251,7 @@ export const userSessionsByUserPersistedDataID = /* GraphQL */ `
         _ttl
         eliminated
         currentRoundResponse
+        currentVoteResponse
         totalScore
         totalGames
         wins

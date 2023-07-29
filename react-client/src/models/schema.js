@@ -160,6 +160,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "currentVoteResponse": {
+                    "name": "currentVoteResponse",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "totalScore": {
                     "name": "totalScore",
                     "isArray": false,
@@ -411,5 +418,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "8235f79f0e4ae3747a3199209e4b4f04"
+    "version": "95977bb0202c46a38124efad1031c82e"
 };

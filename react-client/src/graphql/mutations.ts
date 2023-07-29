@@ -99,6 +99,7 @@ export const createUserSession = /* GraphQL */ `
       _ttl
       eliminated
       currentRoundResponse
+      currentVoteResponse
       totalScore
       totalGames
       wins
@@ -124,6 +125,7 @@ export const updateUserSession = /* GraphQL */ `
       _ttl
       eliminated
       currentRoundResponse
+      currentVoteResponse
       totalScore
       totalGames
       wins
@@ -149,6 +151,7 @@ export const deleteUserSession = /* GraphQL */ `
       _ttl
       eliminated
       currentRoundResponse
+      currentVoteResponse
       totalScore
       totalGames
       wins

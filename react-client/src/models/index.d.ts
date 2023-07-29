@@ -64,6 +64,7 @@ type EagerUserSession = {
   readonly _ttl?: number | null;
   readonly eliminated: boolean;
   readonly currentRoundResponse: string;
+  readonly currentVoteResponse: string;
   readonly totalScore: number;
   readonly totalGames: number;
   readonly wins: number;
@@ -83,6 +84,7 @@ type LazyUserSession = {
   readonly _ttl?: number | null;
   readonly eliminated: boolean;
   readonly currentRoundResponse: string;
+  readonly currentVoteResponse: string;
   readonly totalScore: number;
   readonly totalGames: number;
   readonly wins: number;
