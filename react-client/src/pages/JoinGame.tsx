@@ -100,7 +100,7 @@ const JoinGame = () => {
 						updated.currentRoundResponse = '';
 						updated.gameSessionID = gameSession.id;
 						// set ttl to 1 day in epoch time
-						updated._ttl = Math.floor(Date.now() / 1000) + 86400;
+						// updated._ttl = Math.floor(Date.now() / 1000) + 86400;
 					})
 				);
 			}
