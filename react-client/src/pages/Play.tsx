@@ -29,12 +29,14 @@ export function Play() {
 	const [currentTime, setCurrentTime] = useState(30);
 	const [isTimeOut, setIsTimeOut] = useState(false);
 	const [isSubmitted, setIsSubmitted] = useState(false);
+	const [roundPrompt, setRoundPrompt] = useState('');
 
 	useEffect(() => {
 		let subscription: ZenObservable.Subscription;
 		let timer: string | number | NodeJS.Timeout | undefined;
 
-		let aiRespText = 'This is not AI response';
+		let aiRespText = "i don't know";
+		let aiHasResponded = false;
 
 		const setupRound = async () => {
 			const gameSession = await DataStore.query(
@@ -45,6 +47,7 @@ export function Play() {
 			setPlayerCount(gameSession.playerCount);
 			setPlayersResponded(gameSession.playersResponded);
 			setRoundNo(gameSession.roundNumber);
+			setRoundPrompt(gameSession.roundPrompt);
 
 			// Subscribe to updates to playersResponded
 			subscription = DataStore.observe(
@@ -55,6 +58,11 @@ export function Play() {
 				setPlayersResponded(item.playersResponded);
 
 				if (isHost && item.playersResponded == item.playerCount) {
+					while (!aiHasResponded) {
+						await new Promise((resolve) =>
+							setTimeout(resolve, 100)
+						);
+					}
 					determineNextStep(aiRespText);
 				}
 
@@ -65,28 +73,39 @@ export function Play() {
 				}
 			});
 
-			console.log(subscription)
+			console.log(subscription);
 
 			if (isHost) {
 				// Generate AI response by fetching from endpoint
-				const aiResp = await fetch("/ai/get-answer", {
-					method: 'POST', 
-					headers: {
-						'Content-Type': 'application/json'
-					},
-					body: JSON.stringify({ question: gameSession.roundPrompt }) 
-				});
-			
+				const aiResp = await fetch(
+					'http://localhost:8080/ai/get-answer',
+					{
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify({
+							question: gameSession.roundPrompt
+						})
+					}
+				);
+
 				if (!aiResp.ok) {
-					console.error("Failed to get response from /ai/get-answer");
+					console.error('Failed to get response from /ai/get-answer');
+				} else {
+					aiRespText = await aiResp.text();
+					// if aiRespText is surrounded by quotes, remove them
+					if (aiRespText[0] === '"' && aiRespText[-1] === '"') {
+						aiRespText = aiRespText.slice(1, -1);
+					}
 				}
-			
-				aiRespText = await aiResp.text();
-				
+
+				aiHasResponded = true;
+
 				console.log(`AI response: ${aiRespText}`);
 			}
 
-			 	//const aiRespText = 'This is an AI response';
+			//const aiRespText = 'This is an AI response';
 
 			// 	const gameSession = await DataStore.query(
 			// 		GameSession,
@@ -257,7 +276,7 @@ export function Play() {
 			>
 				Round {roundNo} Prompt
 			</PinkCard>
-			<PromptCard>This is a round 1 question</PromptCard>
+			<PromptCard>{roundPrompt}</PromptCard>
 			{!isHost && (
 				<Flex direction="row" justifyContent="center">
 					<TextField

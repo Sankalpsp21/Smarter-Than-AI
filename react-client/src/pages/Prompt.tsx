@@ -27,11 +27,26 @@ export function Prompt() {
 			}
 
 			if (isHost) {
-				// TODO: replace with call to ChatGPT endpoint
-				const chatPrompt = "What's your favorite movie?";
+				// call to ChatGPT endpoint
+				let chatPrompt = "What's your favorite movie?";
 
-				// delay for 5 seconds
-				await new Promise((resolve) => setTimeout(resolve, 5000));
+				// Generate AI response by fetching from endpoint
+				const aiResp = await fetch(
+					'http://localhost:8080/ai/get-question'
+				);
+
+				if (!aiResp.ok) {
+					console.error(
+						'Failed to get response from /ai/get-question'
+					);
+				} else {
+					chatPrompt = await aiResp.text();
+				}
+
+				console.log(`AI response: ${chatPrompt}`);
+
+				// delay for 2 seconds
+				await new Promise((resolve) => setTimeout(resolve, 2000));
 
 				const gameSession = await DataStore.query(
 					GameSession,
