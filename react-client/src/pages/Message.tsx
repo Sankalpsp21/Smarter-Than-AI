@@ -85,11 +85,12 @@ export function Message() {
 				if (!userSession) return;
 
 				// Reset user response to empty string
-				// await DataStore.save(
-				//   UserSession.copyOf(userSession, (item) => {
-				//     item.currentRoundResponse = "";
-				//   })
-				// );
+				await DataStore.save(
+					UserSession.copyOf(userSession, (item) => {
+						item.currentRoundResponse = '';
+						item.currentVoteResponse = '';
+					})
+				);
 
 				// Subscribe and listen
 				subscription = DataStore.observe(

@@ -24,6 +24,7 @@ type UserSession @model @auth(rules: [{allow: public}]) {
   _ttl: Int
   eliminated: Boolean!
   currentRoundResponse: String!
+  currentVoteResponse: String!
   totalScore: Int!
   totalGames: Int!
   wins: Int!

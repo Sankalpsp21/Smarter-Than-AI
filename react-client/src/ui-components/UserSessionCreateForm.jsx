@@ -200,6 +200,7 @@ export default function UserSessionCreateForm(props) {
     _ttl: "",
     eliminated: false,
     currentRoundResponse: "",
+    currentVoteResponse: "",
     totalScore: "",
     totalGames: "",
     wins: "",
@@ -211,6 +212,9 @@ export default function UserSessionCreateForm(props) {
   const [eliminated, setEliminated] = React.useState(initialValues.eliminated);
   const [currentRoundResponse, setCurrentRoundResponse] = React.useState(
     initialValues.currentRoundResponse
+  );
+  const [currentVoteResponse, setCurrentVoteResponse] = React.useState(
+    initialValues.currentVoteResponse
   );
   const [totalScore, setTotalScore] = React.useState(initialValues.totalScore);
   const [totalGames, setTotalGames] = React.useState(initialValues.totalGames);
@@ -227,6 +231,7 @@ export default function UserSessionCreateForm(props) {
     set_ttl(initialValues._ttl);
     setEliminated(initialValues.eliminated);
     setCurrentRoundResponse(initialValues.currentRoundResponse);
+    setCurrentVoteResponse(initialValues.currentVoteResponse);
     setTotalScore(initialValues.totalScore);
     setTotalGames(initialValues.totalGames);
     setWins(initialValues.wins);
@@ -269,6 +274,7 @@ export default function UserSessionCreateForm(props) {
     _ttl: [],
     eliminated: [{ type: "Required" }],
     currentRoundResponse: [{ type: "Required" }],
+    currentVoteResponse: [{ type: "Required" }],
     totalScore: [{ type: "Required" }],
     totalGames: [{ type: "Required" }],
     wins: [{ type: "Required" }],
@@ -305,6 +311,7 @@ export default function UserSessionCreateForm(props) {
           _ttl,
           eliminated,
           currentRoundResponse,
+          currentVoteResponse,
           totalScore,
           totalGames,
           wins,
@@ -372,6 +379,7 @@ export default function UserSessionCreateForm(props) {
               _ttl: value,
               eliminated,
               currentRoundResponse,
+              currentVoteResponse,
               totalScore,
               totalGames,
               wins,
@@ -404,6 +412,7 @@ export default function UserSessionCreateForm(props) {
               _ttl,
               eliminated: value,
               currentRoundResponse,
+              currentVoteResponse,
               totalScore,
               totalGames,
               wins,
@@ -436,6 +445,7 @@ export default function UserSessionCreateForm(props) {
               _ttl,
               eliminated,
               currentRoundResponse: value,
+              currentVoteResponse,
               totalScore,
               totalGames,
               wins,
@@ -459,6 +469,41 @@ export default function UserSessionCreateForm(props) {
         {...getOverrideProps(overrides, "currentRoundResponse")}
       ></TextField>
       <TextField
+        label="Current vote response"
+        isRequired={true}
+        isReadOnly={false}
+        value={currentVoteResponse}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              _ttl,
+              eliminated,
+              currentRoundResponse,
+              currentVoteResponse: value,
+              totalScore,
+              totalGames,
+              wins,
+              losses,
+              gameSessionID,
+              userPersistedDataID,
+            };
+            const result = onChange(modelFields);
+            value = result?.currentVoteResponse ?? value;
+          }
+          if (errors.currentVoteResponse?.hasError) {
+            runValidationTasks("currentVoteResponse", value);
+          }
+          setCurrentVoteResponse(value);
+        }}
+        onBlur={() =>
+          runValidationTasks("currentVoteResponse", currentVoteResponse)
+        }
+        errorMessage={errors.currentVoteResponse?.errorMessage}
+        hasError={errors.currentVoteResponse?.hasError}
+        {...getOverrideProps(overrides, "currentVoteResponse")}
+      ></TextField>
+      <TextField
         label="Total score"
         isRequired={true}
         isReadOnly={false}
@@ -474,6 +519,7 @@ export default function UserSessionCreateForm(props) {
               _ttl,
               eliminated,
               currentRoundResponse,
+              currentVoteResponse,
               totalScore: value,
               totalGames,
               wins,
@@ -510,6 +556,7 @@ export default function UserSessionCreateForm(props) {
               _ttl,
               eliminated,
               currentRoundResponse,
+              currentVoteResponse,
               totalScore,
               totalGames: value,
               wins,
@@ -546,6 +593,7 @@ export default function UserSessionCreateForm(props) {
               _ttl,
               eliminated,
               currentRoundResponse,
+              currentVoteResponse,
               totalScore,
               totalGames,
               wins: value,
@@ -582,6 +630,7 @@ export default function UserSessionCreateForm(props) {
               _ttl,
               eliminated,
               currentRoundResponse,
+              currentVoteResponse,
               totalScore,
               totalGames,
               wins,
@@ -611,6 +660,7 @@ export default function UserSessionCreateForm(props) {
               _ttl,
               eliminated,
               currentRoundResponse,
+              currentVoteResponse,
               totalScore,
               totalGames,
               wins,
@@ -699,6 +749,7 @@ export default function UserSessionCreateForm(props) {
               _ttl,
               eliminated,
               currentRoundResponse,
+              currentVoteResponse,
               totalScore,
               totalGames,
               wins,

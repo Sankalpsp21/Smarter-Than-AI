@@ -261,10 +261,10 @@ export function Vote() {
     if (gameSession == null) return;
 
     const { aiResponse, UserSessions } = gameSession;
-    // get count of UserSessions currentRoundResponse that matches aiResponse
+    // get count of UserSessions currentVoteResponse that matches aiResponse
     const users = await UserSessions.toArray();
     const count = users.filter(
-      (user) => user.currentRoundResponse === aiResponse
+      (user) => user.currentVoteResponse === aiResponse
     ).length;
     console.log("count: ", count);
     console.log("halfPlayerCount: ", gameSession.playerCount / 2);
@@ -416,7 +416,7 @@ export function Vote() {
     await DataStore.save(
       UserSession.copyOf(userSession, (item) => {
         // Get response from vote-form
-        item.currentRoundResponse = selectedValue as string;
+        item.currentVoteResponse = selectedValue as string;
       })
     );
 
