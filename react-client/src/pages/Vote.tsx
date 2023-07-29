@@ -249,6 +249,9 @@ export function Vote() {
 		if (determinedNextStep) return;
 		determinedNextStep = true;
 
+		// delay 2s
+		await new Promise((resolve) => setTimeout(resolve, 2000));
+
 		let gameSession = await DataStore.query(GameSession, gameSessionID);
 		if (gameSession == null) return;
 
@@ -267,6 +270,8 @@ export function Vote() {
 		const count = users.filter(
 			(user) => user.currentRoundResponse === aiResponse
 		).length;
+		console.log('count: ', count);
+		console.log('halfPlayerCount: ', gameSession.playerCount / 2);
 		// check if majority of users voted for aiResponse
 		if (count > gameSession.playerCount / 2) {
 			// people win

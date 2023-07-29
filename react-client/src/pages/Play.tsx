@@ -50,7 +50,6 @@ export function Play() {
 				GameSession,
 				gameSessionId
 			).subscribe(async (msg: any) => {
-				//TODO: test this
 				const item = msg.element;
 				setPlayersResponded(item.playersResponded);
 
@@ -60,10 +59,6 @@ export function Play() {
 
 				if (!isHost) {
 					if (item.roundMode === RoundMode.VOTE) {
-						// wait for 2 seconds
-						await new Promise((resolve) =>
-							setTimeout(resolve, 2000)
-						);
 						navigate('/vote');
 					}
 				}
