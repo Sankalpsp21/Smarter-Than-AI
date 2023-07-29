@@ -36,9 +36,9 @@ export function Message() {
     const init = async () => {
       // Get a gameSession data
       const gameSession = await DataStore.query(GameSession, gameSessionID);
-
       console.log(location.state);
 
+      // Set the message
       if (location.state === "MESSAGE") {
         setMessage(messageSet.MESSAGE);
       } else if (location.state === "WIN") {
@@ -50,6 +50,7 @@ export function Message() {
       // Prevent the case when gameSession is undefined
       if (!gameSession) return;
 
+      // Delay for 10 seconds
       timer = setInterval(async () => {
         const { currentRoundExpiration } = gameSession;
         const date = new Date(currentRoundExpiration);
@@ -66,28 +67,34 @@ export function Message() {
           setIsTimeOut(true);
         }
       }, 1000);
+    };
 
-      // HOST
+    // Pagination occurs in here
+    const handleNavigate = async () => {
+      const gameSession = await DataStore.query(GameSession, gameSessionID);
+
+      // If it is host
       if (isHost) {
+        // Prevent error when gameSession is null
         if (gameSession == null) {
+          console.log("ERROR: gameSession is null");
           return;
         }
 
+        // Update the gameSession
         await DataStore.save(
           GameSession.copyOf(gameSession, (item) => {
             item.roundNumber = gameSession.roundNumber + 1;
             item.roundMode = RoundMode.PROMPT;
           })
         );
-      }
-    };
-
-    const handleNavigate = async () => {
-      if (isTimeOut) {
+        // if the user is not the host
+      } else {
         // Get the userSession
         const userSession = await DataStore.query(UserSession, userSessionID);
         console.log("COME TO Else Statement cuz I am not the host");
 
+        // Prevent error when userSession is null
         if (userSession == null) {
           console.log("ERROR: userSession is null");
           return;
@@ -100,22 +107,7 @@ export function Message() {
           })
         );
 
-        if (location.state === "WIN") {
-          if (userSession) {
-            await DataStore.save(
-              UserSession.copyOf(userSession, (updated) => {
-                updated.wins += 1;
-                updated.totalScore += 1;
-              })
-            );
-          }
-          navigate("/result", { state: "WIN" });
-        } else if (location.state === "LOSE") {
-          navigate("/result", { state: "LOSE" });
-        } else {
-          navigate("/prompt");
-        }
-
+        // Subscribe and listen
         const subscription = DataStore.observe(
           GameSession,
           gameSessionID
@@ -123,90 +115,32 @@ export function Message() {
           const item = msg.element;
           console.log(item);
 
-          if (location.state === "WIN") {
-            if (userSession) {
+          // When the RoundMode is changed, check the state for navigation
+          if (item.roundMode === RoundMode.PROMPT) {
+            // If the state was WIN, update the user data
+            if (location.state === "WIN") {
               await DataStore.save(
                 UserSession.copyOf(userSession, (updated) => {
                   updated.wins += 1;
                   updated.totalScore += 1;
                 })
               );
+              navigate("/result", { state: "WIN" });
+            } else if (location.state === "LOSE") {
+              navigate("/result", { state: "LOSE" });
+            } else {
+              navigate("/prompt");
             }
-            navigate("/result", { state: "WIN" });
-          } else if (location.state === "LOSE") {
-            navigate("/result", { state: "LOSE" });
-          } else {
-            navigate("/prompt");
           }
-
-          // // If RoundMode is WIN
-          // if (item.roundMode === RoundMode.WIN) {
-          // 	setMessage(messageSet.WIN);
-
-          // 	try {
-          // 		// Get all userSession data of the users who are not eliminated
-          // 		const users = await DataStore.query(
-          // 			UserSession,
-          // 			(user) => user.eliminated.eq(false)
-          // 		);
-
-          // 		// Update user's data
-          // 		const updatedUsers = users.map((user) => {
-          // 			return UserSession.copyOf(user, (updated) => {
-          // 				updated.totalScore += 100;
-          // 				updated.wins += 1;
-          // 			});
-          // 		});
-
-          // 		// Save the updated users
-          // 		await DataStore.save(updatedUsers);
-          // 	} catch (err) {
-          // 		console.log('ERROR: ', err);
-          // 	}
-
-          // 	// delay for 5 seconds
-          // 	await new Promise((resolve) =>
-          // 		setTimeout(resolve, 5000)
-          // 	);
-          // 	navigate('/result', { state: 'WIN' });
-          // }
-          // // If RoundMode is LOSE (When the case is; playerNum === 2)
-          // else {
-          // 	setMessage(messageSet.LOSE);
-          // 	try {
-          // 		// Get all userSession data of the users who are not eliminated (It would be one person)
-          // 		const users = await DataStore.query(
-          // 			UserSession,
-          // 			(user) => user.eliminated.eq(false)
-          // 		);
-
-          // 		// Update user's data
-          // 		const updatedUsers = users.map((user) => {
-          // 			return UserSession.copyOf(user, (updated) => {
-          // 				updated.totalScore -= 100;
-          // 				updated.losses += 1;
-          // 			});
-          // 		});
-
-          // 		// Save the updated users
-          // 		await DataStore.save(updatedUsers);
-          // 	} catch (err) {
-          // 		console.log('ERROR: ', err);
-          // 	}
-
-          // 	// delay for 5 seconds
-          // 	await new Promise((resolve) =>
-          // 		setTimeout(resolve, 5000)
-          // 	);
-          // 	navigate('/result', { state: 'LOSE' });
-          // }
         });
         subscription.unsubscribe();
       }
     };
     try {
       init();
-      handleNavigate();
+      if (isTimeOut) {
+        handleNavigate();
+      }
     } catch (error) {
       console.error(error);
     }
