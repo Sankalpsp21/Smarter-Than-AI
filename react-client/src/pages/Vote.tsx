@@ -66,6 +66,9 @@ export function Vote() {
 		let timer: string | number | NodeJS.Timeout | undefined;
 
 		const init = async () => {
+			// delay 2s
+			await new Promise((resolve) => setTimeout(resolve, 2000));
+
 			// Get gameSession data by gameSessionID
 			const gameSession = await DataStore.query(
 				GameSession,
@@ -82,9 +85,6 @@ export function Vote() {
 			let userVoteResponses = users
 				.filter((user: UserSession) => !user.eliminated)
 				.map((user: UserSession) => user.currentRoundResponse);
-
-			// delay 0.5s
-			await new Promise((resolve) => setTimeout(resolve, 500));
 
 			userVoteResponses = users
 				.filter((user: UserSession) => !user.eliminated)
@@ -147,11 +147,8 @@ export function Vote() {
 							state: 'WIN'
 						});
 					}
-					// If RoundMode is LOSE (When the case is; playerNum === 2) or you are eliminated
-					else if (
-						item.roundMode === RoundMode.LOSE ||
-						item.eliminated
-					) {
+					// If RoundMode is LOSE (When the case is; playerNum === 2)
+					else if (item.roundMode === RoundMode.LOSE) {
 						// update redux for player
 						dispatch(setTotalScore(totalScore - 100));
 						dispatch(setTotalGames(totalGames + 1));
