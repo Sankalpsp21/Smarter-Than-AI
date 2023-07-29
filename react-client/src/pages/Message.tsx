@@ -30,6 +30,7 @@ export function Message() {
 	const [message, setMessage] = useState('');
 
 	useEffect(() => {
+		let subscription: any;
 		let timer: string | number | NodeJS.Timeout | undefined;
 
 		const init = async () => {
@@ -66,47 +67,19 @@ export function Message() {
 					setCurrentTime(seconds);
 				} else {
 					setCurrentTime(0);
-					handleNavigate();
+
+					if (isHost) {
+						handleNavigate();
+					}
 				}
 			}, 1000);
-		};
 
-		// Pagination occurs in here
-		const handleNavigate = async () => {
-			const gameSession = await DataStore.query(
-				GameSession,
-				gameSessionID
-			);
-
-			// If it is host
-			if (isHost) {
-				// Prevent error when gameSession is null
-				if (gameSession == null) {
-					console.log('ERROR: gameSession is null');
-					return;
-				}
-
-				// Update the gameSession
-				await DataStore.save(
-					GameSession.copyOf(gameSession, (item) => {
-						item.roundNumber = gameSession.roundNumber + 1;
-						item.roundMode = RoundMode.PROMPT;
-					})
-				);
-				// if the user is not the host
-			} else {
-				// Get the userSession
+			if (!isHost) {
 				const userSession = await DataStore.query(
 					UserSession,
 					userSessionID
 				);
-				console.log('COME TO Else Statement cuz I am not the host');
-
-				// Prevent error when userSession is null
-				if (userSession == null) {
-					console.log('ERROR: userSession is null');
-					return;
-				}
+				if (!userSession) return;
 
 				// Reset user response to empty string
 				await DataStore.save(
@@ -116,7 +89,7 @@ export function Message() {
 				);
 
 				// Subscribe and listen
-				const subscription = DataStore.observe(
+				subscription = DataStore.observe(
 					GameSession,
 					gameSessionID
 				).subscribe(async (msg: any) => {
@@ -141,9 +114,39 @@ export function Message() {
 						}
 					}
 				});
-				subscription.unsubscribe();
 			}
 		};
+
+		// Pagination occurs in here (host only)
+		const handleNavigate = async () => {
+			const gameSession = await DataStore.query(
+				GameSession,
+				gameSessionID
+			);
+
+			// Prevent error when gameSession is null
+			if (gameSession == null) {
+				console.log('ERROR: gameSession is null');
+				return;
+			}
+
+			// Update the gameSession
+			await DataStore.save(
+				GameSession.copyOf(gameSession, (item) => {
+					item.roundNumber = gameSession.roundNumber + 1;
+					item.roundMode = RoundMode.PROMPT;
+				})
+			);
+			// if the user is not the host
+			if (location.state === 'WIN') {
+				navigate('/result', { state: 'WIN' });
+			} else if (location.state === 'LOSE') {
+				navigate('/result', { state: 'LOSE' });
+			} else {
+				navigate('/prompt');
+			}
+		};
+
 		try {
 			init();
 		} catch (error) {
@@ -151,6 +154,7 @@ export function Message() {
 		}
 
 		return () => {
+			subscription?.unsubscribe();
 			if (timer) {
 				clearInterval(timer);
 			}
