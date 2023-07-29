@@ -1,49 +1,56 @@
 enum RoundMode {
-  PROMPT
-  PLAY
-  VOTE
-  MESSAGE
-  WIN
-  LOSE
+	PROMPT
+	PLAY
+	VOTE
+	MESSAGE
+	WIN
+	LOSE
 }
 
-type UserPersistedData @model @auth(rules: [{allow: public}, { allow: owner, provider: userPools }]) {
-  id: ID!
-  _ttl: Int
-  username: String!
-  totalScore: Int!
-  totalGames: Int!
-  wins: Int!
-  losses: Int!
-  rank: Int!
-  UserSessions: [UserSession] @hasMany(indexName: "byUserPersistedData", fields: ["id"])
+type UserPersistedData
+	@model
+	@auth(rules: [{ allow: public }, { allow: owner, provider: userPools }]) {
+	id: ID!
+	_ttl: Int
+	username: String!
+	totalScore: Int!
+	totalGames: Int!
+	wins: Int!
+	losses: Int!
+	rank: Int!
+	UserSessions: [UserSession]
+		@hasMany(indexName: "byUserPersistedData", fields: ["id"])
 }
 
-type UserSession @model @auth(rules: [{allow: public}]) {
-  id: ID!
-  _ttl: Int
-  eliminated: Boolean!
-  currentRoundResponse: String!
-  currentVoteResponse: String!
-  totalScore: Int!
-  totalGames: Int!
-  wins: Int!
-  losses: Int!
-  gameSessionID: ID! @index(name: "byGameSession")
-  userPersistedDataID: ID @index(name: "byUserPersistedData")
+type UserSession
+	@model
+	@auth(rules: [{ allow: public }, { allow: owner, provider: userPools }]) {
+	id: ID!
+	_ttl: Int
+	eliminated: Boolean!
+	currentRoundResponse: String!
+	currentVoteResponse: String!
+	totalScore: Int!
+	totalGames: Int!
+	wins: Int!
+	losses: Int!
+	gameSessionID: ID! @index(name: "byGameSession")
+	userPersistedDataID: ID @index(name: "byUserPersistedData")
 }
 
-type GameSession @model @auth(rules: [{allow: public}]) {
-  id: ID!
-  _ttl: Int
-  pinCode: Int!
-  playerCount: Int!
-  roundNumber: Int!
-  roundPrompt: String!
-  currentRoundExpiration: AWSDateTime!
-  UserSessions: [UserSession] @hasMany(indexName: "byGameSession", fields: ["id"])
-  playersResponded: Int!
-  roundMode: RoundMode!
-  aiResponse: String!
+type GameSession
+	@model
+	@auth(rules: [{ allow: public }, { allow: owner, provider: userPools }]) {
+	id: ID!
+	_ttl: Int
+	pinCode: Int!
+	playerCount: Int!
+	roundNumber: Int!
+	roundPrompt: String!
+	currentRoundExpiration: AWSDateTime!
+	UserSessions: [UserSession]
+		@hasMany(indexName: "byGameSession", fields: ["id"])
+	playersResponded: Int!
+	roundMode: RoundMode!
+	aiResponse: String!
 }
- 
