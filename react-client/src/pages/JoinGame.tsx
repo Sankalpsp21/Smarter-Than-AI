@@ -9,7 +9,9 @@ import {
 	selectUserSessionID,
 	setUserSessionID,
 	setGameSessionID,
-	setIsHost
+	setIsHost,
+	selectIsLoggedIn,
+	selectUserPersistedDataID
 } from '../redux/GameSlice';
 import { AppDispatch } from '../redux/store';
 import { useNavigate } from 'react-router-dom';
@@ -17,6 +19,9 @@ import { useNavigate } from 'react-router-dom';
 const JoinGame = () => {
 	const dispatch: AppDispatch = useDispatch();
 	const userSessionID = useSelector(selectUserSessionID);
+	const isLoggedIn = useSelector(selectIsLoggedIn);
+	const userPersistedDataID = useSelector(selectUserPersistedDataID);
+
 	const [pinCode, setPinCode] = useState<number>(0);
 	const [error, setError] = useState<string>('');
 	const navigate = useNavigate();
@@ -72,6 +77,8 @@ const JoinGame = () => {
 
 		// check redux store for user. For now just assuming user is new and needs to be created
 		try {
+			const persistedDataID = isLoggedIn ? userPersistedDataID : null;
+
 			if (!userSessionID) {
 				const user = await DataStore.save(
 					new UserSession({
@@ -83,6 +90,7 @@ const JoinGame = () => {
 						wins: 0,
 						losses: 0,
 						gameSessionID: gameSession.id,
+						userPersistedDataID: persistedDataID,
 						// set ttl to 1 day in epoch time
 						_ttl: Math.floor(Date.now() / 1000) + 86400
 					})
@@ -106,7 +114,8 @@ const JoinGame = () => {
 						updated.currentRoundResponse = '';
 						updated.currentVoteResponse = '';
 						updated.gameSessionID = gameSession.id;
-						// set ttl to 1 day in epoch time
+						updated.userPersistedDataID = persistedDataID;
+						// set ttl to 1 day in epoch time (NOTE: not allowed to do this by DataStore error)
 						// updated._ttl = Math.floor(Date.now() / 1000) + 86400;
 					})
 				);
