@@ -270,7 +270,7 @@ export function Vote() {
 		const count = users.filter(
 			(user) => user.currentVoteResponse === aiResponse
 		).length;
-		console.log('count: ', count);
+		console.log('Votes for AI: ', count);
 		console.log('halfPlayerCount: ', gameSession.playerCount / 2);
 		// check if majority of users voted for aiResponse
 		if (count > gameSession.playerCount / 2) {
@@ -311,17 +311,46 @@ export function Vote() {
 			navigate('/message', { state: 'LOSE' });
 		} else {
 			// pick random user to eliminate
-			const randomNum = Math.floor(Math.random() * users.length);
-			const user = users[randomNum];
-			// update user's data
-			await DataStore.save(
-				UserSession.copyOf(user, (updated) => {
-					updated.eliminated = true;
-					updated.totalScore -= 100;
-					updated.losses += 1;
-					updated.totalGames += 1;
-				})
-			);
+			//const randomNum = Math.floor(Math.random() * users.length);
+			//const user = users[randomNum];
+
+			// create a mapping for users votes
+			const userVotesMap = new Map(); // Maps response to vote count
+			users.forEach(user => {
+				if (userVotesMap.has(user.currentVoteResponse)) {
+					userVotesMap.set(user.currentVoteResponse, userVotesMap.get(user.currentVoteResponse) + 1);
+				} else {
+					userVotesMap.set(user.currentVoteResponse, 1);
+				}
+			});
+		
+			// find the user(s) with the maximum votes
+			let maxVotes = 0;
+			let maxVotesUserResponse : string | null = null;
+			userVotesMap.forEach((votes, userResponse) => {
+				if (votes > maxVotes) {
+					maxVotes = votes;
+					maxVotesUserResponse = userResponse;
+				}
+			});
+		
+			// find the first user that corresponds to the maxVotesUserResponse
+			const userToEliminate = users.find(user => user.currentRoundResponse === maxVotesUserResponse);
+
+			if(userToEliminate) {
+				// update user's data
+				await DataStore.save(
+					UserSession.copyOf(userToEliminate, (updated) => {
+						updated.eliminated = true;
+						updated.totalScore -= 100;
+						updated.losses += 1;
+						updated.totalGames += 1;
+					})
+				);
+			}
+			else {
+				console.log("ERROR: failed to find a user to eliminate.")
+			}
 
 			// wait 1 second
 			await new Promise((resolve) => setTimeout(resolve, 1000));
