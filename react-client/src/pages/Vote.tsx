@@ -251,11 +251,6 @@ export function Vote() {
 		const currentRoundExpiration = new Date(
 			now.getTime() + 10 * 1000
 		).toISOString();
-		await DataStore.save(
-			GameSession.copyOf(gameSession, (item) => {
-				item.currentRoundExpiration = currentRoundExpiration;
-			})
-		);
 
 		gameSession = await DataStore.query(GameSession, gameSessionID);
 		if (gameSession == null) return;
@@ -272,6 +267,7 @@ export function Vote() {
 			await DataStore.save(
 				GameSession.copyOf(gameSession, (item) => {
 					item.roundMode = RoundMode.WIN;
+					item.currentRoundExpiration = currentRoundExpiration;
 				})
 			);
 			console.log('navigate to /message with WIN');
@@ -283,6 +279,7 @@ export function Vote() {
 			await DataStore.save(
 				GameSession.copyOf(gameSession, (item) => {
 					item.roundMode = RoundMode.LOSE;
+					item.currentRoundExpiration = currentRoundExpiration;
 				})
 			);
 			// update user's data
@@ -315,44 +312,46 @@ export function Vote() {
 					item.playerCount -= 1;
 					item.playersResponded = 0;
 					item.roundMode = RoundMode.MESSAGE;
+					item.currentRoundExpiration = currentRoundExpiration;
 				})
 			);
 
-			// get last playerCount
-			const newPlayerCount = gameSession.playerCount - 1;
+			// // get last playerCount
+			// const newPlayerCount = gameSession.playerCount - 1;
 
-			if (newPlayerCount == 2) {
-				// ai wins
-				await DataStore.save(
-					GameSession.copyOf(gameSession, (item) => {
-						item.roundMode = RoundMode.LOSE;
-					})
-				);
+			// if (newPlayerCount == 2) {
+			// 	// ai wins
+			// 	await DataStore.save(
+			// 		GameSession.copyOf(gameSession, (item) => {
+			// 			item.roundMode = RoundMode.LOSE;
+			// 			item.currentRoundExpiration = currentRoundExpiration;
+			// 		})
+			// 	);
 
-				// get last user from users where eliminated is false
-				const users = await DataStore.query(UserSession, (c) =>
-					c.and((c) => [
-						c.gameSessionID.eq(gameSessionID),
-						c.eliminated.eq(false)
-					])
-				);
-				const user = users[0];
+			// 	// get last user from users where eliminated is false
+			// 	const users = await DataStore.query(UserSession, (c) =>
+			// 		c.and((c) => [
+			// 			c.gameSessionID.eq(gameSessionID),
+			// 			c.eliminated.eq(false)
+			// 		])
+			// 	);
+			// 	const user = users[0];
 
-				// update user's data
-				await DataStore.save(
-					UserSession.copyOf(user, (updated) => {
-						updated.eliminated = true;
-						updated.totalScore -= 100;
-						updated.losses += 1;
-						updated.totalGames += 1;
-					})
-				);
-				console.log('navigate to /message with LOSE');
-				navigate('/message', { state: 'LOSE' });
-			} else {
-				console.log('navigate to /message with MESSAGE');
-				navigate('/message', { state: 'MESSAGE' });
-			}
+			// 	// update user's data
+			// 	await DataStore.save(
+			// 		UserSession.copyOf(user, (updated) => {
+			// 			updated.eliminated = true;
+			// 			updated.totalScore -= 100;
+			// 			updated.losses += 1;
+			// 			updated.totalGames += 1;
+			// 		})
+			// 	);
+			// 	console.log('navigate to /message with LOSE');
+			// 	navigate('/message', { state: 'LOSE' });
+			// } else {
+			console.log('navigate to /message with MESSAGE');
+			navigate('/message', { state: 'MESSAGE' });
+			// }
 		}
 	};
 

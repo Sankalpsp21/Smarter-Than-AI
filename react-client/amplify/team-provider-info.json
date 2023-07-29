@@ -17,6 +17,12 @@
       },
       "api": {
         "reactclient": {}
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d3ijhu4e9phvvx",
+          "type": "manual"
+        }
       }
     }
   }
