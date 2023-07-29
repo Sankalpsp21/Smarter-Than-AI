@@ -13,6 +13,7 @@ import {
 } from '../redux/GameSlice';
 import { useNavigate } from 'react-router-dom';
 import { ZenObservable } from 'zen-observable-ts';
+import { faLeftLong } from '@fortawesome/free-solid-svg-icons';
 
 export function Play() {
 	const navigate = useNavigate();
@@ -33,7 +34,7 @@ export function Play() {
 		let subscription: ZenObservable.Subscription;
 		let timer: string | number | NodeJS.Timeout | undefined;
 
-		const aiRespText = 'This is an AI response';
+		let aiRespText = 'This is not AI response';
 
 		const setupRound = async () => {
 			const gameSession = await DataStore.query(
@@ -64,15 +65,28 @@ export function Play() {
 				}
 			});
 
-			console.log(subscription);
+			console.log(subscription)
 
-			// if (isHost) {
-			// 	// Generate AI response by fetching from endpoint
-			// 	// // const aiResp = await fetch("/ai/get-answer");
-			// 	// // if (!aiResp.ok)
-			// 	// //   throw new Error("Failed to get response from /ai/get-answer");
-			// 	// const aiRespText = await aiResp.text();
-			// 	const aiRespText = 'This is an AI response';
+			if (isHost) {
+				// Generate AI response by fetching from endpoint
+				const aiResp = await fetch("/ai/get-answer", {
+					method: 'POST', 
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({ question: gameSession.roundPrompt }) 
+				});
+			
+				if (!aiResp.ok) {
+					console.error("Failed to get response from /ai/get-answer");
+				}
+			
+				aiRespText = await aiResp.text();
+				
+				console.log(`AI response: ${aiRespText}`);
+			}
+
+			 	//const aiRespText = 'This is an AI response';
 
 			// 	const gameSession = await DataStore.query(
 			// 		GameSession,

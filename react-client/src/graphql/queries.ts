@@ -117,6 +117,7 @@ export const getUserSession = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
       __typename
     }
   }
@@ -145,6 +146,7 @@ export const listUserSessions = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
         __typename
       }
       nextToken
@@ -183,6 +185,7 @@ export const syncUserSessions = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
         __typename
       }
       nextToken
@@ -223,6 +226,7 @@ export const userSessionsByGameSessionID = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
         __typename
       }
       nextToken
@@ -263,6 +267,7 @@ export const userSessionsByUserPersistedDataID = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
         __typename
       }
       nextToken
@@ -294,6 +299,7 @@ export const getGameSession = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
       __typename
     }
   }
@@ -321,6 +327,7 @@ export const listGameSessions = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
         __typename
       }
       nextToken
@@ -358,6 +365,7 @@ export const syncGameSessions = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
         __typename
       }
       nextToken
