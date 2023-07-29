@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import { Button, Text, TextField, Flex } from "@aws-amplify/ui-react";
 import { SubmitButton, ToggleButton } from "../components/Buttons";
 import { PromptCard, PinkCard, VoteCard } from "../components/Cards";
+import Checkbox from "../components/Checkbox";
 import GameNavbar from "../components/GameNavbar";
 import { DataStore } from "aws-amplify";
 import { useEffect, useState } from "react";
@@ -46,19 +47,17 @@ export function Vote() {
   const [voteOptions, setVoteOptions] = useState<string[]>([]);
   const [currentTime, setCurrentTime] = useState(15);
   const [isVoted, setIsVoted] = useState(false);
+  const [checkboxStates, setCheckboxStates] = useState<Array<boolean>>([]);
 
-  const checkOnlyOne = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const target = e.target;
-    const checkboxes = Array.from(
-      document.getElementsByName("vote")
-    ) as HTMLInputElement[];
-    for (let i = 0; i < checkboxes.length; i++) {
-      if (checkboxes[i] !== target) {
-        checkboxes[i].checked = false;
-        console.log(checkboxes[i]);
-      }
-    }
+  const checkOnlyOne = (index: number) => {
+    setCheckboxStates((prevStates) =>
+      prevStates.map((_, idx) => (idx === index ? true : false))
+    );
   };
+
+  useEffect(() => {
+    setCheckboxStates(new Array(voteOptions.length).fill(false));
+  }, [voteOptions]);
 
   useEffect(() => {
     let gameSubscription: any;
@@ -458,11 +457,18 @@ export function Vote() {
         style={{ overflowX: "hidden" }}
       >
         {voteOptions.map((option, index) => (
-          <VoteCard
+          <Checkbox
             key={index}
-            label={option}
-            onChange={(e) => checkOnlyOne(e)}
+            value={option}
+            onChange={() => checkOnlyOne(index)}
+            onClick={() => checkOnlyOne(index)}
+            checked={checkboxStates[index]}
           />
+          // <VoteCard
+          //   key={index}
+          //   label={option}
+          //   onChange={(e) => checkOnlyOne(e)}
+          // />
         ))}
         {/* <VoteCard
 					label="something Something"
