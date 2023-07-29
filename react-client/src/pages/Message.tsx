@@ -25,6 +25,7 @@ export function Message() {
     WIN: "An AI has been deported....",
     MESSAGE: "A human has been deported....",
     LOSE: "You have been deported....",
+    HOSTLOSE: "The last player has been deported....",
   };
 
   const [message, setMessage] = useState("");
@@ -43,6 +44,8 @@ export function Message() {
         setMessage(messageSet.MESSAGE);
       } else if (location.state === "WIN") {
         setMessage(messageSet.WIN);
+      } else if (isHost && location.state === "LOSE") {
+        setMessage(messageSet.HOSTLOSE);
       } else if (location.state === "LOSE") {
         setMessage(messageSet.LOSE);
       }
@@ -58,7 +61,7 @@ export function Message() {
         const diff = date.getTime() - now.getTime();
 
         // get time in seconds
-        const seconds = Math.floor(diff / 1000) - 5;
+        const seconds = Math.floor(diff / 1000);
         console.log(seconds);
         if (seconds > 0) {
           setCurrentTime(seconds);

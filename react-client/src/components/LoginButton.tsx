@@ -12,7 +12,7 @@ export function LoginButton({ color }: LoginButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <>
-      {isOpen && <Login style={{ position: "absolute" }} />}
+      {isOpen && <Login style={{ position: "absolute", zIndex: 5 }} />}
       <Button
         position="absolute"
         top="40px" /* Slightly inwards from the bottom */

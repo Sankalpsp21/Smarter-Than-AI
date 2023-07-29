@@ -7,14 +7,15 @@ import {
 } from "@aws-amplify/ui-react";
 import { ToggleButton, SubmitButton } from "./Buttons";
 import { LoginCard } from "./Cards";
-import { useState } from "react";
 import "../index.css";
+import { useNavigate } from "react-router-dom";
 
 interface ModalProps {
   style?: React.CSSProperties;
 }
 
 export function Login({ style }: ModalProps) {
+  const navigate = useNavigate();
   return (
     <>
       <Card
@@ -40,8 +41,24 @@ export function Login({ style }: ModalProps) {
           paddingBottom="5vh"
         >
           <Flex direction="column" gap="1.5">
-            <ToggleButton color="#FF6DDF">Sign In</ToggleButton>
-            <ToggleButton color="#62A1FF">Sign Up</ToggleButton>
+            <ToggleButton
+              color="#FF6DDF"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate("/account", { state: "SignIn" });
+              }}
+            >
+              Sign In
+            </ToggleButton>
+            <ToggleButton
+              color="#62A1FF"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate("/account", { state: "SignUp" });
+              }}
+            >
+              Sign Up
+            </ToggleButton>
           </Flex>
         </Card>
       </Card>
@@ -50,6 +67,7 @@ export function Login({ style }: ModalProps) {
 }
 
 export function SignIn({ style }: ModalProps) {
+  const navigate = useNavigate();
   const emailRegex: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   function isEmailValid(email: string): boolean {
@@ -102,6 +120,7 @@ export function SignIn({ style }: ModalProps) {
               color="#FF6DDF"
               onClick={(e) => {
                 e.preventDefault();
+                navigate(-1);
               }}
             >
               Sign In
@@ -114,6 +133,7 @@ export function SignIn({ style }: ModalProps) {
 }
 
 export function SignUp({ style }: ModalProps) {
+  const navigate = useNavigate();
   return (
     <>
       <Card
@@ -155,7 +175,15 @@ export function SignUp({ style }: ModalProps) {
               placeholder="Enter your password"
               inputStyles={{ color: "black" }}
             />
-            <SubmitButton color="#FF6DDF">Sign Up</SubmitButton>
+            <SubmitButton
+              color="#FF6DDF"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate(-1);
+              }}
+            >
+              Sign Up
+            </SubmitButton>
           </Flex>
         </Card>
       </Card>
