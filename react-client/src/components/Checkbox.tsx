@@ -12,12 +12,10 @@ const Checkbox = ({ value, onChange, checked, onClick }: CheckboxProps) => {
     <div
       style={{
         width: "75%",
-        height: "10vh",
         display: "flex",
         alignItems: "center",
         border: "1px solid #ccc",
-        paddingLeft: "2vh",
-        paddingRight: "2vh",
+        padding: "2vh",
         borderRadius: "15px",
         backgroundColor: "#f9f9f9",
         color: "#000000",
@@ -25,6 +23,7 @@ const Checkbox = ({ value, onChange, checked, onClick }: CheckboxProps) => {
         fontWeight: "500",
         fontSize: "1.2em",
         boxShadow: "rgba(13, 26, 38, 0.25) 0px 4px 4px 0px",
+        minWidth: "600px",
       }}
     >
       <input
