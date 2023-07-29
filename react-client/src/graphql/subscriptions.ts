@@ -92,9 +92,8 @@ export const onDeleteUserPersistedData = /* GraphQL */ `
 export const onCreateUserSession = /* GraphQL */ `
   subscription OnCreateUserSession(
     $filter: ModelSubscriptionUserSessionFilterInput
-    $owner: String
   ) {
-    onCreateUserSession(filter: $filter, owner: $owner) {
+    onCreateUserSession(filter: $filter) {
       id
       _ttl
       eliminated
@@ -111,7 +110,6 @@ export const onCreateUserSession = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
-      owner
       __typename
     }
   }
@@ -119,9 +117,8 @@ export const onCreateUserSession = /* GraphQL */ `
 export const onUpdateUserSession = /* GraphQL */ `
   subscription OnUpdateUserSession(
     $filter: ModelSubscriptionUserSessionFilterInput
-    $owner: String
   ) {
-    onUpdateUserSession(filter: $filter, owner: $owner) {
+    onUpdateUserSession(filter: $filter) {
       id
       _ttl
       eliminated
@@ -138,7 +135,6 @@ export const onUpdateUserSession = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
-      owner
       __typename
     }
   }
@@ -146,9 +142,8 @@ export const onUpdateUserSession = /* GraphQL */ `
 export const onDeleteUserSession = /* GraphQL */ `
   subscription OnDeleteUserSession(
     $filter: ModelSubscriptionUserSessionFilterInput
-    $owner: String
   ) {
-    onDeleteUserSession(filter: $filter, owner: $owner) {
+    onDeleteUserSession(filter: $filter) {
       id
       _ttl
       eliminated
@@ -165,7 +160,6 @@ export const onDeleteUserSession = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
-      owner
       __typename
     }
   }
@@ -173,9 +167,8 @@ export const onDeleteUserSession = /* GraphQL */ `
 export const onCreateGameSession = /* GraphQL */ `
   subscription OnCreateGameSession(
     $filter: ModelSubscriptionGameSessionFilterInput
-    $owner: String
   ) {
-    onCreateGameSession(filter: $filter, owner: $owner) {
+    onCreateGameSession(filter: $filter) {
       id
       _ttl
       pinCode
@@ -196,7 +189,6 @@ export const onCreateGameSession = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
-      owner
       __typename
     }
   }
@@ -204,9 +196,8 @@ export const onCreateGameSession = /* GraphQL */ `
 export const onUpdateGameSession = /* GraphQL */ `
   subscription OnUpdateGameSession(
     $filter: ModelSubscriptionGameSessionFilterInput
-    $owner: String
   ) {
-    onUpdateGameSession(filter: $filter, owner: $owner) {
+    onUpdateGameSession(filter: $filter) {
       id
       _ttl
       pinCode
@@ -227,7 +218,6 @@ export const onUpdateGameSession = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
-      owner
       __typename
     }
   }
@@ -235,9 +225,8 @@ export const onUpdateGameSession = /* GraphQL */ `
 export const onDeleteGameSession = /* GraphQL */ `
   subscription OnDeleteGameSession(
     $filter: ModelSubscriptionGameSessionFilterInput
-    $owner: String
   ) {
-    onDeleteGameSession(filter: $filter, owner: $owner) {
+    onDeleteGameSession(filter: $filter) {
       id
       _ttl
       pinCode
@@ -258,7 +247,6 @@ export const onDeleteGameSession = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
-      owner
       __typename
     }
   }

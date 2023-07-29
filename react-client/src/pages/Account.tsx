@@ -13,16 +13,21 @@ const Account = () => {
 	const [isStats, setIsStats] = useState(location.state === 'Stats');
 
 	useEffect(() => {
-		if (!isLoggedIn) {
+		if (!isLoggedIn && !isSignUp) {
 			setIsSignIn(true);
 		}
 	}, []);
 
 	return (
 		<>
-			{isSignIn && <SignIn />}
-			{isSignUp && <SignUp />}
-			{(isLoggedIn || isStats) && <Stats />}
+			{isLoggedIn || isStats ? (
+				<Stats />
+			) : (
+				<>
+					{isSignIn && <SignIn />}
+					{isSignUp && <SignUp />}
+				</>
+			)}
 		</>
 	);
 };

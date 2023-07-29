@@ -61,15 +61,15 @@ app.post('/ai/get-answer', async (req, res) => {
       Players will vote on which answer is the best. Your goal is to have the best response to the following question: "${req.body.question}" 
       without the players being able to guess that you are an AI based on your response.
       Your answer should mimic the style of other players, and avoid capitalization or punctuation that would give away that you are an AI.
-      Your answer should not be the same as any of the other players. Please provide just your answer to the question in your response. Only use text. Don't surround answer in quotes or double quotes and trim whitespace and new lines. Don't use too complicated vocabulary. Sometimes it's ok to use slang and/or improper grammar, spelling, punctuation, but don't overdo it.`;
+      Your answer should not be the same as any of the other players. Please provide just your answer to the question in your response. Only use text. Don't surround answer in quotes or double quotes and trim whitespace and new lines. Don't use too complicated vocabulary. Sometimes it's ok to use improper punctuation or spelling.`;
 
 	console.log(`Query: "${query}"`);
 
 	try {
 		const gptResponse = await openai.createCompletion({
 			model: 'text-davinci-003',
-			temperature: 1.5,
-			max_tokens: 256,
+			temperature: 0.7,
+			max_tokens: 100,
 			presence_penalty: 0.6,
 			prompt: query
 		});

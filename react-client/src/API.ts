@@ -131,7 +131,6 @@ export type UserSession = {
   _version: number,
   _deleted?: boolean | null,
   _lastChangedAt: number,
-  owner?: string | null,
 };
 
 export type UpdateUserPersistedDataInput = {
@@ -282,7 +281,6 @@ export type GameSession = {
   _version: number,
   _deleted?: boolean | null,
   _lastChangedAt: number,
-  owner?: string | null,
 };
 
 export type UpdateGameSessionInput = {
@@ -582,7 +580,6 @@ export type CreateUserSessionMutation = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
-    owner?: string | null,
   } | null,
 };
 
@@ -610,7 +607,6 @@ export type UpdateUserSessionMutation = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
-    owner?: string | null,
   } | null,
 };
 
@@ -638,7 +634,6 @@ export type DeleteUserSessionMutation = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
-    owner?: string | null,
   } | null,
 };
 
@@ -670,7 +665,6 @@ export type CreateGameSessionMutation = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
-    owner?: string | null,
   } | null,
 };
 
@@ -702,7 +696,6 @@ export type UpdateGameSessionMutation = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
-    owner?: string | null,
   } | null,
 };
 
@@ -734,7 +727,6 @@ export type DeleteGameSessionMutation = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
-    owner?: string | null,
   } | null,
 };
 
@@ -853,7 +845,6 @@ export type GetUserSessionQuery = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
-    owner?: string | null,
   } | null,
 };
 
@@ -884,7 +875,6 @@ export type ListUserSessionsQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      owner?: string | null,
     } | null >,
     nextToken?: string | null,
     startedAt?: number | null,
@@ -919,7 +909,6 @@ export type SyncUserSessionsQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      owner?: string | null,
     } | null >,
     nextToken?: string | null,
     startedAt?: number | null,
@@ -955,7 +944,6 @@ export type UserSessionsByGameSessionIDQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      owner?: string | null,
     } | null >,
     nextToken?: string | null,
     startedAt?: number | null,
@@ -991,7 +979,6 @@ export type UserSessionsByUserPersistedDataIDQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      owner?: string | null,
     } | null >,
     nextToken?: string | null,
     startedAt?: number | null,
@@ -1025,7 +1012,6 @@ export type GetGameSessionQuery = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
-    owner?: string | null,
   } | null,
 };
 
@@ -1055,7 +1041,6 @@ export type ListGameSessionsQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      owner?: string | null,
     } | null >,
     nextToken?: string | null,
     startedAt?: number | null,
@@ -1089,7 +1074,6 @@ export type SyncGameSessionsQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      owner?: string | null,
     } | null >,
     nextToken?: string | null,
     startedAt?: number | null,
@@ -1188,7 +1172,6 @@ export type OnDeleteUserPersistedDataSubscription = {
 
 export type OnCreateUserSessionSubscriptionVariables = {
   filter?: ModelSubscriptionUserSessionFilterInput | null,
-  owner?: string | null,
 };
 
 export type OnCreateUserSessionSubscription = {
@@ -1210,13 +1193,11 @@ export type OnCreateUserSessionSubscription = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
-    owner?: string | null,
   } | null,
 };
 
 export type OnUpdateUserSessionSubscriptionVariables = {
   filter?: ModelSubscriptionUserSessionFilterInput | null,
-  owner?: string | null,
 };
 
 export type OnUpdateUserSessionSubscription = {
@@ -1238,13 +1219,11 @@ export type OnUpdateUserSessionSubscription = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
-    owner?: string | null,
   } | null,
 };
 
 export type OnDeleteUserSessionSubscriptionVariables = {
   filter?: ModelSubscriptionUserSessionFilterInput | null,
-  owner?: string | null,
 };
 
 export type OnDeleteUserSessionSubscription = {
@@ -1266,13 +1245,11 @@ export type OnDeleteUserSessionSubscription = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
-    owner?: string | null,
   } | null,
 };
 
 export type OnCreateGameSessionSubscriptionVariables = {
   filter?: ModelSubscriptionGameSessionFilterInput | null,
-  owner?: string | null,
 };
 
 export type OnCreateGameSessionSubscription = {
@@ -1298,13 +1275,11 @@ export type OnCreateGameSessionSubscription = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
-    owner?: string | null,
   } | null,
 };
 
 export type OnUpdateGameSessionSubscriptionVariables = {
   filter?: ModelSubscriptionGameSessionFilterInput | null,
-  owner?: string | null,
 };
 
 export type OnUpdateGameSessionSubscription = {
@@ -1330,13 +1305,11 @@ export type OnUpdateGameSessionSubscription = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
-    owner?: string | null,
   } | null,
 };
 
 export type OnDeleteGameSessionSubscriptionVariables = {
   filter?: ModelSubscriptionGameSessionFilterInput | null,
-  owner?: string | null,
 };
 
 export type OnDeleteGameSessionSubscription = {
@@ -1362,6 +1335,5 @@ export type OnDeleteGameSessionSubscription = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
-    owner?: string | null,
   } | null,
 };

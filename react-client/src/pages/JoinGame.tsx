@@ -33,6 +33,8 @@ const JoinGame = () => {
 				c.and((c) => [c.pinCode.eq(pinCode)])
 			);
 
+			console.log('gameSession==', gameSession);
+
 			// delay 0.5s
 			await new Promise((resolve) => setTimeout(resolve, 500));
 
@@ -74,6 +76,11 @@ const JoinGame = () => {
 		dispatch(setGameSessionID(gameSession.id));
 		console.log('Pin code in IF is ====', pinCode);
 		console.log('gameSession in IF is ====', gameSession);
+
+		console.log(userSessionID);
+		const lastUser = await DataStore.query(UserSession, userSessionID);
+		if (lastUser == null) return;
+		const lastGameSessionID = lastUser.gameSessionID;
 
 		// check redux store for user. For now just assuming user is new and needs to be created
 		try {
@@ -121,12 +128,14 @@ const JoinGame = () => {
 				);
 			}
 
-			// update GameSession playerCount by 1
-			await DataStore.save(
-				GameSession.copyOf(gameSession, (updated) => {
-					updated.playerCount = gameSession.playerCount + 1;
-				})
-			);
+			if (lastGameSessionID !== gameSession.id) {
+				// update GameSession playerCount by 1
+				await DataStore.save(
+					GameSession.copyOf(gameSession, (updated) => {
+						updated.playerCount = gameSession.playerCount + 1;
+					})
+				);
+			}
 
 			// go to waiting room
 			navigate(`/lobby`);

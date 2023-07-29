@@ -5,11 +5,20 @@ cd react-client
 
 amplify pull --appId d3ijhu4e9phvvx --envName dev
 
+# Using datastore
 amplify codegen models
 
-https://docs.amplify.aws/cli/graphql/client-code-generation/#amplify-codegen-statements
+# Using traditional graphql
+# https://docs.amplify.aws/cli/graphql/client-code-generation/#amplify-codegen-statements
 amplify codegen add
 amplify codegen statements
+
+amplify add hosting
+amplify remove hosting
+amplify publish
+
+amplify pull
+amplify push
 
 ```
 
