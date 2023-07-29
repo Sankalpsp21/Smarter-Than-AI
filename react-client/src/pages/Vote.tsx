@@ -238,7 +238,11 @@ export function Vote() {
 		};
 	}, []);
 
+	let determinedNextStep = false;
 	const determineNextStep = async () => {
+		if (determinedNextStep) return;
+		determinedNextStep = true;
+
 		let gameSession = await DataStore.query(GameSession, gameSessionID);
 		if (gameSession == null) return;
 
