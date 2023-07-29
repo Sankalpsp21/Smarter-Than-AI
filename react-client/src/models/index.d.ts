@@ -19,6 +19,7 @@ type EagerUserPersistedData = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
+  readonly _ttl?: number | null;
   readonly username: string;
   readonly totalScore: number;
   readonly totalGames: number;
@@ -36,6 +37,7 @@ type LazyUserPersistedData = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
+  readonly _ttl?: number | null;
   readonly username: string;
   readonly totalScore: number;
   readonly totalGames: number;
@@ -59,6 +61,7 @@ type EagerUserSession = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
+  readonly _ttl?: number | null;
   readonly eliminated: boolean;
   readonly currentRoundResponse: string;
   readonly totalScore: number;
@@ -77,6 +80,7 @@ type LazyUserSession = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
+  readonly _ttl?: number | null;
   readonly eliminated: boolean;
   readonly currentRoundResponse: string;
   readonly totalScore: number;
@@ -101,6 +105,7 @@ type EagerGameSession = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
+  readonly _ttl?: number | null;
   readonly pinCode: number;
   readonly playerCount: number;
   readonly roundNumber: number;
@@ -120,6 +125,7 @@ type LazyGameSession = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
+  readonly _ttl?: number | null;
   readonly pinCode: number;
   readonly playerCount: number;
   readonly roundNumber: number;

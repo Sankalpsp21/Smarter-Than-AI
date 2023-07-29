@@ -10,6 +10,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "_ttl": {
+                    "name": "_ttl",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "username": {
                     "name": "username",
                     "isArray": false,
@@ -121,6 +128,13 @@ export const schema = {
                     "isArray": false,
                     "type": "ID",
                     "isRequired": true,
+                    "attributes": []
+                },
+                "_ttl": {
+                    "name": "_ttl",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
                     "attributes": []
                 },
                 "eliminated": {
@@ -247,6 +261,13 @@ export const schema = {
                     "isArray": false,
                     "type": "ID",
                     "isRequired": true,
+                    "attributes": []
+                },
+                "_ttl": {
+                    "name": "_ttl",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
                     "attributes": []
                 },
                 "pinCode": {
@@ -381,5 +402,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "fd29ad80dc5403a2e1222162ee8ef6f1"
+    "version": "8235f79f0e4ae3747a3199209e4b4f04"
 };

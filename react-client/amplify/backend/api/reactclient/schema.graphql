@@ -9,6 +9,7 @@ enum RoundMode {
 
 type UserPersistedData @model @auth(rules: [{ allow: owner, provider: userPools }]) {
   id: ID!
+  _ttl: Int
   username: String!
   totalScore: Int!
   totalGames: Int!
@@ -20,6 +21,7 @@ type UserPersistedData @model @auth(rules: [{ allow: owner, provider: userPools 
 
 type UserSession @model @auth(rules: [{allow: public}]) {
   id: ID!
+  _ttl: Int
   eliminated: Boolean!
   currentRoundResponse: String!
   totalScore: Int!
@@ -32,6 +34,7 @@ type UserSession @model @auth(rules: [{allow: public}]) {
 
 type GameSession @model @auth(rules: [{allow: public}]) {
   id: ID!
+  _ttl: Int
   pinCode: Int!
   playerCount: Int!
   roundNumber: Int!

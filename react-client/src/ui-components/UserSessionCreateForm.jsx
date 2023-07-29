@@ -197,6 +197,7 @@ export default function UserSessionCreateForm(props) {
     ...rest
   } = props;
   const initialValues = {
+    _ttl: "",
     eliminated: false,
     currentRoundResponse: "",
     totalScore: "",
@@ -206,6 +207,7 @@ export default function UserSessionCreateForm(props) {
     gameSessionID: undefined,
     userPersistedDataID: undefined,
   };
+  const [_ttl, set_ttl] = React.useState(initialValues._ttl);
   const [eliminated, setEliminated] = React.useState(initialValues.eliminated);
   const [currentRoundResponse, setCurrentRoundResponse] = React.useState(
     initialValues.currentRoundResponse
@@ -222,6 +224,7 @@ export default function UserSessionCreateForm(props) {
   );
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
+    set_ttl(initialValues._ttl);
     setEliminated(initialValues.eliminated);
     setCurrentRoundResponse(initialValues.currentRoundResponse);
     setTotalScore(initialValues.totalScore);
@@ -259,11 +262,11 @@ export default function UserSessionCreateForm(props) {
     model: UserPersistedData,
   }).items;
   const getDisplayValue = {
-    gameSessionID: (r) => `${r?.pinCode ? r?.pinCode + " - " : ""}${r?.id}`,
-    userPersistedDataID: (r) =>
-      `${r?.username ? r?.username + " - " : ""}${r?.id}`,
+    gameSessionID: (r) => `${r?._ttl ? r?._ttl + " - " : ""}${r?.id}`,
+    userPersistedDataID: (r) => `${r?._ttl ? r?._ttl + " - " : ""}${r?.id}`,
   };
   const validations = {
+    _ttl: [],
     eliminated: [{ type: "Required" }],
     currentRoundResponse: [{ type: "Required" }],
     totalScore: [{ type: "Required" }],
@@ -299,6 +302,7 @@ export default function UserSessionCreateForm(props) {
       onSubmit={async (event) => {
         event.preventDefault();
         let modelFields = {
+          _ttl,
           eliminated,
           currentRoundResponse,
           totalScore,
@@ -352,6 +356,42 @@ export default function UserSessionCreateForm(props) {
       {...getOverrideProps(overrides, "UserSessionCreateForm")}
       {...rest}
     >
+      <TextField
+        label="Ttl"
+        isRequired={false}
+        isReadOnly={false}
+        type="number"
+        step="any"
+        value={_ttl}
+        onChange={(e) => {
+          let value = isNaN(parseInt(e.target.value))
+            ? e.target.value
+            : parseInt(e.target.value);
+          if (onChange) {
+            const modelFields = {
+              _ttl: value,
+              eliminated,
+              currentRoundResponse,
+              totalScore,
+              totalGames,
+              wins,
+              losses,
+              gameSessionID,
+              userPersistedDataID,
+            };
+            const result = onChange(modelFields);
+            value = result?._ttl ?? value;
+          }
+          if (errors._ttl?.hasError) {
+            runValidationTasks("_ttl", value);
+          }
+          set_ttl(value);
+        }}
+        onBlur={() => runValidationTasks("_ttl", _ttl)}
+        errorMessage={errors._ttl?.errorMessage}
+        hasError={errors._ttl?.hasError}
+        {...getOverrideProps(overrides, "_ttl")}
+      ></TextField>
       <SwitchField
         label="Eliminated"
         defaultChecked={false}
@@ -361,6 +401,7 @@ export default function UserSessionCreateForm(props) {
           let value = e.target.checked;
           if (onChange) {
             const modelFields = {
+              _ttl,
               eliminated: value,
               currentRoundResponse,
               totalScore,
@@ -392,6 +433,7 @@ export default function UserSessionCreateForm(props) {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
+              _ttl,
               eliminated,
               currentRoundResponse: value,
               totalScore,
@@ -429,6 +471,7 @@ export default function UserSessionCreateForm(props) {
             : parseInt(e.target.value);
           if (onChange) {
             const modelFields = {
+              _ttl,
               eliminated,
               currentRoundResponse,
               totalScore: value,
@@ -464,6 +507,7 @@ export default function UserSessionCreateForm(props) {
             : parseInt(e.target.value);
           if (onChange) {
             const modelFields = {
+              _ttl,
               eliminated,
               currentRoundResponse,
               totalScore,
@@ -499,6 +543,7 @@ export default function UserSessionCreateForm(props) {
             : parseInt(e.target.value);
           if (onChange) {
             const modelFields = {
+              _ttl,
               eliminated,
               currentRoundResponse,
               totalScore,
@@ -534,6 +579,7 @@ export default function UserSessionCreateForm(props) {
             : parseInt(e.target.value);
           if (onChange) {
             const modelFields = {
+              _ttl,
               eliminated,
               currentRoundResponse,
               totalScore,
@@ -562,6 +608,7 @@ export default function UserSessionCreateForm(props) {
           let value = items[0];
           if (onChange) {
             const modelFields = {
+              _ttl,
               eliminated,
               currentRoundResponse,
               totalScore,
@@ -649,6 +696,7 @@ export default function UserSessionCreateForm(props) {
           let value = items[0];
           if (onChange) {
             const modelFields = {
+              _ttl,
               eliminated,
               currentRoundResponse,
               totalScore,

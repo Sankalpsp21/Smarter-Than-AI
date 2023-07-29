@@ -76,7 +76,9 @@ const JoinGame = () => {
 						totalGames: 0,
 						wins: 0,
 						losses: 0,
-						gameSessionID: gameSession.id
+						gameSessionID: gameSession.id,
+						// set ttl to 1 day in epoch time
+						_ttl: Math.floor(Date.now() / 1000) + 86400
 					})
 				);
 
@@ -97,6 +99,8 @@ const JoinGame = () => {
 						updated.eliminated = false;
 						updated.currentRoundResponse = '';
 						updated.gameSessionID = gameSession.id;
+						// set ttl to 1 day in epoch time
+						updated._ttl = Math.floor(Date.now() / 1000) + 86400;
 					})
 				);
 			}

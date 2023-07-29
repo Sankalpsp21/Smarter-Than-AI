@@ -6,6 +6,7 @@ export const getUserPersistedData = /* GraphQL */ `
   query GetUserPersistedData($id: ID!) {
     getUserPersistedData(id: $id) {
       id
+      _ttl
       username
       totalScore
       totalGames
@@ -40,6 +41,7 @@ export const listUserPersistedData = /* GraphQL */ `
     ) {
       items {
         id
+        _ttl
         username
         totalScore
         totalGames
@@ -75,6 +77,7 @@ export const syncUserPersistedData = /* GraphQL */ `
     ) {
       items {
         id
+        _ttl
         username
         totalScore
         totalGames
@@ -99,6 +102,7 @@ export const getUserSession = /* GraphQL */ `
   query GetUserSession($id: ID!) {
     getUserSession(id: $id) {
       id
+      _ttl
       eliminated
       currentRoundResponse
       totalScore
@@ -125,6 +129,7 @@ export const listUserSessions = /* GraphQL */ `
     listUserSessions(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        _ttl
         eliminated
         currentRoundResponse
         totalScore
@@ -161,6 +166,7 @@ export const syncUserSessions = /* GraphQL */ `
     ) {
       items {
         id
+        _ttl
         eliminated
         currentRoundResponse
         totalScore
@@ -199,6 +205,7 @@ export const userSessionsByGameSessionID = /* GraphQL */ `
     ) {
       items {
         id
+        _ttl
         eliminated
         currentRoundResponse
         totalScore
@@ -237,6 +244,7 @@ export const userSessionsByUserPersistedDataID = /* GraphQL */ `
     ) {
       items {
         id
+        _ttl
         eliminated
         currentRoundResponse
         totalScore
@@ -262,6 +270,7 @@ export const getGameSession = /* GraphQL */ `
   query GetGameSession($id: ID!) {
     getGameSession(id: $id) {
       id
+      _ttl
       pinCode
       playerCount
       roundNumber
@@ -293,6 +302,7 @@ export const listGameSessions = /* GraphQL */ `
     listGameSessions(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        _ttl
         pinCode
         playerCount
         roundNumber
@@ -329,6 +339,7 @@ export const syncGameSessions = /* GraphQL */ `
     ) {
       items {
         id
+        _ttl
         pinCode
         playerCount
         roundNumber

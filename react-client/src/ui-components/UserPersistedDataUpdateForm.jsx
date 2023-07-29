@@ -197,6 +197,7 @@ export default function UserPersistedDataUpdateForm(props) {
     ...rest
   } = props;
   const initialValues = {
+    _ttl: "",
     username: "",
     totalScore: "",
     totalGames: "",
@@ -205,6 +206,7 @@ export default function UserPersistedDataUpdateForm(props) {
     rank: "",
     UserSessions: [],
   };
+  const [_ttl, set_ttl] = React.useState(initialValues._ttl);
   const [username, setUsername] = React.useState(initialValues.username);
   const [totalScore, setTotalScore] = React.useState(initialValues.totalScore);
   const [totalGames, setTotalGames] = React.useState(initialValues.totalGames);
@@ -223,6 +225,7 @@ export default function UserPersistedDataUpdateForm(props) {
           UserSessions: linkedUserSessions,
         }
       : initialValues;
+    set_ttl(cleanValues._ttl);
     setUsername(cleanValues.username);
     setTotalScore(cleanValues.totalScore);
     setTotalGames(cleanValues.totalGames);
@@ -274,10 +277,10 @@ export default function UserPersistedDataUpdateForm(props) {
     model: UserSession,
   }).items;
   const getDisplayValue = {
-    UserSessions: (r) =>
-      `${r?.eliminated ? r?.eliminated + " - " : ""}${r?.id}`,
+    UserSessions: (r) => `${r?._ttl ? r?._ttl + " - " : ""}${r?.id}`,
   };
   const validations = {
+    _ttl: [],
     username: [{ type: "Required" }],
     totalScore: [{ type: "Required" }],
     totalGames: [{ type: "Required" }],
@@ -312,6 +315,7 @@ export default function UserPersistedDataUpdateForm(props) {
       onSubmit={async (event) => {
         event.preventDefault();
         let modelFields = {
+          _ttl,
           username,
           totalScore,
           totalGames,
@@ -401,6 +405,7 @@ export default function UserPersistedDataUpdateForm(props) {
             );
           });
           const modelFieldsToSave = {
+            _ttl: modelFields._ttl,
             username: modelFields.username,
             totalScore: modelFields.totalScore,
             totalGames: modelFields.totalGames,
@@ -429,6 +434,41 @@ export default function UserPersistedDataUpdateForm(props) {
       {...rest}
     >
       <TextField
+        label="Ttl"
+        isRequired={false}
+        isReadOnly={false}
+        type="number"
+        step="any"
+        value={_ttl}
+        onChange={(e) => {
+          let value = isNaN(parseInt(e.target.value))
+            ? e.target.value
+            : parseInt(e.target.value);
+          if (onChange) {
+            const modelFields = {
+              _ttl: value,
+              username,
+              totalScore,
+              totalGames,
+              wins,
+              losses,
+              rank,
+              UserSessions,
+            };
+            const result = onChange(modelFields);
+            value = result?._ttl ?? value;
+          }
+          if (errors._ttl?.hasError) {
+            runValidationTasks("_ttl", value);
+          }
+          set_ttl(value);
+        }}
+        onBlur={() => runValidationTasks("_ttl", _ttl)}
+        errorMessage={errors._ttl?.errorMessage}
+        hasError={errors._ttl?.hasError}
+        {...getOverrideProps(overrides, "_ttl")}
+      ></TextField>
+      <TextField
         label="Username"
         isRequired={true}
         isReadOnly={false}
@@ -437,6 +477,7 @@ export default function UserPersistedDataUpdateForm(props) {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
+              _ttl,
               username: value,
               totalScore,
               totalGames,
@@ -471,6 +512,7 @@ export default function UserPersistedDataUpdateForm(props) {
             : parseInt(e.target.value);
           if (onChange) {
             const modelFields = {
+              _ttl,
               username,
               totalScore: value,
               totalGames,
@@ -505,6 +547,7 @@ export default function UserPersistedDataUpdateForm(props) {
             : parseInt(e.target.value);
           if (onChange) {
             const modelFields = {
+              _ttl,
               username,
               totalScore,
               totalGames: value,
@@ -539,6 +582,7 @@ export default function UserPersistedDataUpdateForm(props) {
             : parseInt(e.target.value);
           if (onChange) {
             const modelFields = {
+              _ttl,
               username,
               totalScore,
               totalGames,
@@ -573,6 +617,7 @@ export default function UserPersistedDataUpdateForm(props) {
             : parseInt(e.target.value);
           if (onChange) {
             const modelFields = {
+              _ttl,
               username,
               totalScore,
               totalGames,
@@ -607,6 +652,7 @@ export default function UserPersistedDataUpdateForm(props) {
             : parseInt(e.target.value);
           if (onChange) {
             const modelFields = {
+              _ttl,
               username,
               totalScore,
               totalGames,
@@ -633,6 +679,7 @@ export default function UserPersistedDataUpdateForm(props) {
           let values = items;
           if (onChange) {
             const modelFields = {
+              _ttl,
               username,
               totalScore,
               totalGames,

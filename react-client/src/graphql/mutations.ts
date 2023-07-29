@@ -9,6 +9,7 @@ export const createUserPersistedData = /* GraphQL */ `
   ) {
     createUserPersistedData(input: $input, condition: $condition) {
       id
+      _ttl
       username
       totalScore
       totalGames
@@ -37,6 +38,7 @@ export const updateUserPersistedData = /* GraphQL */ `
   ) {
     updateUserPersistedData(input: $input, condition: $condition) {
       id
+      _ttl
       username
       totalScore
       totalGames
@@ -65,6 +67,7 @@ export const deleteUserPersistedData = /* GraphQL */ `
   ) {
     deleteUserPersistedData(input: $input, condition: $condition) {
       id
+      _ttl
       username
       totalScore
       totalGames
@@ -93,6 +96,7 @@ export const createUserSession = /* GraphQL */ `
   ) {
     createUserSession(input: $input, condition: $condition) {
       id
+      _ttl
       eliminated
       currentRoundResponse
       totalScore
@@ -117,6 +121,7 @@ export const updateUserSession = /* GraphQL */ `
   ) {
     updateUserSession(input: $input, condition: $condition) {
       id
+      _ttl
       eliminated
       currentRoundResponse
       totalScore
@@ -141,6 +146,7 @@ export const deleteUserSession = /* GraphQL */ `
   ) {
     deleteUserSession(input: $input, condition: $condition) {
       id
+      _ttl
       eliminated
       currentRoundResponse
       totalScore
@@ -165,6 +171,7 @@ export const createGameSession = /* GraphQL */ `
   ) {
     createGameSession(input: $input, condition: $condition) {
       id
+      _ttl
       pinCode
       playerCount
       roundNumber
@@ -194,6 +201,7 @@ export const updateGameSession = /* GraphQL */ `
   ) {
     updateGameSession(input: $input, condition: $condition) {
       id
+      _ttl
       pinCode
       playerCount
       roundNumber
@@ -223,6 +231,7 @@ export const deleteGameSession = /* GraphQL */ `
   ) {
     deleteGameSession(input: $input, condition: $condition) {
       id
+      _ttl
       pinCode
       playerCount
       roundNumber

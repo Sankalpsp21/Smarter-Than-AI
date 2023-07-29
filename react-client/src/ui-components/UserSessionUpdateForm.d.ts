@@ -14,6 +14,7 @@ export declare type ValidationResponse = {
 };
 export declare type ValidationFunction<T> = (value: T, validationResponse: ValidationResponse) => ValidationResponse | Promise<ValidationResponse>;
 export declare type UserSessionUpdateFormInputValues = {
+    _ttl?: number;
     eliminated?: boolean;
     currentRoundResponse?: string;
     totalScore?: number;
@@ -24,6 +25,7 @@ export declare type UserSessionUpdateFormInputValues = {
     userPersistedDataID?: string;
 };
 export declare type UserSessionUpdateFormValidationValues = {
+    _ttl?: ValidationFunction<number>;
     eliminated?: ValidationFunction<boolean>;
     currentRoundResponse?: ValidationFunction<string>;
     totalScore?: ValidationFunction<number>;
@@ -36,6 +38,7 @@ export declare type UserSessionUpdateFormValidationValues = {
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type UserSessionUpdateFormOverridesProps = {
     UserSessionUpdateFormGrid?: PrimitiveOverrideProps<GridProps>;
+    _ttl?: PrimitiveOverrideProps<TextFieldProps>;
     eliminated?: PrimitiveOverrideProps<SwitchFieldProps>;
     currentRoundResponse?: PrimitiveOverrideProps<TextFieldProps>;
     totalScore?: PrimitiveOverrideProps<TextFieldProps>;

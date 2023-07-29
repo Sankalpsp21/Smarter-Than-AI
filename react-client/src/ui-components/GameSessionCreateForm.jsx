@@ -197,6 +197,7 @@ export default function GameSessionCreateForm(props) {
     ...rest
   } = props;
   const initialValues = {
+    _ttl: "",
     pinCode: "",
     playerCount: "",
     roundNumber: "",
@@ -207,6 +208,7 @@ export default function GameSessionCreateForm(props) {
     roundMode: "",
     aiResponse: "",
   };
+  const [_ttl, set_ttl] = React.useState(initialValues._ttl);
   const [pinCode, setPinCode] = React.useState(initialValues.pinCode);
   const [playerCount, setPlayerCount] = React.useState(
     initialValues.playerCount
@@ -230,6 +232,7 @@ export default function GameSessionCreateForm(props) {
   const [aiResponse, setAiResponse] = React.useState(initialValues.aiResponse);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
+    set_ttl(initialValues._ttl);
     setPinCode(initialValues.pinCode);
     setPlayerCount(initialValues.playerCount);
     setRoundNumber(initialValues.roundNumber);
@@ -261,10 +264,10 @@ export default function GameSessionCreateForm(props) {
     model: UserSession,
   }).items;
   const getDisplayValue = {
-    UserSessions: (r) =>
-      `${r?.eliminated ? r?.eliminated + " - " : ""}${r?.id}`,
+    UserSessions: (r) => `${r?._ttl ? r?._ttl + " - " : ""}${r?.id}`,
   };
   const validations = {
+    _ttl: [],
     pinCode: [{ type: "Required" }],
     playerCount: [{ type: "Required" }],
     roundNumber: [{ type: "Required" }],
@@ -318,6 +321,7 @@ export default function GameSessionCreateForm(props) {
       onSubmit={async (event) => {
         event.preventDefault();
         let modelFields = {
+          _ttl,
           pinCode,
           playerCount,
           roundNumber,
@@ -365,6 +369,7 @@ export default function GameSessionCreateForm(props) {
             }
           });
           const modelFieldsToSave = {
+            _ttl: modelFields._ttl,
             pinCode: modelFields.pinCode,
             playerCount: modelFields.playerCount,
             roundNumber: modelFields.roundNumber,
@@ -407,6 +412,43 @@ export default function GameSessionCreateForm(props) {
       {...rest}
     >
       <TextField
+        label="Ttl"
+        isRequired={false}
+        isReadOnly={false}
+        type="number"
+        step="any"
+        value={_ttl}
+        onChange={(e) => {
+          let value = isNaN(parseInt(e.target.value))
+            ? e.target.value
+            : parseInt(e.target.value);
+          if (onChange) {
+            const modelFields = {
+              _ttl: value,
+              pinCode,
+              playerCount,
+              roundNumber,
+              roundPrompt,
+              currentRoundExpiration,
+              UserSessions,
+              playersResponded,
+              roundMode,
+              aiResponse,
+            };
+            const result = onChange(modelFields);
+            value = result?._ttl ?? value;
+          }
+          if (errors._ttl?.hasError) {
+            runValidationTasks("_ttl", value);
+          }
+          set_ttl(value);
+        }}
+        onBlur={() => runValidationTasks("_ttl", _ttl)}
+        errorMessage={errors._ttl?.errorMessage}
+        hasError={errors._ttl?.hasError}
+        {...getOverrideProps(overrides, "_ttl")}
+      ></TextField>
+      <TextField
         label="Pin code"
         isRequired={true}
         isReadOnly={false}
@@ -419,6 +461,7 @@ export default function GameSessionCreateForm(props) {
             : parseInt(e.target.value);
           if (onChange) {
             const modelFields = {
+              _ttl,
               pinCode: value,
               playerCount,
               roundNumber,
@@ -455,6 +498,7 @@ export default function GameSessionCreateForm(props) {
             : parseInt(e.target.value);
           if (onChange) {
             const modelFields = {
+              _ttl,
               pinCode,
               playerCount: value,
               roundNumber,
@@ -491,6 +535,7 @@ export default function GameSessionCreateForm(props) {
             : parseInt(e.target.value);
           if (onChange) {
             const modelFields = {
+              _ttl,
               pinCode,
               playerCount,
               roundNumber: value,
@@ -523,6 +568,7 @@ export default function GameSessionCreateForm(props) {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
+              _ttl,
               pinCode,
               playerCount,
               roundNumber,
@@ -560,6 +606,7 @@ export default function GameSessionCreateForm(props) {
             e.target.value === "" ? "" : new Date(e.target.value).toISOString();
           if (onChange) {
             const modelFields = {
+              _ttl,
               pinCode,
               playerCount,
               roundNumber,
@@ -590,6 +637,7 @@ export default function GameSessionCreateForm(props) {
           let values = items;
           if (onChange) {
             const modelFields = {
+              _ttl,
               pinCode,
               playerCount,
               roundNumber,
@@ -679,6 +727,7 @@ export default function GameSessionCreateForm(props) {
             : parseInt(e.target.value);
           if (onChange) {
             const modelFields = {
+              _ttl,
               pinCode,
               playerCount,
               roundNumber,
@@ -711,6 +760,7 @@ export default function GameSessionCreateForm(props) {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
+              _ttl,
               pinCode,
               playerCount,
               roundNumber,
@@ -774,6 +824,7 @@ export default function GameSessionCreateForm(props) {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
+              _ttl,
               pinCode,
               playerCount,
               roundNumber,

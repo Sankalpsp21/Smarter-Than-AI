@@ -4,6 +4,7 @@
 
 export type CreateUserPersistedDataInput = {
   id?: string | null,
+  _ttl?: number | null,
   username: string,
   totalScore: number,
   totalGames: number,
@@ -14,6 +15,7 @@ export type CreateUserPersistedDataInput = {
 };
 
 export type ModelUserPersistedDataConditionInput = {
+  _ttl?: ModelIntInput | null,
   username?: ModelStringInput | null,
   totalScore?: ModelIntInput | null,
   totalGames?: ModelIntInput | null,
@@ -25,6 +27,32 @@ export type ModelUserPersistedDataConditionInput = {
   not?: ModelUserPersistedDataConditionInput | null,
   _deleted?: ModelBooleanInput | null,
 };
+
+export type ModelIntInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+};
+
+export enum ModelAttributeTypes {
+  binary = "binary",
+  binarySet = "binarySet",
+  bool = "bool",
+  list = "list",
+  map = "map",
+  number = "number",
+  numberSet = "numberSet",
+  string = "string",
+  stringSet = "stringSet",
+  _null = "_null",
+}
+
 
 export type ModelStringInput = {
   ne?: string | null,
@@ -42,20 +70,6 @@ export type ModelStringInput = {
   size?: ModelSizeInput | null,
 };
 
-export enum ModelAttributeTypes {
-  binary = "binary",
-  binarySet = "binarySet",
-  bool = "bool",
-  list = "list",
-  map = "map",
-  number = "number",
-  numberSet = "numberSet",
-  string = "string",
-  stringSet = "stringSet",
-  _null = "_null",
-}
-
-
 export type ModelSizeInput = {
   ne?: number | null,
   eq?: number | null,
@@ -64,18 +78,6 @@ export type ModelSizeInput = {
   ge?: number | null,
   gt?: number | null,
   between?: Array< number | null > | null,
-};
-
-export type ModelIntInput = {
-  ne?: number | null,
-  eq?: number | null,
-  le?: number | null,
-  lt?: number | null,
-  ge?: number | null,
-  gt?: number | null,
-  between?: Array< number | null > | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
 };
 
 export type ModelBooleanInput = {
@@ -88,6 +90,7 @@ export type ModelBooleanInput = {
 export type UserPersistedData = {
   __typename: "UserPersistedData",
   id: string,
+  _ttl?: number | null,
   username: string,
   totalScore: number,
   totalGames: number,
@@ -113,6 +116,7 @@ export type ModelUserSessionConnection = {
 export type UserSession = {
   __typename: "UserSession",
   id: string,
+  _ttl?: number | null,
   eliminated: boolean,
   currentRoundResponse: string,
   totalScore: number,
@@ -130,6 +134,7 @@ export type UserSession = {
 
 export type UpdateUserPersistedDataInput = {
   id: string,
+  _ttl?: number | null,
   username?: string | null,
   totalScore?: number | null,
   totalGames?: number | null,
@@ -146,6 +151,7 @@ export type DeleteUserPersistedDataInput = {
 
 export type CreateUserSessionInput = {
   id?: string | null,
+  _ttl?: number | null,
   eliminated: boolean,
   currentRoundResponse: string,
   totalScore: number,
@@ -158,6 +164,7 @@ export type CreateUserSessionInput = {
 };
 
 export type ModelUserSessionConditionInput = {
+  _ttl?: ModelIntInput | null,
   eliminated?: ModelBooleanInput | null,
   currentRoundResponse?: ModelStringInput | null,
   totalScore?: ModelIntInput | null,
@@ -190,6 +197,7 @@ export type ModelIDInput = {
 
 export type UpdateUserSessionInput = {
   id: string,
+  _ttl?: number | null,
   eliminated?: boolean | null,
   currentRoundResponse?: string | null,
   totalScore?: number | null,
@@ -208,6 +216,7 @@ export type DeleteUserSessionInput = {
 
 export type CreateGameSessionInput = {
   id?: string | null,
+  _ttl?: number | null,
   pinCode: number,
   playerCount: number,
   roundNumber: number,
@@ -230,6 +239,7 @@ export enum RoundMode {
 
 
 export type ModelGameSessionConditionInput = {
+  _ttl?: ModelIntInput | null,
   pinCode?: ModelIntInput | null,
   playerCount?: ModelIntInput | null,
   roundNumber?: ModelIntInput | null,
@@ -252,6 +262,7 @@ export type ModelRoundModeInput = {
 export type GameSession = {
   __typename: "GameSession",
   id: string,
+  _ttl?: number | null,
   pinCode: number,
   playerCount: number,
   roundNumber: number,
@@ -270,6 +281,7 @@ export type GameSession = {
 
 export type UpdateGameSessionInput = {
   id: string,
+  _ttl?: number | null,
   pinCode?: number | null,
   playerCount?: number | null,
   roundNumber?: number | null,
@@ -288,6 +300,7 @@ export type DeleteGameSessionInput = {
 
 export type ModelUserPersistedDataFilterInput = {
   id?: ModelIDInput | null,
+  _ttl?: ModelIntInput | null,
   username?: ModelStringInput | null,
   totalScore?: ModelIntInput | null,
   totalGames?: ModelIntInput | null,
@@ -309,6 +322,7 @@ export type ModelUserPersistedDataConnection = {
 
 export type ModelUserSessionFilterInput = {
   id?: ModelIDInput | null,
+  _ttl?: ModelIntInput | null,
   eliminated?: ModelBooleanInput | null,
   currentRoundResponse?: ModelStringInput | null,
   totalScore?: ModelIntInput | null,
@@ -331,6 +345,7 @@ export enum ModelSortDirection {
 
 export type ModelGameSessionFilterInput = {
   id?: ModelIDInput | null,
+  _ttl?: ModelIntInput | null,
   pinCode?: ModelIntInput | null,
   playerCount?: ModelIntInput | null,
   roundNumber?: ModelIntInput | null,
@@ -354,6 +369,7 @@ export type ModelGameSessionConnection = {
 
 export type ModelSubscriptionUserPersistedDataFilterInput = {
   id?: ModelSubscriptionIDInput | null,
+  _ttl?: ModelSubscriptionIntInput | null,
   username?: ModelSubscriptionStringInput | null,
   totalScore?: ModelSubscriptionIntInput | null,
   totalGames?: ModelSubscriptionIntInput | null,
@@ -380,6 +396,18 @@ export type ModelSubscriptionIDInput = {
   notIn?: Array< string | null > | null,
 };
 
+export type ModelSubscriptionIntInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+  in?: Array< number | null > | null,
+  notIn?: Array< number | null > | null,
+};
+
 export type ModelSubscriptionStringInput = {
   ne?: string | null,
   eq?: string | null,
@@ -395,20 +423,9 @@ export type ModelSubscriptionStringInput = {
   notIn?: Array< string | null > | null,
 };
 
-export type ModelSubscriptionIntInput = {
-  ne?: number | null,
-  eq?: number | null,
-  le?: number | null,
-  lt?: number | null,
-  ge?: number | null,
-  gt?: number | null,
-  between?: Array< number | null > | null,
-  in?: Array< number | null > | null,
-  notIn?: Array< number | null > | null,
-};
-
 export type ModelSubscriptionUserSessionFilterInput = {
   id?: ModelSubscriptionIDInput | null,
+  _ttl?: ModelSubscriptionIntInput | null,
   eliminated?: ModelSubscriptionBooleanInput | null,
   currentRoundResponse?: ModelSubscriptionStringInput | null,
   totalScore?: ModelSubscriptionIntInput | null,
@@ -429,6 +446,7 @@ export type ModelSubscriptionBooleanInput = {
 
 export type ModelSubscriptionGameSessionFilterInput = {
   id?: ModelSubscriptionIDInput | null,
+  _ttl?: ModelSubscriptionIntInput | null,
   pinCode?: ModelSubscriptionIntInput | null,
   playerCount?: ModelSubscriptionIntInput | null,
   roundNumber?: ModelSubscriptionIntInput | null,
@@ -451,6 +469,7 @@ export type CreateUserPersistedDataMutation = {
   createUserPersistedData?:  {
     __typename: "UserPersistedData",
     id: string,
+    _ttl?: number | null,
     username: string,
     totalScore: number,
     totalGames: number,
@@ -480,6 +499,7 @@ export type UpdateUserPersistedDataMutation = {
   updateUserPersistedData?:  {
     __typename: "UserPersistedData",
     id: string,
+    _ttl?: number | null,
     username: string,
     totalScore: number,
     totalGames: number,
@@ -509,6 +529,7 @@ export type DeleteUserPersistedDataMutation = {
   deleteUserPersistedData?:  {
     __typename: "UserPersistedData",
     id: string,
+    _ttl?: number | null,
     username: string,
     totalScore: number,
     totalGames: number,
@@ -538,6 +559,7 @@ export type CreateUserSessionMutation = {
   createUserSession?:  {
     __typename: "UserSession",
     id: string,
+    _ttl?: number | null,
     eliminated: boolean,
     currentRoundResponse: string,
     totalScore: number,
@@ -563,6 +585,7 @@ export type UpdateUserSessionMutation = {
   updateUserSession?:  {
     __typename: "UserSession",
     id: string,
+    _ttl?: number | null,
     eliminated: boolean,
     currentRoundResponse: string,
     totalScore: number,
@@ -588,6 +611,7 @@ export type DeleteUserSessionMutation = {
   deleteUserSession?:  {
     __typename: "UserSession",
     id: string,
+    _ttl?: number | null,
     eliminated: boolean,
     currentRoundResponse: string,
     totalScore: number,
@@ -613,6 +637,7 @@ export type CreateGameSessionMutation = {
   createGameSession?:  {
     __typename: "GameSession",
     id: string,
+    _ttl?: number | null,
     pinCode: number,
     playerCount: number,
     roundNumber: number,
@@ -643,6 +668,7 @@ export type UpdateGameSessionMutation = {
   updateGameSession?:  {
     __typename: "GameSession",
     id: string,
+    _ttl?: number | null,
     pinCode: number,
     playerCount: number,
     roundNumber: number,
@@ -673,6 +699,7 @@ export type DeleteGameSessionMutation = {
   deleteGameSession?:  {
     __typename: "GameSession",
     id: string,
+    _ttl?: number | null,
     pinCode: number,
     playerCount: number,
     roundNumber: number,
@@ -702,6 +729,7 @@ export type GetUserPersistedDataQuery = {
   getUserPersistedData?:  {
     __typename: "UserPersistedData",
     id: string,
+    _ttl?: number | null,
     username: string,
     totalScore: number,
     totalGames: number,
@@ -734,6 +762,7 @@ export type ListUserPersistedDataQuery = {
     items:  Array< {
       __typename: "UserPersistedData",
       id: string,
+      _ttl?: number | null,
       username: string,
       totalScore: number,
       totalGames: number,
@@ -765,6 +794,7 @@ export type SyncUserPersistedDataQuery = {
     items:  Array< {
       __typename: "UserPersistedData",
       id: string,
+      _ttl?: number | null,
       username: string,
       totalScore: number,
       totalGames: number,
@@ -791,6 +821,7 @@ export type GetUserSessionQuery = {
   getUserSession?:  {
     __typename: "UserSession",
     id: string,
+    _ttl?: number | null,
     eliminated: boolean,
     currentRoundResponse: string,
     totalScore: number,
@@ -819,6 +850,7 @@ export type ListUserSessionsQuery = {
     items:  Array< {
       __typename: "UserSession",
       id: string,
+      _ttl?: number | null,
       eliminated: boolean,
       currentRoundResponse: string,
       totalScore: number,
@@ -851,6 +883,7 @@ export type SyncUserSessionsQuery = {
     items:  Array< {
       __typename: "UserSession",
       id: string,
+      _ttl?: number | null,
       eliminated: boolean,
       currentRoundResponse: string,
       totalScore: number,
@@ -884,6 +917,7 @@ export type UserSessionsByGameSessionIDQuery = {
     items:  Array< {
       __typename: "UserSession",
       id: string,
+      _ttl?: number | null,
       eliminated: boolean,
       currentRoundResponse: string,
       totalScore: number,
@@ -917,6 +951,7 @@ export type UserSessionsByUserPersistedDataIDQuery = {
     items:  Array< {
       __typename: "UserSession",
       id: string,
+      _ttl?: number | null,
       eliminated: boolean,
       currentRoundResponse: string,
       totalScore: number,
@@ -944,6 +979,7 @@ export type GetGameSessionQuery = {
   getGameSession?:  {
     __typename: "GameSession",
     id: string,
+    _ttl?: number | null,
     pinCode: number,
     playerCount: number,
     roundNumber: number,
@@ -977,6 +1013,7 @@ export type ListGameSessionsQuery = {
     items:  Array< {
       __typename: "GameSession",
       id: string,
+      _ttl?: number | null,
       pinCode: number,
       playerCount: number,
       roundNumber: number,
@@ -1009,6 +1046,7 @@ export type SyncGameSessionsQuery = {
     items:  Array< {
       __typename: "GameSession",
       id: string,
+      _ttl?: number | null,
       pinCode: number,
       playerCount: number,
       roundNumber: number,
@@ -1037,6 +1075,7 @@ export type OnCreateUserPersistedDataSubscription = {
   onCreateUserPersistedData?:  {
     __typename: "UserPersistedData",
     id: string,
+    _ttl?: number | null,
     username: string,
     totalScore: number,
     totalGames: number,
@@ -1066,6 +1105,7 @@ export type OnUpdateUserPersistedDataSubscription = {
   onUpdateUserPersistedData?:  {
     __typename: "UserPersistedData",
     id: string,
+    _ttl?: number | null,
     username: string,
     totalScore: number,
     totalGames: number,
@@ -1095,6 +1135,7 @@ export type OnDeleteUserPersistedDataSubscription = {
   onDeleteUserPersistedData?:  {
     __typename: "UserPersistedData",
     id: string,
+    _ttl?: number | null,
     username: string,
     totalScore: number,
     totalGames: number,
@@ -1123,6 +1164,7 @@ export type OnCreateUserSessionSubscription = {
   onCreateUserSession?:  {
     __typename: "UserSession",
     id: string,
+    _ttl?: number | null,
     eliminated: boolean,
     currentRoundResponse: string,
     totalScore: number,
@@ -1147,6 +1189,7 @@ export type OnUpdateUserSessionSubscription = {
   onUpdateUserSession?:  {
     __typename: "UserSession",
     id: string,
+    _ttl?: number | null,
     eliminated: boolean,
     currentRoundResponse: string,
     totalScore: number,
@@ -1171,6 +1214,7 @@ export type OnDeleteUserSessionSubscription = {
   onDeleteUserSession?:  {
     __typename: "UserSession",
     id: string,
+    _ttl?: number | null,
     eliminated: boolean,
     currentRoundResponse: string,
     totalScore: number,
@@ -1195,6 +1239,7 @@ export type OnCreateGameSessionSubscription = {
   onCreateGameSession?:  {
     __typename: "GameSession",
     id: string,
+    _ttl?: number | null,
     pinCode: number,
     playerCount: number,
     roundNumber: number,
@@ -1224,6 +1269,7 @@ export type OnUpdateGameSessionSubscription = {
   onUpdateGameSession?:  {
     __typename: "GameSession",
     id: string,
+    _ttl?: number | null,
     pinCode: number,
     playerCount: number,
     roundNumber: number,
@@ -1253,6 +1299,7 @@ export type OnDeleteGameSessionSubscription = {
   onDeleteGameSession?:  {
     __typename: "GameSession",
     id: string,
+    _ttl?: number | null,
     pinCode: number,
     playerCount: number,
     roundNumber: number,

@@ -14,6 +14,7 @@ export declare type ValidationResponse = {
 };
 export declare type ValidationFunction<T> = (value: T, validationResponse: ValidationResponse) => ValidationResponse | Promise<ValidationResponse>;
 export declare type GameSessionCreateFormInputValues = {
+    _ttl?: number;
     pinCode?: number;
     playerCount?: number;
     roundNumber?: number;
@@ -25,6 +26,7 @@ export declare type GameSessionCreateFormInputValues = {
     aiResponse?: string;
 };
 export declare type GameSessionCreateFormValidationValues = {
+    _ttl?: ValidationFunction<number>;
     pinCode?: ValidationFunction<number>;
     playerCount?: ValidationFunction<number>;
     roundNumber?: ValidationFunction<number>;
@@ -38,6 +40,7 @@ export declare type GameSessionCreateFormValidationValues = {
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type GameSessionCreateFormOverridesProps = {
     GameSessionCreateFormGrid?: PrimitiveOverrideProps<GridProps>;
+    _ttl?: PrimitiveOverrideProps<TextFieldProps>;
     pinCode?: PrimitiveOverrideProps<TextFieldProps>;
     playerCount?: PrimitiveOverrideProps<TextFieldProps>;
     roundNumber?: PrimitiveOverrideProps<TextFieldProps>;
