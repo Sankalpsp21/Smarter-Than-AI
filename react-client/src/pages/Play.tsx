@@ -50,7 +50,6 @@ export function Play() {
 				GameSession,
 				gameSessionId
 			).subscribe(async (msg: any) => {
-				//TODO: test this
 				const item = msg.element;
 				setPlayersResponded(item.playersResponded);
 
@@ -60,10 +59,6 @@ export function Play() {
 
 				if (!isHost) {
 					if (item.roundMode === RoundMode.VOTE) {
-						// wait for 2 seconds
-						await new Promise((resolve) =>
-							setTimeout(resolve, 2000)
-						);
 						navigate('/vote');
 					}
 				}
@@ -131,6 +126,9 @@ export function Play() {
 	}, []);
 
 	const determineNextStep = async (chatGPTResp: string) => {
+		// wait 2 seconds
+		await new Promise((resolve) => setTimeout(resolve, 2000));
+
 		const gameSession = await DataStore.query(GameSession, gameSessionId);
 		if (gameSession == null) return;
 		// set playersResponded to 0 & roundMode to "VOTE"
@@ -144,9 +142,6 @@ export function Play() {
 				).toISOString();
 			})
 		);
-
-		// wait 2 seconds
-		await new Promise((resolve) => setTimeout(resolve, 2000));
 
 		navigate('/vote');
 	};

@@ -61,9 +61,14 @@ export function Vote() {
   };
 
   useEffect(() => {
+    let gameSubscription: any;
+    let userSubscription: any;
     let timer: string | number | NodeJS.Timeout | undefined;
 
     const init = async () => {
+      // delay 2s
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
       // Get gameSession data by gameSessionID
       const gameSession = await DataStore.query(GameSession, gameSessionID);
 
@@ -77,9 +82,6 @@ export function Vote() {
       let userVoteResponses = users
         .filter((user: UserSession) => !user.eliminated)
         .map((user: UserSession) => user.currentRoundResponse);
-
-      // delay 0.5s
-      await new Promise((resolve) => setTimeout(resolve, 500));
 
       userVoteResponses = users
         .filter((user: UserSession) => !user.eliminated)
@@ -97,7 +99,7 @@ export function Vote() {
       setCurrentRoundNumber(gameSession.roundNumber);
       setPlayerCount(gameSession.playerCount);
 
-      const subscription = DataStore.observe(
+      gameSubscription = DataStore.observe(
         GameSession,
         gameSessionID
       ).subscribe(async (msg: any) => {
@@ -159,7 +161,23 @@ export function Vote() {
           determineNextStep();
         }
       });
-      console.log(subscription);
+      console.log(gameSubscription);
+
+      if (!isHost) {
+        userSubscription = DataStore.observe(
+          UserSession,
+          userSessionID
+        ).subscribe(async (msg: any) => {
+          const item = msg.element;
+          console.log(item);
+
+          if (item.eliminated) {
+            console.log("navigate to /message with LOSE");
+            navigate("/message", { state: "LOSE" });
+          }
+        });
+        console.log(userSubscription);
+      }
 
       timer = setInterval(async () => {
         const { currentRoundExpiration } = gameSession;
@@ -176,21 +194,6 @@ export function Vote() {
           setCurrentTime(0);
           if (isHost) {
             determineNextStep();
-          } else {
-            const subscription = DataStore.observe(
-              UserSession,
-              userSessionID
-            ).subscribe(async (msg: any) => {
-              const item = msg.element;
-              console.log(item);
-
-              if (item.eliminated) {
-                subscription.unsubscribe();
-                console.log("navigate to /message with LOSE");
-                navigate("/message", { state: "LOSE" });
-              }
-            });
-            console.log(subscription);
           }
         }
       }, 1000);
@@ -230,6 +233,8 @@ export function Vote() {
     }
 
     return () => {
+      gameSubscription?.unsubscribe();
+      userSubscription?.unsubscribe();
       if (timer) {
         clearTimeout(timer);
       }
@@ -240,6 +245,9 @@ export function Vote() {
   const determineNextStep = async () => {
     if (determinedNextStep) return;
     determinedNextStep = true;
+
+    // delay 2s
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
     let gameSession = await DataStore.query(GameSession, gameSessionID);
     if (gameSession == null) return;
@@ -259,6 +267,8 @@ export function Vote() {
     const count = users.filter(
       (user) => user.currentRoundResponse === aiResponse
     ).length;
+    console.log("count: ", count);
+    console.log("halfPlayerCount: ", gameSession.playerCount / 2);
     // check if majority of users voted for aiResponse
     if (count > gameSession.playerCount / 2) {
       // people win
