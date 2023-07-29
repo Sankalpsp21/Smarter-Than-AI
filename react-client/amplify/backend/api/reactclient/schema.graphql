@@ -7,7 +7,7 @@ enum RoundMode {
   LOSE
 }
 
-type UserPersistedData @model @auth(rules: [{ allow: owner, provider: userPools }]) {
+type UserPersistedData @model @auth(rules: [{allow: public}, { allow: owner, provider: userPools }]) {
   id: ID!
   _ttl: Int
   username: String!

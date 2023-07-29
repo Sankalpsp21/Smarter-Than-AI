@@ -127,9 +127,10 @@ const JoinGame = () => {
 			<h1>ARE YOU SMARTER THAN AN AI?</h1>
 			<div>Enter pin code to join</div>
 			<TextField
-				size="default"
+				size="large"
 				placeholder="Pin code..."
 				onChange={handlePinCodeChange}
+				label={undefined}
 			/>
 			<Text style={{ color: 'red' }}>{error}</Text>
 			<ToggleButton color="#62A1FF" onClick={handleJoinBtn}>
