@@ -94,10 +94,12 @@ export function Play() {
 					console.error('Failed to get response from /ai/get-answer');
 				} else {
 					aiRespText = await aiResp.text();
+					// trim whitespace and newlines
+					aiRespText = aiRespText.trim();
 					// if aiRespText is surrounded by quotes, remove them
-					if (aiRespText[0] === '"' && aiRespText[-1] === '"') {
-						aiRespText = aiRespText.slice(1, -1);
-					}
+					aiRespText = aiRespText.replace(/^"(.+(?="$))"$/, '$1');
+					// remove all double quotes for now
+					aiRespText = aiRespText.replace(/"/g, '');
 				}
 
 				aiHasResponded = true;
