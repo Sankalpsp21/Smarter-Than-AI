@@ -171,9 +171,9 @@ export function SignIn({ style }: ModalProps) {
 			dispatch(setIsLoggedIn(true));
 
 			// redirect to stats page
-			// navigate('/account', { state: 'Stats' });
-			// // refresh page
-			// window.location.reload();
+			navigate('/account', { state: 'Stats' });
+			// refresh page
+			window.location.reload();
 		} catch (error) {
 			console.log('error signing in', error);
 			alert(error);
