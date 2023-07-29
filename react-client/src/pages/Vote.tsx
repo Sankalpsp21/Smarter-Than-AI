@@ -61,6 +61,8 @@ export function Vote() {
 	};
 
 	useEffect(() => {
+		let gameSubscription: any;
+		let userSubscription: any;
 		let timer: string | number | NodeJS.Timeout | undefined;
 
 		const init = async () => {
@@ -100,7 +102,7 @@ export function Vote() {
 			setCurrentRoundNumber(gameSession.roundNumber);
 			setPlayerCount(gameSession.playerCount);
 
-			const subscription = DataStore.observe(
+			gameSubscription = DataStore.observe(
 				GameSession,
 				gameSessionID
 			).subscribe(async (msg: any) => {
@@ -145,8 +147,11 @@ export function Vote() {
 							state: 'WIN'
 						});
 					}
-					// If RoundMode is LOSE (When the case is; playerNum === 2)
-					else if (item.roundMode === RoundMode.LOSE) {
+					// If RoundMode is LOSE (When the case is; playerNum === 2) or you are eliminated
+					else if (
+						item.roundMode === RoundMode.LOSE ||
+						item.eliminated
+					) {
 						// update redux for player
 						dispatch(setTotalScore(totalScore - 100));
 						dispatch(setTotalGames(totalGames + 1));
@@ -162,7 +167,23 @@ export function Vote() {
 					determineNextStep();
 				}
 			});
-			console.log(subscription);
+			console.log(gameSubscription);
+
+			if (!isHost) {
+				userSubscription = DataStore.observe(
+					UserSession,
+					userSessionID
+				).subscribe(async (msg: any) => {
+					const item = msg.element;
+					console.log(item);
+
+					if (item.eliminated) {
+						console.log('navigate to /message with LOSE');
+						navigate('/message', { state: 'LOSE' });
+					}
+				});
+				console.log(userSubscription);
+			}
 
 			timer = setInterval(async () => {
 				const { currentRoundExpiration } = gameSession;
@@ -179,21 +200,6 @@ export function Vote() {
 					setCurrentTime(0);
 					if (isHost) {
 						determineNextStep();
-					} else {
-						const subscription = DataStore.observe(
-							UserSession,
-							userSessionID
-						).subscribe(async (msg: any) => {
-							const item = msg.element;
-							console.log(item);
-
-							if (item.eliminated) {
-								subscription.unsubscribe();
-								console.log('navigate to /message with LOSE');
-								navigate('/message', { state: 'LOSE' });
-							}
-						});
-						console.log(subscription);
 					}
 				}
 			}, 1000);
@@ -233,6 +239,8 @@ export function Vote() {
 		}
 
 		return () => {
+			gameSubscription?.unsubscribe();
+			userSubscription?.unsubscribe();
 			if (timer) {
 				clearTimeout(timer);
 			}
