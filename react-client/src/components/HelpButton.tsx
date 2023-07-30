@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@aws-amplify/ui-react";
+import { Help } from "./Modals";
 
 interface HelpButtonProps {
   children: React.ReactNode;
@@ -8,27 +9,37 @@ interface HelpButtonProps {
 }
 
 export function HelpButton({ children, color, onClick }: HelpButtonProps) {
-    return (
+  const [isOpen, setIsOpen] = useState(false);
+  const handleClick = (e: any) => {
+    e.preventDefault();
+    setIsOpen(!isOpen);
+  };
+  return (
+    <>
+      {isOpen && (
+        <Help
+          style={{ position: "absolute", zIndex: 5 }}
+          onClick={handleClick}
+        />
+      )}
       <Button
         position="absolute"
-        bottom="40px" /* Slightly inwards from the bottom */
-        right="40px" /* Slightly inwards from the right */
-  
+        bottom="40px"
+        right="40px"
         backgroundColor={color}
-        borderRadius="50%" /* To make it perfectly round */
-  
-        width="50px" /* Adjust the width to your desired size */
-        height="50px" /* Adjust the height to your desired size */
-  
+        borderRadius="50%"
+        width="50px"
+        height="50px"
         padding="1em"
-  
         border="none"
         boxShadow="rgba(13, 26, 38, 0.25) 0px 4px 4px 0px"
-        onClick={onClick}
+        onClick={(e) => {
+          e.preventDefault();
+          setIsOpen(!isOpen);
+        }}
       >
         {children}
       </Button>
-    );
-  }
-  
-  
+    </>
+  );
+}
