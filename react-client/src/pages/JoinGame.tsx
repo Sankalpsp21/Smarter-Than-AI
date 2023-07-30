@@ -79,11 +79,13 @@ const JoinGame = () => {
 
 		console.log(userSessionID);
 		const lastUser = await DataStore.query(UserSession, userSessionID);
-		if (lastUser == null) return;
-		const lastGameSessionID = lastUser.gameSessionID;
+		// if (lastUser == null) return;
+		const lastGameSessionID =
+			lastUser == null ? null : lastUser.gameSessionID;
 
 		// check redux store for user. For now just assuming user is new and needs to be created
 		try {
+			console.log('asdf');
 			const persistedDataID = isLoggedIn ? userPersistedDataID : null;
 
 			if (!userSessionID) {
@@ -157,6 +159,7 @@ const JoinGame = () => {
 				onChange={handlePinCodeChange}
 				label={undefined}
 				style={{ zIndex: -1000 }}
+				autoComplete="off"
 			/>
 			<Text style={{ color: '#ffa6a6' }}>{error}</Text>
 			<ToggleButton color="#62A1FF" onClick={handleJoinBtn}>

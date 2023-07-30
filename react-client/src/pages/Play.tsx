@@ -296,6 +296,7 @@ export function Play() {
 							borderRadius: '10px'
 						}}
 						onChange={handleTextField}
+						autoComplete="off"
 					></TextField>
 					{!isHost && (
 						<ToggleButton
