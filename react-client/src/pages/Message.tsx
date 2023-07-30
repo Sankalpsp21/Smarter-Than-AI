@@ -22,10 +22,10 @@ export function Message() {
 	const userSessionID = useSelector(selectUserSessionID);
 
 	const messageSet = {
-		WIN: 'An AI has been deported....',
-		MESSAGE: 'A human has been deported....',
-		LOSE: 'You have been deported....',
-		HOSTLOSE: 'The last player has been deported....'
+		WIN: 'An AI has been kicked out....',
+		MESSAGE: 'A human has been voted out....',
+		LOSE: 'You have been eliminated....',
+		HOSTLOSE: 'The last player has been eliminated....'
 	};
 
 	const [message, setMessage] = useState('');
